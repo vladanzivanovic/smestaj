@@ -96,7 +96,9 @@
             "npm install",
             "npm run build",
             "sudo -u www-data php bin/console presta:sitemaps:dump web --gzip -e prod",
-            "sudo -u www-data php bin/console liip:imagine:cache:remove -e prod"
+            "sudo -u www-data php bin/console liip:imagine:cache:remove -e prod",
+            "sudo -u www-data php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json -e prod",
+            "sudo -u www-data php bin/console bazinga:js-translation:dump web/js --format=json --merge-domains -e prod"
         ],
         "cache:clear": [
             "php bin/console cache:clear --no-warmup --ansi",
