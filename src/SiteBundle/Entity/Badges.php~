@@ -1,0 +1,297 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Badges
+ *
+ * @ORM\Table(name="badges")
+ * @ORM\Entity(repositoryClass="SiteBundle\Repository\BadgeRepository")
+ */
+class Badges
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Name", type="string", length=100, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="text", length=65535, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Image", type="string", length=250, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="SysCreatedTime", type="datetime", nullable=false)
+     */
+    private $syscreatedtime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="SysModifyTime", type="datetime", nullable=false)
+     */
+    private $sysmodifytime;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
+     * @ORM\JoinColumn(name="SysCreatorId", referencedColumnName="Id")
+     */
+    private $syscreatorid;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
+     * @ORM\JoinColumn(name="SysModifyId", referencedColumnName="Id")
+     */
+    private $sysmodifyid;
+
+    /**
+     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Badgetoad", mappedBy="badgeid")
+     */
+    private $badgeToAds;
+
+    public function __construct()
+    {
+        $this->badgeToAds = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Badges
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Badges
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Badges
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set syscreatedtime
+     *
+     * @param \DateTime $syscreatedtime
+     *
+     * @return Badges
+     */
+    public function setSyscreatedtime($syscreatedtime)
+    {
+        $this->syscreatedtime = $syscreatedtime;
+
+        return $this;
+    }
+
+    /**
+     * Get syscreatedtime
+     *
+     * @return \DateTime
+     */
+    public function getSyscreatedtime()
+    {
+        return $this->syscreatedtime;
+    }
+
+    /**
+     * Set sysmodifytime
+     *
+     * @param \DateTime $sysmodifytime
+     *
+     * @return Badges
+     */
+    public function setSysmodifytime($sysmodifytime)
+    {
+        $this->sysmodifytime = $sysmodifytime;
+
+        return $this;
+    }
+
+    /**
+     * Get sysmodifytime
+     *
+     * @return \DateTime
+     */
+    public function getSysmodifytime()
+    {
+        return $this->sysmodifytime;
+    }
+
+    /**
+     * Set syscreatorid
+     *
+     * @param integer $syscreatorid
+     *
+     * @return Badges
+     */
+    public function setSyscreatorid($syscreatorid)
+    {
+        $this->syscreatorid = $syscreatorid;
+
+        return $this;
+    }
+
+    /**
+     * Get syscreatorid
+     *
+     * @return integer
+     */
+    public function getSyscreatorid()
+    {
+        return $this->syscreatorid;
+    }
+
+    /**
+     * Set sysmodifyid
+     *
+     * @param integer $sysmodifyid
+     *
+     * @return Badges
+     */
+    public function setSysmodifyid($sysmodifyid)
+    {
+        $this->sysmodifyid = $sysmodifyid;
+
+        return $this;
+    }
+
+    /**
+     * Get sysmodifyid
+     *
+     * @return integer
+     */
+    public function getSysmodifyid()
+    {
+        return $this->sysmodifyid;
+    }
+
+    /**
+     * Add badgeToAd
+     *
+     * @param \SiteBundle\Entity\Badgetoad $badgeToAd
+     *
+     * @return Badges
+     */
+    public function addBadgeToAd(\SiteBundle\Entity\Badgetoad $badgeToAd)
+    {
+        $this->badgeToAds[] = $badgeToAd;
+
+        return $this;
+    }
+
+    /**
+     * Remove badgeToAd
+     *
+     * @param \SiteBundle\Entity\Badgetoad $badgeToAd
+     */
+    public function removeBadgeToAd(\SiteBundle\Entity\Badgetoad $badgeToAd)
+    {
+        $this->badgeToAds->removeElement($badgeToAd);
+    }
+
+    /**
+     * Get badgeToAds
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBadgeToAds()
+    {
+        return $this->badgeToAds;
+    }
+}

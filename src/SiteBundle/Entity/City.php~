@@ -1,0 +1,196 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * City
+ *
+ * @ORM\Table(name="city", indexes={@ORM\Index(name="CityAreaId", columns={"AreaId"}), @ORM\Index(name="CityCountryId", columns={"CountryId"})})
+ * @ORM\Entity(repositoryClass="SiteBundle\Repository\CityRepository")
+ */
+class City
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Name", type="string", length=200, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Alias", type="string", length=200, nullable=false)
+     */
+    private $alias;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ZipCode", type="string", length=50, nullable=true)
+     */
+    private $zipcode;
+
+    /**
+     * @var \Country
+     *
+     * @ORM\ManyToOne(targetEntity="Country")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="CountryId", referencedColumnName="id")
+     * })
+     */
+    private $countryid;
+
+    /**
+     * @var \Area
+     *
+     * @ORM\ManyToOne(targetEntity="Area")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="AreaId", referencedColumnName="Id")
+     * })
+     */
+    private $areaid;
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return City
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     *
+     * @return City
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
+     * Set zipcode
+     *
+     * @param string $zipcode
+     *
+     * @return City
+     */
+    public function setZipcode($zipcode)
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    /**
+     * Get zipcode
+     *
+     * @return string
+     */
+    public function getZipcode()
+    {
+        return $this->zipcode;
+    }
+
+    /**
+     * Set countryid
+     *
+     * @param \SiteBundle\Entity\Country $countryid
+     *
+     * @return City
+     */
+    public function setCountryid(\SiteBundle\Entity\Country $countryid = null)
+    {
+        $this->countryid = $countryid;
+
+        return $this;
+    }
+
+    /**
+     * Get countryid
+     *
+     * @return \SiteBundle\Entity\Country
+     */
+    public function getCountryid()
+    {
+        return $this->countryid;
+    }
+
+    /**
+     * Set areaid
+     *
+     * @param \SiteBundle\Entity\Area $areaid
+     *
+     * @return City
+     */
+    public function setAreaid(\SiteBundle\Entity\Area $areaid = null)
+    {
+        $this->areaid = $areaid;
+
+        return $this;
+    }
+
+    /**
+     * Get areaid
+     *
+     * @return \SiteBundle\Entity\Area
+     */
+    public function getAreaid()
+    {
+        return $this->areaid;
+    }
+}

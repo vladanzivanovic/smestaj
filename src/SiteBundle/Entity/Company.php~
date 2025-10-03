@@ -1,0 +1,165 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Company
+ *
+ * @ORM\Table(name="company")
+ * @ORM\Entity(repositoryClass="SiteBundle\Repository\CompanyRepository")
+ */
+class Company
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Title", type="string", length=300)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Telephone", type="string", length=255, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="SocialNetwork", type="text")
+     */
+    private $socialnetwork;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Email", type="string", length=255, nullable=false)
+     */
+    private $email;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Company
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Company
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set telephone
+     *
+     * @param string $telephone
+     *
+     * @return Company
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * Get telephone
+     *
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * Set socialNetwork
+     *
+     * @param string $socialNetwork
+     *
+     * @return Company
+     */
+    public function setSocialNetwork($socialNetwork)
+    {
+        $this->socialNetwork = $socialNetwork;
+
+        return $this;
+    }
+
+    /**
+     * Get socialNetwork
+     *
+     * @return string
+     */
+    public function getSocialNetwork()
+    {
+        return $this->socialNetwork;
+    }
+}

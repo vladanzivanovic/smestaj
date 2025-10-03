@@ -1,0 +1,103 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Gendertoads
+ *
+ * @ORM\Table(name="gendertoads", indexes={@ORM\Index(name="GenderToAdsAdsId", columns={"AdsId"}), @ORM\Index(name="GenderToAdsGenderId", columns={"GenderId"})})
+ * @ORM\Entity
+ */
+class Gendertoads
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Ads
+     *
+     * @ORM\ManyToOne(targetEntity="Ads", inversedBy="genderIds")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="AdsId", referencedColumnName="Id")
+     * })
+     */
+    private $adsid;
+
+    /**
+     * @var \Genders
+     *
+     * @ORM\ManyToOne(targetEntity="Genders", inversedBy="genderstoads")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="GenderId", referencedColumnName="Id")
+     * })
+     */
+    private $genderid;
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set adsid
+     *
+     * @param \SiteBundle\Entity\Ads $adsid
+     *
+     * @return Gendertoads
+     */
+    public function setAdsid(\SiteBundle\Entity\Ads $adsid = null)
+    {
+        $this->adsid = $adsid;
+
+        return $this;
+    }
+
+    /**
+     * Get adsid
+     *
+     * @return \SiteBundle\Entity\Ads
+     */
+    public function getAdsid()
+    {
+        return $this->adsid;
+    }
+
+    /**
+     * Set genderid
+     *
+     * @param \SiteBundle\Entity\Genders $genderid
+     *
+     * @return Gendertoads
+     */
+    public function setGenderid(\SiteBundle\Entity\Genders $genderid = null)
+    {
+        $this->genderid = $genderid;
+
+        return $this;
+    }
+
+    /**
+     * Get genderid
+     *
+     * @return \SiteBundle\Entity\Genders
+     */
+    public function getGenderid()
+    {
+        return $this->genderid;
+    }
+}

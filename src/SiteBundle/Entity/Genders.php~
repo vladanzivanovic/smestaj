@@ -1,0 +1,268 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Genders
+ *
+ * @ORM\Table(name="genders")
+ * @ORM\Entity(repositoryClass="SiteBundle\Repository\GendersRepository")
+ */
+class Genders
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Name", type="string", length=150, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alias", type="string", length=150, nullable=false)
+     */
+    private $alias;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="SysCreatedDateTime", type="datetime", nullable=false)
+     */
+    private $syscreateddatetime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="SysModifyDateTame", type="datetime", nullable=false)
+     */
+    private $sysmodifydatetame;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
+     * @ORM\JoinColumn(name="SysCreatorId", referencedColumnName="Id")
+     */
+    private $syscreatorid;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
+     * @ORM\JoinColumn(name="SysModifyId", referencedColumnName="Id")
+     */
+    private $sysmodifyid;
+
+    /**
+     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Gendertoads", mappedBy="genderid")
+     */
+    private $genderstoads;
+
+
+    public function __construct()
+    {
+        $this->genderstoads = new ArrayCollection();
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Genders
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     *
+     * @return Genders
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
+     * Set syscreateddatetime
+     *
+     * @param \DateTime $syscreateddatetime
+     *
+     * @return Genders
+     */
+    public function setSyscreateddatetime($syscreateddatetime)
+    {
+        $this->syscreateddatetime = $syscreateddatetime;
+
+        return $this;
+    }
+
+    /**
+     * Get syscreateddatetime
+     *
+     * @return \DateTime
+     */
+    public function getSyscreateddatetime()
+    {
+        return $this->syscreateddatetime;
+    }
+
+    /**
+     * Set sysmodifydatetame
+     *
+     * @param \DateTime $sysmodifydatetame
+     *
+     * @return Genders
+     */
+    public function setSysmodifydatetame($sysmodifydatetame)
+    {
+        $this->sysmodifydatetame = $sysmodifydatetame;
+
+        return $this;
+    }
+
+    /**
+     * Get sysmodifydatetame
+     *
+     * @return \DateTime
+     */
+    public function getSysmodifydatetame()
+    {
+        return $this->sysmodifydatetame;
+    }
+
+    /**
+     * Set syscreatorid
+     *
+     * @param integer $syscreatorid
+     *
+     * @return Genders
+     */
+    public function setSyscreatorid($syscreatorid)
+    {
+        $this->syscreatorid = $syscreatorid;
+
+        return $this;
+    }
+
+    /**
+     * Get syscreatorid
+     *
+     * @return integer
+     */
+    public function getSyscreatorid()
+    {
+        return $this->syscreatorid;
+    }
+
+    /**
+     * Set sysmodifyid
+     *
+     * @param integer $sysmodifyid
+     *
+     * @return Genders
+     */
+    public function setSysmodifyid($sysmodifyid)
+    {
+        $this->sysmodifyid = $sysmodifyid;
+
+        return $this;
+    }
+
+    /**
+     * Get sysmodifyid
+     *
+     * @return integer
+     */
+    public function getSysmodifyid()
+    {
+        return $this->sysmodifyid;
+    }
+
+    /**
+     * Add genderstoad
+     *
+     * @param \SiteBundle\Entity\Gendertoads $genderstoad
+     *
+     * @return Genders
+     */
+    public function addGenderstoad(\SiteBundle\Entity\Gendertoads $genderstoad)
+    {
+        $this->genderstoads[] = $genderstoad;
+
+        return $this;
+    }
+
+    /**
+     * Remove genderstoad
+     *
+     * @param \SiteBundle\Entity\Gendertoads $genderstoad
+     */
+    public function removeGenderstoad(\SiteBundle\Entity\Gendertoads $genderstoad)
+    {
+        $this->genderstoads->removeElement($genderstoad);
+    }
+
+    /**
+     * Get genderstoads
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGenderstoads()
+    {
+        return $this->genderstoads;
+    }
+}

@@ -1,0 +1,98 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserToRole
+ *
+ * @ORM\Table(name="usertorole")
+ * @ORM\Entity(repositoryClass="SiteBundle\Repository\UserToRoleRepository")
+ */
+class Usertorole
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="id")
+     * @ORM\JoinColumn(name="UserId", referencedColumnName="Id")
+     */
+    private $userId;
+
+    /**
+     * @var Role
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\Role", inversedBy="id")
+     * @ORM\JoinColumn(name="RoleId", referencedColumnName="id")
+     */
+    private $roleId;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     *
+     * @return UserToRole
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set roleId
+     *
+     * @param integer $roleId
+     *
+     * @return UserToRole
+     */
+    public function setRoleId($roleId)
+    {
+        $this->roleId = $roleId;
+
+        return $this;
+    }
+
+    /**
+     * Get roleId
+     *
+     * @return int
+     */
+    public function getRoleId()
+    {
+        return $this->roleId;
+    }
+}

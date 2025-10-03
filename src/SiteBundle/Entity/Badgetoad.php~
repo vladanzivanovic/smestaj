@@ -1,0 +1,229 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Badgetoad
+ *
+ * @ORM\Table(name="badgetoad", indexes={@ORM\Index(name="BadgeToAdAdsId", columns={"AdsId"}), @ORM\Index(name="BadgeToAdBadgeId", columns={"BadgeId"})})
+ * @ORM\Entity(repositoryClass="SiteBundle\Repository\BadgeToAdRepository")
+ */
+class Badgetoad
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="SysCreatedTime", type="datetime", nullable=true)
+     */
+    private $syscreatedtime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="SysModifiedTime", type="datetime", nullable=true)
+     */
+    private $sysmodifiedtime;
+
+    /**
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
+     * @ORM\JoinColumn(name="SysCreatorId", referencedColumnName="Id")
+     */
+    private $syscreatorid;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
+     * @ORM\JoinColumn(name="SysModifyId", referencedColumnName="Id")
+     */
+    private $sysmodifierid;
+
+    /**
+     * @var \Ads
+     *
+     * @ORM\ManyToOne(targetEntity="Ads", inversedBy="badges")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="AdsId", referencedColumnName="Id")
+     * })
+     */
+    private $adsid;
+
+    /**
+     * @var \Badges
+     *
+     * @ORM\ManyToOne(targetEntity="Badges", inversedBy="badgeToAds")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="BadgeId", referencedColumnName="Id")
+     * })
+     */
+    private $badgeid;
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set syscreatedtime
+     *
+     * @param \DateTime $syscreatedtime
+     *
+     * @return Badgetoad
+     */
+    public function setSyscreatedtime($syscreatedtime)
+    {
+        $this->syscreatedtime = $syscreatedtime;
+
+        return $this;
+    }
+
+    /**
+     * Get syscreatedtime
+     *
+     * @return \DateTime
+     */
+    public function getSyscreatedtime()
+    {
+        return $this->syscreatedtime;
+    }
+
+    /**
+     * Set sysmodifiedtime
+     *
+     * @param \DateTime $sysmodifiedtime
+     *
+     * @return Badgetoad
+     */
+    public function setSysmodifiedtime($sysmodifiedtime)
+    {
+        $this->sysmodifiedtime = $sysmodifiedtime;
+
+        return $this;
+    }
+
+    /**
+     * Get sysmodifiedtime
+     *
+     * @return \DateTime
+     */
+    public function getSysmodifiedtime()
+    {
+        return $this->sysmodifiedtime;
+    }
+
+    /**
+     * Set syscreatorid
+     *
+     * @param integer $syscreatorid
+     *
+     * @return Badgetoad
+     */
+    public function setSyscreatorid($syscreatorid)
+    {
+        $this->syscreatorid = $syscreatorid;
+
+        return $this;
+    }
+
+    /**
+     * Get syscreatorid
+     *
+     * @return integer
+     */
+    public function getSyscreatorid()
+    {
+        return $this->syscreatorid;
+    }
+
+    /**
+     * Set sysmodifierid
+     *
+     * @param integer $sysmodifierid
+     *
+     * @return Badgetoad
+     */
+    public function setSysmodifierid($sysmodifierid)
+    {
+        $this->sysmodifierid = $sysmodifierid;
+
+        return $this;
+    }
+
+    /**
+     * Get sysmodifierid
+     *
+     * @return integer
+     */
+    public function getSysmodifierid()
+    {
+        return $this->sysmodifierid;
+    }
+
+    /**
+     * Set adsid
+     *
+     * @param \SiteBundle\Entity\Ads $adsid
+     *
+     * @return Badgetoad
+     */
+    public function setAdsid(\SiteBundle\Entity\Ads $adsid = null)
+    {
+        $this->adsid = $adsid;
+
+        return $this;
+    }
+
+    /**
+     * Get adsid
+     *
+     * @return \SiteBundle\Entity\Ads
+     */
+    public function getAdsid()
+    {
+        return $this->adsid;
+    }
+
+    /**
+     * Set badgeid
+     *
+     * @param \SiteBundle\Entity\Badges $badgeid
+     *
+     * @return Badgetoad
+     */
+    public function setBadgeid(\SiteBundle\Entity\Badges $badgeid = null)
+    {
+        $this->badgeid = $badgeid;
+
+        return $this;
+    }
+
+    /**
+     * Get badgeid
+     *
+     * @return \SiteBundle\Entity\Badges
+     */
+    public function getBadgeid()
+    {
+        return $this->badgeid;
+    }
+}
