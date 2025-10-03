@@ -93,8 +93,8 @@
             "sudo -u www-data php bin/console cache:warmup -e prod",
             "sudo -u www-data php bin/console assets:install --symlink --relative web/js -e prod",
             "sudo -u www-data php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json -e prod",
-            "sudo -u www-data bash -c 'source /root/.nvm/nvm.sh && npm install'",
-            "sudo -u www-data bash -c 'source /root/.nvm/nvm.sh && npm run build'",
+            "npm install",
+            "npm run build",
             "sudo -u www-data php bin/console presta:sitemaps:dump web --gzip -e prod",
             "sudo -u www-data php bin/console liip:imagine:cache:remove -e prod"
         ],
