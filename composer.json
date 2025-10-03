@@ -96,7 +96,7 @@
             "sudo -u www-data npm install",
             "sudo -u www-data npm run build",
             "sudo -u www-data php bin/console presta:sitemaps:dump web --gzip -e prod",
-            "sudo -u www-data php bin/console liip:imagine:cache:remove -e prod",
+            "sudo -u www-data php bin/console liip:imagine:cache:remove -e prod"
         ],
         "cache:clear": [
             "php bin/console cache:clear --no-warmup --ansi",
