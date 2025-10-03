@@ -1,0 +1,227 @@
+{# src/SiteBundle/Resources/views/Site/index.html.html.twig #}
+{% extends("@Site/base.html.twig") %}
+{% block content %}
+
+    <div class="page-title-container">
+        <div class="container">
+            <div class="page-title pull-left">
+                <h2 class="entry-title">Vodič za proslave</h2>
+            </div>
+            <ul class="breadcrumbs pull-right">
+                <li><a href="{{ path('site_index') }}">POČETNA</a></li>
+                <li class="active">Vodič za proslave</li>
+            </ul>
+        </div>
+    </div>
+
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                <div id="main" class="col-sm-8 col-md-9">
+                    <div class="travelo-box booking-section">
+                        <form id="booking-form" action="{{ path('site_ad_reservation') }}" method="post" enctype="multipart/form-data" onsubmit="reservationService
+                        .adReservationSubmit(this, event)" data-form-type="wizard">
+                            <div class="person-information">
+                                <h2>Vaši podaci</h2>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 col-md-5">
+                                        <label for="first-name">Ime</label>
+                                        <input type="text" class="input-text full-width" value="" placeholder="Ime" name="user[firstName]" id="first-name" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-5">
+                                        <label for="last-name">Prezime</label>
+                                        <input type="text" class="input-text full-width" value="" placeholder="Prezime" name="user[lastName]" id="last-name" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <label for="email">Email</label>
+                                        <input type="text" class="input-text full-width" value="" placeholder="Email" name="user[email]" id="email" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <label for="telephone">Telefon</label>
+                                        <input type="text" class="input-text full-width" value="" placeholder="Telefon" name="user[telephone]" id="telephone" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <label for="mobile-phone">Mobilni telefon</label>
+                                        <input type="text" class="input-text full-width" value="" placeholder="Mobilni telefon" name="user[mobilePhone]"
+                                               id="mobile-phone" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 col-md-5">
+                                        <label for="address">Adresa</label>
+                                        <input type="text" class="input-text full-width" value="" placeholder="Adresa" name="user[address]"
+                                               id="address" />
+                                    </div>
+                                    <div class="col-sm-6 col-md-5">
+                                        <label for="city">Grad</label>
+                                        <input type="text" class="input-text full-width city" name="user[city]" value="" placeholder="Grad" id="city" autocomplete="false"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="group-details">
+                                <h2>Proslavljam</h2>
+                                <div class="form-group row">
+                                    <div class="col-sm-10 errorParent">
+                                        <div class="selector">
+                                            <select class="full-width" name="eventTypeId" data-placeholder="Izaberite tip proslave">
+                                                {% for type in eventTypes %}
+                                                    <option value="{{ type['Id'] }}">{{ type['Name'] }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="booking-type">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 col-md-5">
+                                        <label for="event-date">Proslava će biti održana dana</label>
+                                        <div class="datepicker-wrap">
+                                            <input type="text" name="eventDate" class="input-text full-width" placeholder="mm/dd/yyyy" id="event-date" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-5">
+                                        <label for="event-city">U mestu</label>
+                                        <input type="text" name="eventCity" class="input-text full-width city" id="event-city" autocomplete="false"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-10 errorParent">
+                                        <label for="event-interests">Žanrovi, kategorije koje vas interesuju</label>
+                                        <input type="text" name="interests" class="input-text full-width eventInterests" id="event-interests" />
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="booking-flight">
+                                <h2>Još nekoliko detelja</h2>
+                                <div class="row form-group">
+                                    <div class="col-sm-6 col-md-4">
+                                        <label for="event-place">Biće održana u *</label>
+                                        <input type="text" class="input-text full-width" name="eventPlace" value="" placeholder="Restoran, sala, firma, kuća
+" id="event-place" />
+                                    </div>
+                                    <div class="timepicker">
+                                        <div class="col-sm-6 col-md-3">
+                                            <label for="timeFrom">Sa početkom</label>
+                                            <input type="text" name="timeFrom" class="input-text full-width" id="timeFrom" placeholder="hh:mm" />
+                                        </div>
+                                        <div class="col-sm-6 col-md-3">
+                                            <label for="timeTo">I trajaće do</label>
+                                            <input type="text" name="timeTo" class="input-text full-width" placeholder="hh:mm" id="timeTo" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-6 col-md-5">
+                                        <label for="guest-number">Broj gostiju</label>
+                                        <div class="selector">
+                                            <select class="full-width" name="guestNumber" data-placeholder="Izaeberite broj gostiju" id="guest-number">
+                                                <option value="<25"><25</option>
+                                                <option value="26-49">26-49</option>
+                                                <option value="50-99">50-99</option>
+                                                <option value="100-199">100-199</option>
+                                                <option value="200-299">200-299</option>
+                                                <option value="300-499">300-499</option>
+                                                <option value="500+">500+</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-10">
+                                        <label for="note">Dodatni detalji koje smo mi zaboravili</label>
+                                        <textarea class="full-width" rows="10" placeholder="Ukoliko imate još neku informaciju koju smo mi izostavili
+                                        upišite ovde" name="note" id="note"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="booking-hotel">
+                                <h2>Kako želite da vas kontaktiramo?</h2>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="contactType" value="email">Email
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="contactType" value="sms">SMS
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="contactType" value="telefon">Telefon
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="contactType" value="all">Sve jedno
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="acceptPolicy"> Slanjem rezervacije slažem se sa <a href="#"><span class="skin-color"> Uslovima i
+                                                            politikom sajta mojeveselje.com</span></a>.
+                                    </label>
+                                </div>
+                            </div>
+                            <div align="center" class="g-recaptcha" data-sitekey="{{ re_captcha_key }}"></div>
+                            <div class="form-group row reservation-button">
+                                <div class="center-block">
+                                    <button type="submit" class="full-width btn-large">REZERVIŠI</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="sidebar col-md-3">
+
+                    <div class="travelo-box guarantee-box">
+                        <img width="150" height="150" class="guarantee-image" alt="" src="{{ asset('bundles/site/images/badges/guarantee.png') }}">
+                        <h4>100% Sigurnost</h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block customStylesheets %}
+    {% stylesheets
+        '@SiteBundle/Resources/public/components/bootstrap-tagsinput/bootstrap-tagsinput.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block customJavascript %}
+    {% javascripts
+        '@SiteBundle/Resources/public/js/Services/WizardService.js'
+        '@SiteBundle/Resources/public/js/Services/ReservationService.js'
+        '@SiteBundle/Resources/public/js/Controller/WizardController.js'
+        '@SiteBundle/Resources/public/components/bootstrap-timepicker/bootstrap-timepicker.min.js'
+        '@SiteBundle/Resources/public/components/bootstrap-tagsinput/bootstrap-tagsinput.min.js'
+    %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    <script nonce="{{ csp_nonce('script') }}">
+        var interest = JSON.parse('{{ interests }}'.replace(/&quot;/g,'"'));
+    </script>
+{% endblock %}

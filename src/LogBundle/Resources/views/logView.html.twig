@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="{{ asset('js/bundles/log/css/web-log-viewer.css') }}">
+<br>
+<link rel="stylesheet" href="{{ asset('js/bundles/log/vendor/highlight/styles/darcula.css') }}">
+
+<div class="container-fluid">
+    <div class="row">
+        {% if noLog is defined %}
+            <div class="alert alert-info">
+                No Log has been generated for today!<br>
+            </div>
+        {% else %}
+            <div class="side-bar">
+                <a href="/">Home</a>
+                <a href="{{ url('log_list_view') }}">Back to logs</a>
+                <br>
+                <div class="form">
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('debug')">
+                        debug
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('info')">
+                        info
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('notice')">
+                        notice
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('warning')">
+                        warning
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('error')">
+                        error
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('critical')">
+                        critical
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('alert')">
+                        alert
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox" checked onclick="toggle('emergency')">
+                        emergency
+                    </label>
+                    <br>
+                </div>
+            </div>
+            <div class="content">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="10%">DateTime</th>
+                        <th width="10%">Channel</th>
+                        <th width="10%">Level</th>
+                        <th>Message</th>
+                    </tr>
+                    {% for line in log %}
+                        <tr class="{{ line.level }}">
+                            <td>
+                                {{ line.dateTime }}
+                            </td>
+                            <td>
+                                {{ line.type }}
+                            </td>
+                            <td>
+                                {{ line.level }}
+                            </td>
+                            <td>
+                                {{ line.message|raw }}
+                                {% if line.json %}
+                                    <br>
+                                    <pre>
+                                        <code class="json">
+                                            {{ line.json|raw }}
+                                        </code>
+                                    </pre>
+
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{{ asset('js/bundles/log/js/web-log-viewer.js') }}"></script>
+<script src="{{ asset('js/bundles/log/vendor/highlight/highlight.pack.js') }}"></script>
+<script>hljs.initHighlightingOnLoad();</script>

@@ -1,0 +1,14 @@
+.ads-list {
+  @extend .hotel-list;
+  &__grid {
+    @extend .row;
+    @extend .image-box;
+    @extend .hotel;
+    @extend .listing-style1;
+    &--box {
+      @extend .box;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

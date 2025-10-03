@@ -1,0 +1,78 @@
+{% set routeName = app.request.attributes.get('_route') %}
+
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|split('_')[0] }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin prijava</title>
+
+    <link rel="shortcut icon" href="../../../assets/images/favicon.png" />
+
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/admin/app.css') }}"/>
+    {% endblock %}
+</head>
+<body class="login">
+<div class="main-wrapper">
+    <div class="page-wrapper full-page">
+        <div class="page-content d-flex align-items-center justify-content-center">
+
+            <div class="row w-100 mx-0 auth-page">
+                <div class="col-md-8 col-xl-6 mx-auto">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-md-4 pr-md-0">
+                                <div class="auth-left-wrapper">
+
+                                </div>
+                            </div>
+                            <div class="col-md-8 pl-md-0">
+                                <form id="login_form" class="auth-form-wrapper px-4 py-5">
+                                    <a href="#" class="noble-ui-logo logo-light d-block mb-2">Noble<span>UI</span></a>
+                                    <h5 class="text-muted font-weight-normal mb-4">Welcome back! Log in to your account.</h5>
+                                    <form class="forms-sample">
+                                        <div class="form-group">
+                                            <label for="email">Email address</label>
+                                            <input type="email" name="username" class="form-control" id="email" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" name="password" class="form-control" id="password" autocomplete="current-password" placeholder="Password">
+                                        </div>
+                                        <div class="mt-3">
+                                            <button id="login_btn" type="button" class="btn btn-primary mr-2 mb-2 mb-md-0">Login</button>
+                                        </div>
+                                    </form>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% block javascripts %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const LOCALE = '{{ default_locale }}';
+        const ROUTE_NAME = '{{ routeName }}';
+        const LOCALES = JSON.parse('{{ languages|json_encode|raw }}')
+        const APP_ENV = '{{ app is defined and app.environment == 'prod' ? 'prod' : 'dev' }}';
+        const SENTRY_DSN = '{{ app_params('sentry_javascript_dns') }}';
+
+        window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
+    </script>
+    <script src="{{ preload(asset('build/runtime.js')) }}"></script>
+    <script src="{{ asset('js/bundles/bazingajstranslation/js/translator.min.js') }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': locale_codes()|join(',') }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'validators', 'locales': locale_codes()|join(',') }) }}"></script>
+    <script type="text/javascript" src="{{ asset('build/js/admin/app.js') }}"></script>
+    <script src="{{ asset('js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{% endblock %}
+{% block pageJavascript %}{% endblock %}
+</body>
+</html>

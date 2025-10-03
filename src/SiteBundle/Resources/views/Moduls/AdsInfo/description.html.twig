@@ -1,0 +1,136 @@
+<div class="hotel fade in active single-ads__description" id="hotel-description">
+    <div class="tab-pane">
+        <h2 class="col-md-9">{{ title }}</h2>
+        <div class="intro table-wrapper full-width hidden-table-sms">
+            <div class="col-sm-5 col-lg-5 features table-cell">
+                <ul>
+                    <li><label>mesto:</label>{{ address.city.title }}</li>
+                    <li><label>ulica:</label>{{ address.street.title }}</li>
+                    <li><label>tip:</label>{{ ad_categories.main.title }}</li>
+                    <li><label>pre sezona:</label>€ {{ prices.price_pre_season.from }}
+                        - €{{ prices.price_pre_season.to }}</li>
+                    <li><label>sezona:</label>€{{ prices.price_season.from }}
+                        - €{{ prices.price_season.to }}</li>
+                    <li><label>post sezona:</label>€{{ prices.price_post_season.from }}
+                        - €{{ prices.price_post_season.to }}</li>
+                </ul>
+            </div>
+            <div class="col-sm-5 col-lg-5 features table-cell">
+                <ul>
+                    <li>
+                        <label>vlasnik:</label>{{ contact.first_name }} {{ contact.last_name }}
+                    </li>
+                    {% if payment.type > constant('SiteBundle\\Entity\\AdsPayedDate::PAYMENT_PLAN_BASIC')  %}
+                        <li><label>telefon:</label>
+                            <button type="button" class="showTelNumber">Prikaži broj</button>
+                            <a class="hide telNumber" href="tel:{{ contact.telephone.classic }}">{{ contact.telephone.classic }}</a>
+                        </li>
+                        <li><label>mobilni:</label>
+                            <a class="hide telNumber" href="tel:{{ contact.telephone.mobile }}">{{ contact.telephone.mobile }}</a>
+                        </li>
+                        <li><label>viber:</label>
+                            <a class="hide telNumber" href="tel:{{ contact.telephone.viber }}">{{ contact.telephone.viber }}</a>
+                        </li>
+                    {% endif %}
+                    <li><label>website:</label>
+                        {% set ad_website = social.website is not null ? social.website : path('site_index') %}
+                        <a href="{{ full_url(ad_website) }}" target="_blank">{{ ad_website }}</a></li>
+                    <li><label>facebook:</label>
+                        <a href="{{ full_url(social.facebook) }}"
+                           target="_blank">{{ social.facebook }}</a>
+                    </li>
+                    <li><label>instagram:</label>
+                        <a href="{{ full_url(social.instagram) }}"
+                           target="_blank">{{ social.instagram }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% if tags['accomodation-type'] is defined %}
+        <div class="col-xs-12 room-type">
+            <label>Tip soba</label>
+            {% for accomodation in tags['accomodation-type'] %}
+                <span class="info-primary">{{ accomodation.title }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="clearfix"></div>
+        <div class="long-description">{{ description|raw }}</div>
+    </div>
+    {% if tags['range'] is defined %}
+    <div class="tab-pane with-border-bottom">
+        <div class="col-xs-12">
+            <h2>Udaljenost</h2>
+            <ul class="amenities clearfix style1">
+                {% for range in tags['range'] %}
+                    <li class="col-md-4 col-sm-6">
+                        {% set icon = 'fa' in range.icon ? 'fa '~ range.icon : range.icon %}
+                        <div class="icon-box style1">
+                            <i class="{{ icon }}"></i>
+                            {{ range.title }}
+                            <i class="range">{{ range.value }}m</i>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+    {% if tags['accomodation'] is defined %}
+    <div class="tab-pane with-border-bottom">
+        <div class="col-xs-12">
+            <h2>Opremljenost</h2>
+            <ul class="amenities clearfix style1">
+                {% for accomodation in tags['accomodation'] %}
+                    <li class="col-md-4 col-sm-6">
+                        {% set icon = 'fa' in accomodation.icon ? 'fa '~ accomodation.icon : accomodation.icon %}
+                        <div class="icon-box style1">
+                            <i class="{{ icon }}"></i>
+                            {{ accomodation.title }}
+                            <i class="soap-icon-check detail-check-mark"></i>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+    {% if tags['services'] is defined %}
+    <div class="tab-pane with-border-bottom">
+        <div class="col-xs-12">
+            <h2>Usluge</h2>
+            <ul class="amenities clearfix style1">
+                {% for service in tags['services'] %}
+                    <li class="col-md-4 col-sm-6">
+                        {% set icon = 'fa' in service.icon ? 'fa '~ service.icon : service.icon %}
+                        <div class="icon-box style1">
+                            <i class="{{ icon }}"></i>
+                            {{ service.title }}
+                            <i class="soap-icon-check detail-check-mark"></i>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+    {% if tags['food'] is defined %}
+    <div class="tab-pane with-border-bottom">
+        <div class="col-xs-12">
+            <h2>Hrana</h2>
+            <ul class="amenities clearfix style1">
+                {% for food in tags['food'] %}
+                    <li class="col-md-4 col-sm-6">
+                        {% set icon = 'fa' in food.icon ? 'fa '~ food.icon : food.icon %}
+                        <div class="icon-box style1">
+                            <i class="{{ icon }}"></i>
+                            {{ food.title }}
+                            <i class="soap-icon-check detail-check-mark"></i>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>

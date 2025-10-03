@@ -1,0 +1,137 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: siteinfoparameters.yml }
+    - { resource: hwi.yml }
+    - { resource: services.yml }
+    - { resource: template.yml }
+    - { resource: "@AdminBundle/Resources/config/services.yml" }
+    - { resource: "@SiteBundle/Resources/config/services.yml" }
+    - { resource: "@SiteBundle/Resources/config/validator.yml" }
+    - { resource: "@SiteBundle/Resources/config/extension_services.yml" }
+#    - { resource: assets_rewrite.yml }
+    - { resource: security.yml }
+    - { resource: mysql.yml }
+    - { resource: about_us.yml }
+    - { resource: liip_params.yml }
+#    - { resource: maker.yml }
+    - { resource: doctrine_extension.yml }
+#    - { resource: social.yml }
+    - { resource: "@SiteBundle/Resources/config/listeners.yml" }
+    - { resource: prestasitemap.yml }
+    - { resource: purify.yml }
+    - { resource: bazinga_js.yaml }
+    - { resource: nelmio_security.yaml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'rs'
+    limit:
+        index_payed: 10
+        adsPerPage: 12
+    image:
+        max_image_upload: 10
+        allowed_file_types:
+            - 'jpeg'
+            - 'jpg'
+            - 'png'
+            - 'gif'
+        max_file_size: 2000000
+    upload_image_dir: "uploads/images/"
+    upload_badges_dir: "uploads/badges/"
+    upload_tmp_dir: "uploads/tmp/"
+    image_resize:
+        product:
+          thumbnail: [400,400]
+          max_resolution: [800,800]
+        category:
+          thumbnail: [600,300]
+          max_resolution: [1920,500]
+        slider:
+          max_resolution: [1920,1080]
+
+framework:
+    #esi: ~
+    default_locale: '%locale%'
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    router:
+        resource: '%kernel.root_dir%/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    serializer: { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    trusted_hosts: ~
+#    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments: ~
+    http_method_override: true
+    php_errors:
+        log: true
+    web_link: ~
+    assets:
+        json_manifest_path: '%kernel.project_dir%/web/build/manifest.json'
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        server_version: '5.7'
+        charset: UTF8
+        mapping_types:
+            enum: string
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/../var/data/data.sqlite"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path: '%database_path%'
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+    logging: '%kernel.debug%'
+
+fos_js_routing:
+    cache_control:
+        # All are optional, defaults shown
+        public: false   # can be true (public) or false (private)
+        maxage: null    # integer value, e.g. 300
+        smaxage: null   # integer value, e.g. 300
+        expires: null   # anything that can be fed to "new \DateTime($expires)", e.g. "5 minutes"
+        vary: []        # string or array, e.g. "Cookie" or [ Cookie, Accept ]
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
+sentry:
+    dsn: '%sentry_dns%'

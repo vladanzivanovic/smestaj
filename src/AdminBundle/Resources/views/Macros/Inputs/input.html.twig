@@ -1,0 +1,35 @@
+{% macro input(id, value, name, placeholder = "", type = "text", class = "", additionalAttributes = null) %}
+    <input type="{{ type }}" id="{{ id }}" name="{{ name }}" class="{{ class }}" placeholder="{{ placeholder }}" value="{{ value }}" {{ additionalAttributes | raw }}>
+{% endmacro %}
+
+{% macro textarea(id, value, name, rows = "10", placeholder = "", class = "") %}
+    <textarea name="{{ name }}" id="{{ id }}" class="{{ class }}" rows="{{ rows }}" placeholder="{{ placeholder }}">{{ value }}</textarea>
+{% endmacro %}
+
+{% macro selectbox(id, name, selected, options, placeholder = "", class = "", multiple = false) %}
+    <select id="{{ id }}" name="{{ name }}" class="{{ class }}" {{ true == multiple ? 'multiple="multiple"' }}>
+        {% if multiple == false %}
+            <option value="-1">Izaberite...</option>
+        {% endif %}
+        {% for option in options %}
+            {% set isSelected = multiple == true ? option.value in selected : option.value == selected %}
+            <option value="{{ option.value }}" {{ isSelected ? 'selected="selected"' : '' }}>{{ option.title }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro selectboxGroup(id, name, selected, options, placeholder = "", class = "", multiple = false) %}
+    <select id="{{ id }}" name="{{ name }}" class="{{ class }}" {{ true == multiple ? 'multiple="multiple"' }}>
+        {% if multiple == false %}
+            <option value="-1">Izaberite...</option>
+        {% endif %}
+        {% for groupName, groupOptions in options %}
+            <optgroup label="{{ groupName }}">
+                {% for option in groupOptions %}
+                    {% set isSelected = multiple == true ? option.value in selected : option.value == selected %}
+                    <option value="{{ option.value }}" {{ isSelected ? 'selected="selected"' : '' }}>{{ option.title }}</option>
+                {% endfor %}
+            </optgroup>
+        {% endfor %}
+    </select>
+{% endmacro %}

@@ -1,0 +1,58 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Dodavanje / Izmena promotivnih kupona{% endblock %}
+
+{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_coupon_page' %}
+
+{% block content %}
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena promotivnih kupona' } %}
+
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Dodavanje - izmena promotivnih kupona</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <form id="edit_form" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.input('Promo kod', 'code', IS_EDIT ? code : '', 'code') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.datePicker('Važi od', 'valid_from', IS_EDIT ? valid_from : '', 'valid_from') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.datePicker('Važi do', 'valid_to', IS_EDIT ? valid_to : '', 'valid_to') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.input('Popust', 'discount', IS_EDIT ? discount : '', 'discount') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                    </form>
+                    {{ form.button('coupon_submit', 'btn btn-primary submit', 'Sačuvaj', 'button') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
+        const ID = {{ IS_EDIT ? app.request.attributes.get('id') : 0 }};
+    </script>
+{% endblock %}

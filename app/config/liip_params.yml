@@ -1,0 +1,86 @@
+liip_imagine :
+    resolvers:
+        ads_photos:
+            web_path:
+                web_root: "%kernel.project_dir%/web"
+                cache_prefix: "/uploads"
+    loaders:
+        default:
+            filesystem:
+                data_root: "%kernel.project_dir%/web/"
+    filter_sets :
+#        cache : ads_photos
+        single_thumb :
+            cache: ads_photos
+            quality : 75
+            filters :
+                auto_rotate: ~
+                thumbnail  : { size : [70, 70], mode : outbound }
+                background : { size : [70, 70], position : center, color : '#ffffff' }
+        list_thumb :
+            cache: ads_photos
+            quality : 75
+            filters :
+                auto_rotate: ~
+                thumbnail  : { size : [400, 238], mode : outbound }
+                background : { size : [400, 238], position : center, color : '#ffffff' }
+#        mobile_list_thumb :
+#            cache: ads_photos
+#            quality : 75
+#            filters :
+#                thumbnail  : { size : [270, 161], mode : outbound }
+#                background : { size : [270, 161], position : center, color : '#ffffff' }
+        grid_thumb :
+            cache: ads_photos
+            quality : 75
+            filters :
+                auto_rotate: ~
+                thumbnail  : { size : [270, 147], mode : outbound }
+                background : { size : [270, 147], position : center, color : '#ffffff' }
+        index_thumb_recommended :
+            cache: ads_photos
+            quality : 75
+            filters :
+                auto_rotate: ~
+                thumbnail  : { size : [270, 160], mode : outbound }
+                background : { size : [270, 160], position : center, color : '#ffffff' }
+        index_thumb_category :
+            cache: ads_photos
+            quality : 75
+            filters :
+                auto_rotate: ~
+                thumbnail  : { size : [600, 450], mode : outbound }
+                background : { size : [600, 450], position : center, color : '#ffffff' }
+        category_single:
+            cache: ads_photos
+            quality : 100
+            filters:
+                auto_rotate: ~
+                downscale:
+                    max: [ 1600, 1600 ]
+        single:
+            cache: ads_photos
+            quality : 80
+            filters:
+                auto_rotate: ~
+                downscale:
+                    max: [ 600, 600 ]
+        single_full:
+            cache: ads_photos
+            quality : 100
+            filters:
+                auto_rotate: ~
+        tmp_images :
+            cache: ads_photos
+            quality : 100
+            filters :
+                auto_rotate: ~
+                downscale:
+                    max: [ 1600, 1600 ]
+        dashboard_set_images :
+            cache: ads_photos
+            quality : 100
+            filters :
+                auto_rotate: ~
+                downscale:
+                    max: [ 300, 300 ]

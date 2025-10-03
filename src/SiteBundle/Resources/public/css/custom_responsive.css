@@ -1,0 +1,209 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[Table of contents]
+
+1. New Grid System
+2. Add clearfix in the grid system
+3. Styles for devices(>=992px and <=1199px)
+4. Styles for devices(<=1199px)
+5. Styles for devices(<=991px )
+6. Styles for devices(>=768px and <= 991px)
+7. Styles for devices(<=767px )
+8. Styles for devices(<=480px )
+9. Styles for devices(<=320px )
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .header-bg-image{
+        min-height: 250px;
+        background-size: auto 100%;
+    }
+    .header-bg-image-category{
+        min-height: 160px;
+        background-size: auto 100% !important;
+    }
+    .header-bg-image .description .page-title,.header-bg-image-category .description .page-title {
+        font-size: 2em;
+    }
+
+    .header-bg-image .description .sub-title, .header-bg-image-category .description .sub-title {
+        font-size: 1.3em;
+    }
+}
+
+@media (min-width: 481px) {
+}
+@media (min-width: 768px) {
+    .main-search-box .row div{
+        margin-right: 10px;
+    }
+}
+@media (min-width: 992px) {
+}
+@media (min-width: 1200px) {
+}
+@media (max-width: 1300px) {
+    .hidden-lg2{
+        display: none !important;
+    }
+    .contact-box-mobile{
+        position: fixed;
+        bottom: 0;
+        margin: 0 auto;
+        width: 205px;
+        left: 0;
+        right: 0;
+        padding: 0;
+        text-align: center;
+        z-index: 9999;
+    }
+    .contact-box-mobile .contact-details {
+        float: left;
+        border-right: 1px solid #f5f5f5;
+        padding: 0 15px;
+        margin-bottom: 0;
+    }
+    .contact-box-mobile .contact-details .contact-phone {
+        color: #2d3e52;
+        font-size: 2.6667em;
+        margin-right: 10px;
+    }
+}
+/* 3. Styles for devices(>=992px and <=1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+}
+/* 4. Styles for devices(<=1199px) */
+@media (max-width: 1199px) {
+    .img-350-200{
+        min-width: 100px;
+        max-width:115%;
+    }
+    .img-270-175{
+        min-width: 100%;
+    }
+
+}
+/* 5. Styles for devices(<=991px ) */
+@media (max-width: 991px) {
+    .photo-gallery img {
+        max-width: 100%;
+    }
+}
+/* 6. Styles for devices(>=768px and <= 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+
+    .photo-gallery .slides img {
+        min-height: 300px;
+        max-height: 420px;
+        /*height: 100%;*/
+    }
+}
+/* 7. Styles for devices(<=767px ) */
+@media (max-width: 767px) {
+
+    .photo-gallery .slides img {
+        min-height: 300px;
+        max-height: 330px;
+        /*height: 100%;*/
+    }
+    .main-search-box .title-bar {
+        width: 29%;
+    }
+    .main-search-box .title {
+        float: none;
+        text-align: center;
+    }
+    .main-search-box .search-bar {
+        width: 70%;
+    }
+    .main-search-box .search-btn {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    #add-room {
+        width: 100% !important;
+    }
+}
+/* 8. Styles for devices(<=480px ) */
+@media (max-width: 480px) {
+    .header-bg-image{
+        min-height:150px;
+        background-size: 100%;
+    }
+
+    .header-bg-image-category{
+        min-height:160px;
+        background-size: 170% !important;
+    }
+
+    .photo-gallery .slides img {
+        min-height: 200px;
+        max-height: 210px;
+        /*height: 100%;*/
+    }
+    .header-bg-image .description .page-title, .header-bg-image-category .description .page-title {
+        font-size: 1.6em;
+    }
+
+    .header-bg-image .description .sub-title {
+        font-size: 1em;
+    }
+    .profile-tabs.full-width-style.arrow-left > ul.tabs li {
+        margin-bottom: 4px;
+        width: 32.9%;
+        float: left;
+    }
+    .profile-tabs.full-width-style.arrow-left > ul.tabs li a {
+        border: none;
+        margin-right: 4px;
+        font-size: 1em;
+        white-space: normal;
+        word-break: break-word;
+        line-height: normal;
+    }
+    .profile-tabs.full-width-style.arrow-left > ul.tabs li a:after {
+        bottom: -5px !important;
+        left: 50% !important;
+        margin-left: -10px !important;
+        border-top: 5px solid #c51a21 !important;
+        border-left: 7px solid transparent !important;
+        border-right: 7px solid transparent !important;
+        top: 105% !important;
+    }
+    .profile-tabs.full-width-style.arrow-left ul.tabs li.active a {
+        margin-right: 0;
+        border-left: 0;
+        border-bottom: 2px solid #c41a21;
+        position: relative;
+    }
+    .tab-container.full-width-style .tab-content {
+        width: 100%;
+    }
+    .tab-container.full-width-style.arrow-left .tab-content .tab-pane {
+        padding: 10px;
+    }
+    .toggle-container .panel.style1 .panel-content{
+        padding-left: 0;
+    }
+}
+@media (max-width: 360px){
+    .header-bg-image{
+        min-height:140px;
+        background-size: auto 100%;
+    }
+    .img-350-200 {
+        min-width: 330px;
+    }
+    .section {
+        padding-bottom: 20px;
+    }
+    .photo-gallery .slides img {
+        min-height: 150px;
+        max-height: 170px;
+        /*height: 100%;*/
+    }
+}
+/* 9. Styles for devices(<=320px ) */
+@media (max-width: 320px) {
+}

@@ -1,0 +1,17 @@
+<ul class="menu">
+    {% for cat in categories['categories'] %}
+        {% set category = cat %}
+        {% if category['children'] is not null %}
+            <li class="menu-item-has-children {{ categoryParam in category.alias ? 'active' : '' }}">
+                <a href="{{ path('site_ads_view', {'category': category.alias }) }}">{{ category.name }}</a>
+                <ul>
+                    {% for child in category['children'] %}
+                        <li class="{{ categoryParam in category.alias ? 'active' : '' }}"><a href="{{ path("site_ads_view", {'category': child.alias }) }}">{{ child.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% else %}
+            <li class="{{ categoryParam in category.alias ? 'active' : '' }}"><a href="{{ path('site_ads_view', {'category': category.alias }) }}">{{ category.name }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

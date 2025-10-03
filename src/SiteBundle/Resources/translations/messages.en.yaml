@@ -1,0 +1,454 @@
+pending: 'pending'
+active: 'active'
+disabled: 'disabled'
+
+default_title: Selling online woman clothes and accessories | Fashion house Elipsa
+
+images: Images
+accomodation_availability: Accomodation availability
+video: Video
+
+new: 'new'
+discount: 'discount'
+down: down
+up: up
+
+choose: Choose
+
+data:
+  success_send: 'Data are successfully sent.'
+  success_deleted: 'Data are successfully deleted.'
+  success_save: Data are successfully save.
+
+generic_error: 'An error has occurred.'
+
+error:
+  in_use: '%item% is in use.'
+
+notifications:
+  please_wait: 'Please wait.'
+
+price: price
+
+navi:
+  home: Home
+  about_us: About us
+  locations: Locations
+  loyalty: Loyalty
+  catalogue: Catalogue
+  shop: Shop
+  blog: Blog
+  ask_us: Ask us
+  contact: Contact
+  account: My account
+  trends: Trends
+  collaborators: Collaborators
+  career_form: Career Form
+  policy_and_privacy: Privacy policy
+  use_conditions: Use conditions
+  career: Careers
+  cookie_policy: Cookie policy
+
+serbian: Serbian
+english: English
+serbia: Serbia
+
+size: size
+color: color
+categories: categories
+filters: filters
+sort: sort
+limit: limit
+show_per_page: show
+
+veličina: size
+boja: color
+kategorije: categories
+sortiranje: sort
+cena: price
+tagovi: tags
+mesto: city
+stranica: page
+
+next_page: next
+prev_page: prev
+last_page: last
+first_page: first
+
+available_sizes: available sizes
+available_colors: available colors
+
+sort.slug.most_selled: najprodavanije
+sort.slug.from_lowest_price: najjeftinije-prvo
+sort.slug.from_highest_price: najskuplje-prvo
+sort.slug.on_sale: na-rasprodaji
+sort.slug.first_new: najnoviji
+sort.slug.our_selection: izdvojeno
+sort.slug.by_name_from_a: po nazivu A-Ž
+sort.slug.by_name_from_z: po nazivu Ž-A
+
+sort.title.most_selled: Najprodavanije
+sort.title.from_lowest_price: Najjeftinije prvo
+sort.title.from_highest_price: Najskuplje prvo
+sort.title.on_sale: Na rasprodaji
+sort.title.first_new: Najnoviji
+sort.title.our_selection: Izdvojeno
+
+
+most_selled: most selled
+from_lowest_price: lower price first
+from_highest_price: higher price first
+on_sale: on sale
+first_new: new
+
+select.color: select color
+select.size: select size
+
+add_to_cart: add to cart
+
+tags: tags
+
+share_link: share link
+
+product.description: product description
+product.material_cleaning: material and cleaning
+product.size_table: table size
+product.sku: SKU
+product.desc.type: Type
+product.desc.color: Color
+product.desc.heel_height: Heel height
+product.desc.platform_height: Platformheight
+product.desc.price: Price
+
+product.material.upper: Upper
+product.material.lining: Lining
+product.material.sole: Sole
+
+related_products: related products
+
+cart.name: cart
+cart.total_products: total cost
+cart.total_shipping: total with shipping
+cart.view: view cart
+cart.checkout: checkout
+cart.personal_data: Customer data
+cart.order_completed_successful: order completed
+cart.continue_shopping: continue shopping
+cart.update: update cart
+cart.next_step: next step
+cart.shipping: shipping
+cart.empty: your cart is empty
+cart.total_cost: cart total
+cart.promo_coupon: Discount code
+cart.promo_coupon_text: Enter your code if you have one.
+cart.add_coupon_btn: add code
+cart.estimate_shipping: Estimate shipping
+cart.estimate_shipping_text: Wählen Sie Land und Zahlungsart aus, um den Versandpreis zu berechnen
+
+cart.table.image: image
+cart.table.product_name: product
+cart.table.price: price
+cart.table.quantity: quantity
+cart.table.total: total
+
+title.your_cart: Your cart
+title.cart_personal_data: Your cart - personal information
+title.checkout_completed_successful: Checkout completed
+title.checkout_completed_unsuccessful: Unsuccessful order
+title.location: Location
+title.blog_detailed_page: Blog page
+title.shop_page: Shop
+title.account_activation_page: Account activation
+title.my_account: My account
+title.ask_us: Ask us
+title.catalog: Catalogue
+title.about_us: About us
+title.contact_us: Contact
+title.privacy_policy: Privacy policy
+title.reset_password: Reset password
+title.not_exits_page: Page doesn't exists
+title.career: Creers
+
+checkout.have_account: Returning customer? <a href="#" class="open-login">Click here</a> to login
+checkout.billing_address: billing address
+checkout.order_notes: order notes
+checkout.login_text: create an account by entering the information below. If you are a returning customer please click "Login" button at the top of the page.
+checkout.your_order: your order
+checkout.product_total: product <span>total</span>
+checkout.create_account: create an account
+checkout.payment.by_taking: Pay when arrive
+checkout.paymeny.credit_card: credit card
+checkout.complete_order: complete order
+checkout.account_exists: Account with email address %email% is already registered.
+checkout.account_deactivated: Account with email address %email% is deactivated.
+checkout.finish.transaction_detail: Transaction details
+checkout.finish.transaction_status_label: Transaction status
+checkout.finish.transaction_status_success_detail_text: You order has been successfully paid - your accout is in charge.
+checkout.finish.transaction_status_failed: Payment failed, your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
+checkout.finish.transaction_date_time: Transaction date
+checkout.finish.auth_code: Authorization Code
+checkout.finish.order_id: Order ID
+checkout.finish.response: Payment Status
+checkout.finish.proc_return_code: Transaction Status Code
+checkout.finish.transaction_id: Transaction id
+checkout.finish.md_status: Status code for the 3D transaction
+checkout.finish.payment_id: Payment id
+checkout.finish.credit_card_no: Credit card no
+checkout.checkbox.terms_and_conditions: By clicking on checkbox you will accept ours <a href="%link%">terms and conditions.</a>
+checkout.checkbox.user_privacy: By clicking on checkbox you will accept ours <a href="%link%">user privacy terms.</a>
+checkout.checkbox.payment_obligation: By clicking on checkbox you will accept payment obligation
+
+checkout_completed.title: your order has been successfully completed.
+checkout_completed.details: the details of the order has been sent to your email address.
+checkout_fail.title: Unsuccessful order.
+
+Approved: Approved
+Declined: Declined
+
+country: country
+countries: countries
+first_name: first name
+First_name: First name
+Last_name: Last name
+last_name: last name
+address: address
+city: city
+zip_code: postal code
+email: email address
+mobile_telephone: mobile phone
+telephone: telephone
+create_account: create account
+password: password
+Password: Password
+Re_password: Repeat password
+occupation: occupation
+message: message
+birth_date: birth date
+subject: subject
+website: website
+position: position
+about_company: about company
+payments: Payments
+
+email.order.title: Order #%orderId%
+email.order.seller: Seller
+email.order.seller.name: Company
+email.order.seller.account: Account number
+email.order.seller.address: Address
+email.order.seller.telephone: Telephone
+email.order.seller.mobile: Mobile phone
+email.order.failed.message: Payment failed.<br> Your account is not charged, maybe your card number is not right, expiration date or security code. Please, try again and in case of consecutive fails call your bank.
+
+
+email.order.buyer: Buyer
+email.order.buyer.full_name: Name and surname
+email.order.buyer.city: City/Town
+email.order.buyer.street_number: Street and number
+email.order.buyer.payment_type: Payment
+
+email.registration.title: Account registration on site %siteName%
+email.registration.success.text: Your registration was successull
+email.registration.message: In order to complete registration process you need to activate account.<br/> Click on the link below.
+
+email.reset_password.title: Reset password on site %siteName%
+email.reset_password.headline.text: Change password request
+email.reset_password.message: In order to change password please follow the link below.
+
+email.order.data.title: Order data
+email.order.data.title_unsucessfull: Unsucessfull order
+email.order.table.product_name: Product name
+email.order.table.size: Size
+email.order.table.color: Color
+email.order.table.quantity: Quantity
+email.order.table.shipping: Shipping
+email.order.table.promo_coupon: Promotion code
+email.order.total_shipping: total with shipping
+
+payment_type.on_delivering: On delivering
+payment_type.credit_card: Credi card
+
+location.modal.work_time: Working time
+location.modal.work_time_weekend: Saturday
+location.look_btn: view location
+location.map: map
+
+all: all
+
+read_more: read more
+
+blog.posted: posted
+
+form: form
+submit: Submit
+
+loyalty.rate: Rate the ELIPSA brand from 1-5
+loyalty.message.success: You are successfuly register in loyalty program.
+loyalty.message.user_exists: You are already registered in loyalty program.
+
+January: Januar
+February: Februar
+March: Mart
+April: April
+May: Maj
+June: Jun
+July: Jul
+August: Avgust
+September: Septembar
+October: Oktobar
+November: Novembar
+December: Decembar
+
+login.text: login
+login.btn: Submit login
+login.remember_me: remember me
+login.successfull: Login was successful
+
+reset_password.text: Did you forgot password?
+reset_password.label: Reset pssword
+reset_password.successful:  You will receive email with link to change pssword
+reset_password.user_not_exists: User not exits.
+reset_password.page.text: Enter new pssword.
+reset_password.page.error.expired_token: Your request to change password has expired. Please request new one.
+reset_password.page.success: You are successfuly changed password.
+
+logout.text: logout
+
+registration.text: registration
+registration.btn: Submit registration
+registration.via: register via
+registration.error.user_exists: You are already registered
+registration.success.message: Registration was successfull.<br/> We send you confirmation email
+registration.activation.title: Your account is active
+registration.activation.message: You can continue to login
+
+user.inactive_user: Your email address is not confirmed yet.<br/> Please folow the link in email in order to activate account.
+
+my_account.welcome_text: welcome
+my_account.personal_info.text: personal information
+my_account.personal_info.success.message: podaci su uspešno izmenjeni
+my_account.address_info: address information
+my_account.wish_list: wish list
+my_account.order_list: order list
+my_account.order_table.image: image
+my_account.order_table.name: product
+my_account.order_table.description: description
+my_account.order_table.price: price
+my_account.order_table.color: color
+my_account.order_table.size: size
+my_account.order_table.quantity: quantity
+my_account.order_table.view_product: product details
+
+wish_list.success.add.message: Product is added to wish list
+wish_list.success.remove.message: Product is removed from wish list
+
+login_required: You must be logged in first
+
+'Bad credentials.': Bad credentials
+
+ask_us.message.success: You are successfuly send the question.
+
+newsletter.text: Be the first informed about everything.
+newsletter.notShowBtn: don't show anymore.
+newsletter.existingUser: You already subscribed on newsletter
+newsletter.success.add.message: You are successfully subscribed on newsletter
+
+contact.telephone.main: Main
+contact.telephone.mobile: Mobile
+contact.company_activity: Company activity
+contact.company_id: Company ID
+contact.tax_id: Tax ID
+
+links: links
+store: store
+info: information
+
+yes: yes
+no: no
+
+all_rights: All rights reserved.
+
+ROLE_USER: customer
+ROLE_ADMIN: administrator
+ROLE_SUPER_ADMIN: super admin
+
+chat.message.greeting: Hi. How can we help you?
+
+text.type.loyalty: Loyalty
+text.type.policy_and_privacy: Policy and Privacy
+text.type.use_conditions: Use conditions
+text.type.collaborators: Collaborators
+text.type.career_form: Career Form
+text.type.career: Careers
+text.type.cookie_policy: Cookie policy
+
+collaborator.form.basic_data: basic data
+collaborator.form.where_open_store: Where do you plan to open franchise store?
+collaborator.form.have_space: do you have space
+collaborator.form.location: location
+collaborator.form.presentation: company presentation
+collaborator.form.plan: Images or plan
+collaborator.form.space_size: space size
+collaborator.form.number_of_floors: number of floors
+collaborator.message.already_applied: You are already applying to the collaborators program
+collaborator.message.success: You are successfully sent the application.
+
+not_exists_page.description: We are so sorry, but the page you requested is not available.
+
+career.form.accompanying_letter: accompaning letter
+career.message.already_applied: You are already sent application
+career.message.success: You are successfully sent the application.
+
+main_street: main street
+shopping_mall: shopping mall
+
+banner.loyalty: loyalty
+banner.news_letter: newsletter
+banner.pop_up: Basic popup
+
+job.applied_for_form: Join our team
+job.application_form: Apply for position
+job.form.personal_data: personal data
+job.form.education: education
+job.form.job_place_apply: job for which you are applying
+job.form.school: name of finished school/faculty
+job.form.school_level: professinal qualification level
+job.form.school_title: acquired title
+job.form.position: position
+job.form.policy_accept: I'm accepting specified conditions and accepting that my personal data could be used in the purpose of selection and employment
+
+eu.cookies.accept.title: This website using cookies.
+eu.cookies.accept.text: We use cookies to improve your usability. By using elisa.rs you agree to the use of cookies.
+eu.cookies.accept.btn: Accept
+eu.cookies.learn_more.btn: Learn more
+
+intesa.already_payed: Transaction is already payed.
+intesa.already_refunded: Transaction is already refudirana.
+intesa.already_void: Transaction is already canceled.
+
+order.status.new: New order
+order.status.awaiting_authorization: Fuds reserved
+order.status.post_auth: Payed
+order.status.completed: Payed
+order.status.refund: Funds returned
+order.status.void: Order canceled
+order.status.failed: Greška prilikom naručivanja
+order.type.on_delivering: pouzećem
+order.type.credit_card: platna kartica
+
+material.leather: Leather
+material.corrected_leather_face: Leather with corrected face
+material.textiles: Textiles
+material.other_materials: Other materials
+
+payment_type.on_delivery: On delivery
+payment_type.card: Card
+payment_type.paypal: Paypal
+payment_type.bank_transfer: Bank transfer
+
+product.remark: 'All data related to the product are presented in good intentions. Trgovina Lea is not responsible for errors occurred in product description.Images are illustrated in nature, thus it does not need to fully match the colors of product. Shoes size are informative. We recommend to check availability of product before ordering.'
+product.structure: "Purpose: \nThe way of making.Glued\nMaintenance. Cleaning with damp cloth, brushing"
+
+clothes: clothes
+shoes: shoes
+
+oglasi: ads

@@ -1,0 +1,38 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Podešavanje sajta{% endblock %}
+{% block bodyClass %}settings-page{% endblock %}
+
+{% block content %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Podešavanje sajta' } %}
+
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Podešavanje sajta</h4>
+        </div>
+    </div>
+
+    <form id="edit_form" enctype="multipart/form-data" class="forms-sample">
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                {% for setting in settings %}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            {{ form.input(setting.name, 'name_' ~ setting.id, setting.value, setting.id) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </form>
+    {{ form.button('settings_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+{% endblock %}

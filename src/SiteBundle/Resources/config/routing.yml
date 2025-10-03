@@ -1,0 +1,84 @@
+api:
+  resource: "@SiteBundle/Resources/config/apiRouting.yml"
+  prefix: /api/
+  options:
+    expose: true
+
+core:
+  resource: '@SiteBundle/Controller'
+  type: annotation
+
+site_index:
+  defaults: { _controller: SiteBundle:Index:index }
+  path: /
+  options:
+    sitemap:
+      priority: 0.7
+      changefreq: weekly
+      section: default
+
+site_single_ads:
+  path: /pregled/{category}/{alias}
+  defaults: { _controller: SiteBundle:Ads\AdsGet:singleAds }
+
+site_login_check:
+  path: /site-login-check
+
+site_logout:
+  path: /site-logout
+
+#site_activate_registration:
+#  path: /aktivacija-naloga/{id}
+#  defaults: { _controller: SiteBundle:User\UserEdit:activateRegistration}
+#  requirements:
+#    id: \d+
+
+site_about_us:
+  path: /o-nama
+  defaults:
+      _controller: FrameworkBundle:Template:template
+      template: SiteBundle:Site:aboutUs.html.twig
+
+site_contact_us:
+  path: /kontakt
+  defaults:
+      _controller: FrameworkBundle:Template:template
+      template: SiteBundle:Site:contactus.html.twig
+  options:
+    sitemap:
+      priority: 0.1
+      changefreq: never
+      section: default
+
+facebook_login:
+    path: /login/check-facebook
+
+site_reservation_success:
+  path: /uspesna-rezervacija/{reservationId}/{alias}
+  defaults: { _controller: SiteBundle:Reservation\ReservationGet:successReservationPage}
+  requirements:
+    reservationId: \d+
+
+site_reservation_confirmation:
+  path: /potvrda-rezervacije/{reservation}/{status}
+  defaults: { _controller: SiteBundle:Reservation\ReservationEdit:setReservationConfirmationPage}
+  requirements:
+    reservation: \d+
+
+#site_logo_email:
+#  path: /logo.png
+#  defaults: { _controller: SiteBundle:SiteImage:getLogoEmail}
+
+#site_logo:
+#  path: /apartmani-sobe-crna-gora/logo.png
+#  defaults: { _controller: SiteBundle:SiteImage:getLogo}
+
+site_ads_view:
+  path: /{category}/{extraParams}
+  controller: SiteBundle:Ads\AdsIndex:index
+  defaults:
+    extraParams: null
+  requirements:
+    category: "^(?!build)[a-zA-Z-]+"
+    extraParams: .*
+  methods: [GET]

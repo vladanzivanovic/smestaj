@@ -1,0 +1,11 @@
+form#setAd{
+  .error-msg-fix {
+    .form-group {
+      > div {
+        input:not(.input-error) {
+          margin-bottom: 35px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+@import "../vendors/core/core.css";
+@import "../fonts/feather-font/css/iconfont.css";
+@import "~@mdi/font/css/materialdesignicons.css";
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "~sweetalert2/dist/sweetalert2.css";
+@import "~toastr/toastr";
+@import "~select2";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~jquery-tags-input/dist/jquery.tagsinput.min.css";
+@import "~datatables.net-rowreorder-bs4/css/rowReorder.bootstrap4.min.css";
+// Booststrap functions and variables
+@import "~bootstrap4/scss/functions";
+@import "~bootstrap4/scss/variables";
+@import "~summernote/dist/summernote.css";
+@import "~@staaky/tipped/dist/css/tipped.css";
+
+// Template variables
+@import 'light/variables';
+@import 'variables';
+
+// SCSS compass funtions
+@import "~compass-mixins/lib/compass";
+@import "~compass-mixins/lib/animate";
+
+// Bootstrap main SCSS
+@import "~bootstrap43/scss/bootstrap";
+
+// Template mixins
+@import 'common/mixins/animation';
+@import 'common/mixins/badges';
+@import 'common/mixins/blockquote';
+@import 'common/mixins/breadcrumbs';
+@import 'common/mixins/buttons';
+@import 'common/mixins/cards';
+@import 'common/mixins/misc';
+@import 'common/mixins/no_ui_slider';
+@import 'common/mixins/pagination';
+@import 'common/mixins/popovers';
+@import 'common/mixins/tooltips';
+@import 'common/mixins/width';
+
+// Core stules
+@import 'common/background';
+@import 'common/reset';
+@import 'common/functions';
+@import 'common/fonts';
+// @import url('https://fonts.googleapis.com/css?family=Overpass:300,400,600,700,800');
+@import 'common/footer';
+@import 'common/misc';
+@import 'common/utilities';
+@import 'common/demo';
+@import 'common/typography';
+
+@import 'demo_1/vertical-wrapper';
+@import 'demo_1/navbar';
+@import 'demo_1/sidebar';
+@import 'demo_1/layouts';
+
+// components
+@import "common/components/accordions";
+@import "common/components/badges";
+@import "common/components/bootstrap-alert";
+@import "common/components/breadcrumbs";
+@import "common/components/buttons";
+@import "common/components/cards";
+@import "common/components/checkbox-radio";
+@import "common/components/dashboard";
+@import "common/components/dropdown";
+@import "common/components/forms";
+@import "common/components/icons";
+@import "common/components/input-group";
+@import "common/components/list-group";
+@import "common/components/modal";
+@import "common/components/pagination";
+@import "common/components/popover";
+@import "common/components/profile";
+@import "common/components/tables";
+@import "common/components/timeline";
+@import "common/components/chat";
+@import "common/components/faq";
+@import "common/components/auth";
+@import "common/components/select2";
+
+// Email
+@import 'common/components/email/inbox';
+@import 'common/components/email/email-read';
+@import 'common/components/email/email-compose';
+
+
+// Plugin overrides
+@import "light/components/plugin-overrides/ace";
+@import "light/components/plugin-overrides/apex-charts";
+@import "light/components/plugin-overrides/bootstrap-datepicker";
+@import "light/components/plugin-overrides/data-tables";
+@import "light/components/plugin-overrides/dropify";
+@import "light/components/plugin-overrides/dropzone";
+@import "light/components/plugin-overrides/full-calendar";
+@import "light/components/plugin-overrides/jquery-flot";
+@import "light/components/plugin-overrides/peity";
+@import "light/components/plugin-overrides/perfect-scrollbar";
+@import "light/components/plugin-overrides/sweet-alert";
+@import "light/components/plugin-overrides/select2";
+@import "light/components/plugin-overrides/simplemde";
+@import "light/components/plugin-overrides/tags-input";
+@import "light/components/plugin-overrides/tempusdominus-bootstrap-4";
+@import "light/components/plugin-overrides/tinymce";
+@import "light/components/plugin-overrides/typeahead";
+@import "light/components/plugin-overrides/wizard";
+@import "toastr";
+@import "../../../../../app/Resources/public/scss/dropzone/dropzone";
+//@import "../../../../SiteBundle/Resources/public/sass/loader";
+@import "../../../../SiteBundle/Resources/public/sass/Moduls/google_maps";
+
+@import "common/components/summernote";
+
+// Page related
+@import "./pages/product-edit";

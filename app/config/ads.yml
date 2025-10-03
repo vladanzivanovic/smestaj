@@ -1,0 +1,36 @@
+parameters:
+  reservation:
+    guest_numbers:
+      1: '<25'
+      2: '26-49'
+      3: '50-99'
+      4: '100-199'
+      5: '200-299'
+      6: '300-499'
+      7: '500+'
+  budget:
+    1: '<100€'
+    2: '100 - 300€'
+    3: '300 - 500€'
+    4: '500 - 700€'
+    5: '700 - 900€'
+    6: '900 - 1000€'
+    7: '1000 - 2000€'
+    8: '2000 - 3000€'
+    9: '3000 - 4000€'
+    10: '4000 - 5000€'
+    11: '5000€+'
+  contact_types:
+    1: 'Telefon'
+    2: 'Email'
+    3: 'SMS'
+    4: 'Sve jedno'
+  reject_reservation:
+    1: 'Zauzet termin'
+    2: 'Ostalo'
+  file_types:
+    images:
+      1: 'jpg'
+      2: 'jpeg'
+      3: 'png'
+      4: 'gif'

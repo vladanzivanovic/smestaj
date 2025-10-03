@@ -1,0 +1,35 @@
+parameters:
+    site_info:
+        site_name: 'Smeštaj'
+        site_telephone: '+382/68-744-773'
+        site_email: '%email_address%'
+        site_description: 'Apartmani i sobe Crna Gora. Apartmani Budva, Apartmani Sutomore, Apartmani Kotor. Privatan smestaj Crna Gora'
+        site_title: 'Smeštaj Crna Gora - Montenegro'
+        facebook_url: 'https://www.facebook.com/smestaj'
+        twitter_url: ''
+        google_plus_url: ''
+    languages:
+        rs:
+            name: Srbija
+            label: Srpski
+            code: rs
+            currencyCode: RSD
+            full_code: sr_RS
+    shop:
+        list_sort:
+            1: basic
+            2: by_name_from_a
+            3: by_name_from_z
+            4: from_lowest_price
+            5: from_highest_price
+        items_per_page:
+            - 12
+            - 24
+            - 36
+            - 48
+        sort_mapping:
+            basic: [ 'a.id', 'DESC' ]
+            by_name_from_a: [ 'a.title', 'ASC' ]
+            by_name_from_z: [ 'a.title', 'DESC' ]
+            from_lowest_price: [ 'a.prepricefrom', 'ASC' ]
+            from_highest_price: [ 'a.prepricefrom', 'DESC' ]

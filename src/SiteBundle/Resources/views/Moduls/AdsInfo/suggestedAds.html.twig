@@ -1,0 +1,25 @@
+<div class="travelo-box">
+    <h4>Naše preporuke</h4>
+    <div class="image-box style14 ad-suggestion">
+        {% for ad in ads_suggestions %}
+            <article class="box">
+                <figure class="img-70">
+                    <a href="{{ path('site_ads_view', {'category': ad.category_slug, 'extraParams': ad.city_slug ~'/'~ ad.alias}) }}">
+                        <img src="{{ path('app.image_show', {entity: 'oglasi', filter: 'single_thumb', name: ad['media_slug']}) }}" alt="{{ default_alt_text }}"
+                             title="{{ default_title_text }}">
+                    </a>
+                </figure>
+                <div class="details">
+                    <h5 class="box-title">
+                        <a href="{{ path('site_ads_view', {'category': ad.category_slug, 'extraParams': ad.city_slug ~'/'~ ad.alias}) }}">
+                            {{ ad['title'] }}
+                        </a>
+                    </h5>
+                    <label class="price-wrapper">
+                        Već od <span class="price-per-unit">{{ ad['pre_price_from'] }}</span>
+                    </label>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</div>

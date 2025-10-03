@@ -1,0 +1,40 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Dodavanje/Izmena o nama{% endblock %}
+{% block bodyClass %}about-us-edit{% endblock %}
+{% block content %}
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena stranice o nama' } %}
+
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">O nama</h4>
+        </div>
+    </div>
+
+    <form id="edit_form" enctype="multipart/form-data">
+        {% for language in languages %}
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ language.name|upper }}</h6>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            {{ form.textarea('Detaljan opis *', 'about_us_description_'~language.code, rs_description ?? null , language.code~'_description', 10, '', 'form-control') }}
+                                        </div>
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+    {{ form.button('about_us_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+{% endblock %}

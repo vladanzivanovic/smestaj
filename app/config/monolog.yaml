@@ -1,0 +1,15 @@
+monolog:
+  handlers:
+    main:
+      type: stream
+      path: '%kernel.logs_dir%/%kernel.environment%.log'
+      level: debug
+      channels: ['!event']
+    app_log:
+      type: stream
+      path: '%kernel.logs_dir%/app_dev.log'
+      level: error
+      include-stacktraces: true
+    console:
+      type: console
+      channels: ['!event', '!doctrine']

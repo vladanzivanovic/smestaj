@@ -1,0 +1,43 @@
+{# src/mestajSiteBundle/Resources/views/Moduls/footer.html.html.twig #}
+{% block footer %}
+    <footer id="footer">
+        <div class="footer-wrapper">
+            <div class="container">
+                <div class="row">
+                    <h2 class="text-center">Svaki odomor počinje sa nama</h2>
+                    {% for index, chunk in cities() %}
+                    <div class="col-sm-3 col-md-2">
+                        <ul class="city-list discover triangle hover {{ is_full_view() ? 'row' : '' }} text-left">
+                            {% for city in chunk %}
+                            <li class="city-list__item" itemscope itemtype="http://schema.org/Place"><a class="city-list__link" itemtype="url" href="{{ path("site_ads_view", {'category': 'smestaj', 'extraParams': city.alias  }) }}"><span itemprop="name">Apartmani {{ city['name'] }}</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="bottom gray-area">
+            <div class="footer__bottom container">
+                <div class="footer__logo logo">
+                    <a href="{{ path('site_index') }}" title="{{ default_title_text }}">
+                        <img src="{{ path('site_logo') }}" alt="{{ default_alt_text }}"/>
+                    </a>
+                </div>
+                <div>
+                    <ul class="social-icons">
+                        <li class="twitter"><a title="twitter" href="{{ site_info['twitter_url'] }}" data-toggle="tooltip" target="_blank"><i class="soap-icon-twitter"></i></a></li>
+                        <li class="googleplus"><a title="googleplus" href="{{ site_info['google_plus_url'] }}" data-toggle="tooltip" target="_blank"><i class="soap-icon-googleplus"></i></a></li>
+                        <li class="facebook"><a title="facebook" href="{{ site_info['facebook_url'] }}" data-toggle="tooltip" target="_blank"><i class="soap-icon-facebook"></i></a></li>
+                    </ul>
+                </div>
+                <div class="copyright">
+                    <p>&copy; {{ 'now'|date('Y') }} {{ site_info['site_name'] }}</p>
+                </div>
+                <div class="footer__bottom__back-to-top">
+                    <a id="back-to-top" href="#" class="animated" data-animation-type="bounce"><i class="soap-icon-longarrow-up circle"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

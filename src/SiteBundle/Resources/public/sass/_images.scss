@@ -1,0 +1,38 @@
+.img-250-147{
+  @include imagesHolder(250px, 147px);
+}
+.img-270-175{
+  @include imagesHolder(270px, 175px);
+}
+.img-290-160{
+  @include imagesHolder(290px, 160px);
+}
+.img-65-50{
+  @include imagesHolder(65px, 50px);
+}
+.img-70{
+  @include imagesHolder(70px, 70px, true);
+}
+.img-350-200{
+  @include imagesHolder(350px, 200px);
+}
+.img-350-160{
+  @include imagesHolder(350px, 160px);
+}
+.img-170-160{
+  @include imagesHolder(170px, 160px, true);
+}
+.img-130-90{
+  @include imagesHolder(130px, 90px, true);
+}
+
+img.img-center
+{
+  min-height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%) !important;
+  -ms-transform: translate(-50%,-50%) !important;
+  transform: translate(-50%,-50%) !important;
+}

@@ -1,0 +1,98 @@
+<div id="settings" class="tab-pane fade">
+    <h2>Podešavanje naloga</h2>
+    <form action="{{ path('site_user_update', {'id': app.user.id} ) }}" method="PUT" id="signup-form" enctype="multipart/form-data" onsubmit="loginService.register(event)" data-toggle="validator">
+        <h5 class="skin-color">Osnovni podaci</h5>
+        <div class="row form-group">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label>Korisničko ime</label>
+                <input type="text" class="input-text full-width" name="username" value="{{ app.user.username }}">
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label>Nova lozinka</label>
+                <input type="text" class="input-text full-width" name="newPassword" id="new-password">
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label>Ponovite lozinku</label>
+                <input type="text" class="input-text full-width" name="reNewPassword">
+            </div>
+        </div>
+        {#<div class="row form-group">#}
+        {#<p class="description">Vi ste?</p>#}
+        {#<div class="radio {{ is_granted('ROLE_USER') ? 'checked' }}">#}
+        {#<label>#}
+        {#<input type="radio" name="role" value="ROLE_USER" {{ is_granted('ROLE_USER') ? 'checked="true"' }}>Korisnik#}
+        {#</label>#}
+        {#</div>#}
+        {#<div class="radio">#}
+        {#<label>#}
+        {#<input type="radio" name="role" value="ROLE_ADVANCED_USER" {{ is_granted('ROLE_ADVANCED_USER') ? 'checked="true"' }}>Oglašavač#}
+        {#</label>#}
+        {#</div>#}
+        {#</div>#}
+        <hr>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <h5 class="skin-color">Lični podaci</h5>
+            <div class="row form-group">
+                <div class="col-xs-12">
+                    <label>Ime</label>
+                    <input type="text" class="input-text full-width" name="firstName" value="{{ app.user.firstname }}">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-12">
+                    <label>Prezime</label>
+                    <input type="text" class="input-text full-width" name="lastName" value="{{ app.user.lastname }}">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-12">
+                    <label>Email</label>
+                    <input type="text" class="input-text full-width" name="email" value="{{ app.user.email }}">
+                </div>
+            </div>
+        </div>
+{#        <div class="col-xs-12 col-sm-6 col-md-4">#}
+{#            <h5 class="skin-color">Kontakt podaci</h5>#}
+{#            <div class="row form-group">#}
+{#                <div class="col-xs-12">#}
+{#                    <label>Telefon</label>#}
+{#                    <input type="text" class="input-text full-width" name="telephone" value="{{ app.user.telephone }}">#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="row form-group">#}
+{#                <div class="col-xs-12">#}
+{#                    <label>Mobilni telefon</label>#}
+{#                    <input type="text" class="input-text full-width" name="mobilephone" value="{{ app.user.mobilephone }}">#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="row form-group">#}
+{#                <div class="col-xs-12">#}
+{#                    <label>Viber</label>#}
+{#                    <input type="text" class="input-text full-width" name="viber" value="{{ app.user.viber }}">#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col-xs-12 col-sm-6 col-md-4">#}
+{#            <h5 class="skin-color">&nbsp;</h5>#}
+{#            <div class="row form-group">#}
+{#                <div class="col-xs-12">#}
+{#                    <label for="address">Adresa</label>#}
+{#                    <input type="text" class="input-text full-width" name="address" id="address" value="{{ app.user.address }}">#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="row form-group">#}
+{#                <div class="col-xs-12">#}
+{#                    <label for="city-name">Mesto</label>#}
+{#                    <input type="text" class="input-text full-width city" name="city" id="city-name" value="{{ app.user.city is defined and app .user.city is not null ? app.user.city.name : '' }}" autocomplete="false">#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="form-group col-xs-12">
+            <button class="btn-medium">Promeni</button>
+        </div>
+    </form>
+</div>

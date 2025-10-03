@@ -1,0 +1,120 @@
+{# src/mestajSiteBundle/Resources/views/Site/index.html.html.twig #}
+{% extends("@Site/base.html.twig") %}
+{% block content %}
+    <div class="global-map-area header-bg-image section parallax" data-parallax="scroll" data-image-src="{{ asset('images/slider/apartmani-sobe-montenegro-1.jpg') }}" data-natural-height="700">
+        <div class="text-center description">
+            <h1 class="page-title">
+                Uživajte sa najboljima. <br>
+                Letovanje u najboljim apartmanima i privatnim smeštajima u Crnoj Gori.
+            </h1>
+            <h3 class="sub-title">(apartmani, privatni smeštaji, hoteli, Budva, Sutomore, Petrovac...)</h3>
+        </div>
+    </div>
+    {{ include('@Site/Moduls/search-tabs.html.twig') }}
+    <section id="content" class="index">
+        <div class="index__section">
+            <div class="container">
+                <div class=" block">
+                    <div class="row image-box style10">
+                        {% set firstCategory = categories['categories'][0] %}
+                        <div class="col-md-6">
+                            <article class="box post">
+                                <figure>
+                                    <a href="{{ path("site_ads_view", {'category': firstCategory.alias  }) }}" class="hover-effect">
+                                        <img
+                                                src="{{ path('category_image_show', {filter: 'index_thumb_category', alias: firstCategory.alias}) }}"
+                                                alt="{{ default_alt_text }}" draggable="false">
+                                    </a>
+                                    <figcaption class="entry-date">
+                                        <label class="date">{{ firstCategory.name }}</label>
+                                        <label class="month">{{ categories['counted'][firstCategory['id']] ?? '0' }} {{ pluralization(categories['counted'][firstCategory['id']] ?? '0', 'smeštajnih objekata', 'smeštajni objekat' ) }}</label>
+                                    </figcaption>
+                                </figure>
+                            </article>
+                        </div>
+                        {% set secondCategory = categories['categories'][1] %}
+                        <div class="col-md-6">
+                            <article class="box post">
+                                <figure>
+                                    <a href="{{ path("site_ads_view", {'category': secondCategory.alias  }) }}" class="hover-effect">
+                                        <img
+                                                src="{{ path('category_image_show', {filter: 'index_thumb_category', alias: secondCategory.alias}) }}"
+                                                alt="{{ default_alt_text }}" draggable="false">
+                                    </a>
+                                    <figcaption class="entry-date">
+                                        <label class="date">{{ secondCategory.name }}</label>
+                                        <label class="month">{{ categories['counted'][secondCategory['id']] ?? '0' }} {{ pluralization(categories['counted'][secondCategory['id']] ?? '0', 'smeštajnih objekata', 'smeštajni objekat' ) }}</label>
+                                    </figcaption>
+                                </figure>
+                            </article>
+                        </div>
+                        {% for category in categories['categories'] | slice(2) %}
+                            <div class="col-md-4">
+                                <article class="box post">
+                                    <figure>
+                                        <a href="{{ path("site_ads_view", {'category': category.alias  }) }}" class="hover-effect">
+                                            <img
+                                                    src="{{ path('category_image_show', {filter: 'index_thumb_category', alias: category.alias}) }}"
+                                                    alt="{{ default_alt_text }}" draggable="false">
+                                        </a>
+                                        <figcaption class="entry-date">
+                                            <label class="date">{{ category.name }}</label>
+                                            <label class="month">{{ categories['counted'][category['id']] ?? '0' }} {{ pluralization(categories['counted'][category['id']] ?? '0', 'smeštajnih objekata', 'smeštajni objekat' ) }}</label>
+                                        </figcaption>
+                                    </figure>
+                                </article>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <h2 class="s-title">Naša preporuka</h2>
+                <div class="recomended-hotels block image-carousel style2 flexslider" data-animation="slide" data-item-width="270"
+                     data-item-margin="30">
+                    <ul class="slides image-box listing-style2">
+                        {% for ad in recommended %}
+                        <li>
+                            <article class="box">
+                                <figure>
+                                    <a href="{{ path('site_single_ads', {'category': ad['category_alias'], 'alias': ad['alias']}) }}" class="hover-effect"><img
+                                                src="{{ path('app.image_show', {entity: 'ads' | trans, filter: 'index_thumb_recommended', name: ad.image}) }}" alt="{{ default_alt_text }}" width="270" height="160"/></a>
+                                </figure>
+                                <div class="details">
+                                    <a title="View all" href="{{ path('site_single_ads',  {'category': ad['category_alias'], 'alias': ad['alias']}) }}" class="pull-right button uppercase">Pogledaj</a>
+                                    <h4 class="box-title">{{ ad['title'] }} - {{ ad['city'] }}</h4>
+                                    <label class="price-wrapper">
+                                       već od <span class="price-per-unit">&euro; {{ ad['pre_price_from'] }}</span>
+                                    </label>
+                                </div>
+                            </article>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="container">
+                <h2>Mesta sa najboljim apartmanima i sobama u Crnoj Gori</h2>
+                <div class="row">
+                    {% for chunk in cities | batch(4) %}
+                        <div class="col-md-4">
+                            <div class="flight-routes image-box style13 block">
+                                {% for city in chunk %}
+                                    <div class="box">
+                                        <div class="action">
+                                            <a href="{{ path('site_ads_view', {'category': 'smestaj', 'extraParams': city.alias  }) }}" class="button">POGLEDAJ</a>
+                                        </div>
+                                        <div class="details no-margin">
+                                            <h5 class="box-title">Smeštaj {{ city.name }}</h5>
+                                            <label class="price-wrapper"><span class="price-per-unit">{{ city['total_ads'] }}</span> apartmana, soba, hotela</label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

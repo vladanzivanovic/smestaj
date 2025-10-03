@@ -1,0 +1,22 @@
+{# src/SiteBundle/Resources/views/Moduls/headerTop.html.html.twig #}
+{% block headerTop %}
+
+    <div class="topnav hidden-xs">
+        <div class="container">
+            <ul class="quick-menu pull-left signup-menu">
+                {% if app.user is null or app.user is not defined %}
+                    <li><a href="#mojeveselje-login" class="soap-popupbox" id="login-button">PRIJAVA</a></li>
+                    <li><a href="#mojeveselje-signup" class="soap-popupbox">REGISTRACIJA OGLAŠIVAČA</a></li>
+                {% else %}
+                    <li><a href="{{ path('site_user_profile') }}">VAŠ PROFIL</a></li>
+                    <li><a href="{{ path('site_logout') }}">ODJAVA</a></li>
+                {% endif %}
+            </ul>
+            <ul class="quick-menu pull-right">
+                <li>
+                    <a href="{{ path('site_contact_us') }}">Kontakt</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

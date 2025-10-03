@@ -1,0 +1,40 @@
+{% extends('Admin/base.html.twig') %}
+
+{% set relatedName = routeName() == 'admin.blog_tags' ? 'Blog - tagovi' : 'Proizvodi - tagovi' %}
+{% set routeSubName = routeName() == 'admin.blog_tags' ? 'blog' : 'product' %}
+
+{% block content %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Šifarnik tagova' } %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">{{ relatedName }}</h4>
+        </div>
+        <div class="d-flex align-items-center flex-wrap text-nowrap">
+            <a href="{{ path('admin.add_' ~ routeSubName ~ '_tag_page') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                <i class="btn-icon-prepend" data-feather="download-cloud"></i>
+                Dodaj tag
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="data-table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('Admin/Components/confirmationModal.html.twig') }}
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const CAN_EDIT = true;
+        const CAN_REMOVE = true;
+        const ROUTE_SUB_NAME = '{{ routeSubName }}';
+    </script>
+{% endblock %}

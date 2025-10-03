@@ -1,0 +1,28 @@
+twig:
+    globals:
+        generate_seo_url: '@SiteBundle\Services\UrlService'
+        date_format: "ccc, d.MM.Y"
+        site_info: '%site_info%'
+        base_url: '%base_url%'
+        default_alt_text: 'Smestaj Crna Gora, Privatni smestaj Budva, Kotor, Sutomore - Privatni Smestaj Crna Gora'
+        default_title_text: 'Smestaj Crna Gora, Privatni smestaj Budva, Kotor, Sutomore - Privatni Smestaj Crna Gora'
+        upload_image_dir: '%upload_image_dir%'
+        upload_badges_dir: '%upload_badges_dir%'
+        string_helper: '@SiteBundle\Helper\StringHelper'
+        re_captcha_key: '%re_captcha_key%'
+        adsense_key: '%adsense_key%'
+        google_api_key: '%google_api_key%'
+        google_analytics: '%google_analytics%'
+        google_maps_key: '%google_maps_key%'
+        assetic_base_path: '%assetic_base_path%'
+        limit: '%limit%'
+        image: '%image%'
+        constants_service: '@SiteBundle\Helper\ConstantsHelper'
+        languages: '%languages%'
+        default_locale: '%default_locale%'
+        facebook:
+            app_id: '%fb_id%'
+            app_secret: '%fb_secret%'
+            default_access_token: '%fb_page_token%'
+            page_id: '%fb_page_id%'
+            graph_version: '%fb_graph_version%'

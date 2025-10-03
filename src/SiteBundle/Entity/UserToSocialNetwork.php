@@ -1,0 +1,161 @@
+<?php
+
+namespace SiteBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserToSocialNetwork
+ *
+ * @ORM\Table(name="usertosocialnetwork")
+ * @ORM\Entity(repositoryClass="SiteBundle\Repository\UserToSocialNetworkRepository")
+ */
+class UserToSocialNetwork
+{
+    const FACEBOOK_TYPE = 'facebook';
+    const GOOGLE_TYPE = 'google';
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="Id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Type", type="string", length=255)
+     */
+    private $type;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="SocialId", type="bigint", length=255)
+     */
+    private $socialid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Image", type="string", length=500, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="socialId")
+     * @ORM\JoinColumn(name="UserId", nullable=true, referencedColumnName="Id")
+     */
+    private $userid;
+
+    
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return UserToSocialNetwork
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set socialid
+     *
+     * @param integer $socialid
+     *
+     * @return UserToSocialNetwork
+     */
+    public function setSocialId($socialid)
+    {
+        $this->socialid = $socialid;
+
+        return $this;
+    }
+
+    /**
+     * Get socialid
+     *
+     * @return int
+     */
+    public function getSocialId()
+    {
+        return $this->socialid;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return UserToSocialNetwork
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set userid
+     *
+     * @param \SiteBundle\Entity\User $userid
+     *
+     * @return UserToSocialNetwork
+     */
+    public function setUserid(\SiteBundle\Entity\User $userid = null)
+    {
+        $this->userid = $userid;
+
+        return $this;
+    }
+
+    /**
+     * Get userid
+     *
+     * @return \SiteBundle\Entity\User
+     */
+    public function getUserid()
+    {
+        return $this->userid;
+    }
+}

@@ -1,0 +1,181 @@
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <a href="#" class="sidebar-brand">
+            Smeštaj<span> Admin</span>
+        </a>
+        <div class="sidebar-toggler not-active">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div class="sidebar-body">
+        <ul class="nav">
+            <li class="nav-item nav-category">Stranice</li>
+            <li class="nav-item {{ routeName == 'admin.dashboard' ? 'active' : '' }}">
+                <a href="{{ path('admin.dashboard') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Proizvodi</span>
+                </a>
+            </li>
+{#            <li class="nav-item {{ routeName == 'admin.locations' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.locations') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Lokacije</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.blog' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.blog') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Blog</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.catalog_page' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.catalog_page') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Katalog</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.about_us_page' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.about_us_page') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">O nama</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.jobs' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.jobs') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Radna mesta</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item nav-category">Pregled</li>#}
+{#            <li class="nav-item {{ routeName == 'admin.orders' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.orders') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Narudžbine</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.loyalty' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.loyalty') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Loyalty</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.collaborators' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.collaborators') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Saradnici</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.career' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.career') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="box"></i>#}
+{#                    <span class="link-title">Zaposlenje</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item nav-category">Podešavanja</li>#}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link {{ routeName == 'admin.dashboard' ? 'active' : '' }}" data-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">#}
+{#                    <i class="link-icon" data-feather="feather"></i>#}
+{#                    <span class="link-title">Naslovna stranica</span>#}
+{#                    <i class="link-arrow" data-feather="chevron-down"></i>#}
+{#                </a>#}
+{#                <div class="collapse" id="uiComponents">#}
+{#                    <ul class="nav sub-menu">#}
+{#                        <li class="nav-item">#}
+{#                            <a href="{{ path('admin.sliders') }}" class="nav-link">Slider</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a href="{{ path('admin.home_banners') }}" class="nav-link">Brzi linkovi</a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.settings_page' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.settings_page') }}" class="nav-link">#}
+{#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}
+{#                    <span class="link-title">Podešavanje sajta</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.coupons' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.coupons') }}" class="nav-link">#}
+{#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}
+{#                    <span class="link-title">Promotivni kuponi</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.banners' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.banners') }}" class="nav-link">#}
+{#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}
+{#                    <span class="link-title">Baneri</span>#}
+{#                </a>#}
+{#            </li>#}
+            <li class="nav-item {{ routeName == 'admin.users' ? 'active' : '' }}">
+                <a href="{{ path('admin.users') }}" class="nav-link">
+                    <i class="link-icon mdi mdi-format-color-fill"></i>
+                    <span class="link-title">Korisnici</span>
+                </a>
+            </li>
+{#            <li class="nav-item {{ routeName == 'admin.descriptions' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.descriptions') }}" class="nav-link">#}
+{#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}
+{#                    <span class="link-title">Tekstovi</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.slider_text' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.slider_text') }}" class="nav-link">#}
+{#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}
+{#                    <span class="link-title">Slider tekst</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item nav-category">šifarnik</li>#}
+{#            <li class="nav-item {{ routeName == 'admin.colors' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.colors') }}" class="nav-link">#}
+{#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}
+{#                    <span class="link-title">Boje</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.product_tags' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.product_tags') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="calendar"></i>#}
+{#                    <span class="link-title">Tagovi proizvoda</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.blog_tags' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.blog_tags') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="calendar"></i>#}
+{#                    <span class="link-title">Blog tagovi</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.categories' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.categories') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="calendar"></i>#}
+{#                    <span class="link-title">Kategorije</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.sizes' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.sizes') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="calendar"></i>#}
+{#                    <span class="link-title">Veličine</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.shipping_page' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.shipping_page') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="calendar"></i>#}
+{#                    <span class="link-title">Slanje</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.payment_page' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.payment_page') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="calendar"></i>#}
+{#                    <span class="link-title">Plaćanje</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="nav-item {{ routeName == 'admin.countries_page' ? 'active' : '' }}">#}
+{#                <a href="{{ path('admin.countries_page') }}" class="nav-link">#}
+{#                    <i class="link-icon" data-feather="calendar"></i>#}
+{#                    <span class="link-title">Države</span>#}
+{#                </a>#}
+{#            </li>#}
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,2 @@
+admin.api.login_check:
+  path: /login-check

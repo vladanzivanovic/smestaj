@@ -1,0 +1,50 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Dodavanje / Izmena boja{% endblock %}
+
+{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_color_page' %}
+
+{% block content %}
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena boja' } %}
+
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Dodavanje - izmena boje</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <form id="edit_form" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.input('Boja', 'color_field', IS_EDIT ? color.hex : '', 'color') }}
+                                </div>
+                            </div><!-- Col -->
+                            {% for language in languages %}
+                                {%  set trans = IS_EDIT ? color.translationByLocale(language.code) : '' %}
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        {{ form.input('Naziv - '~language.name|upper, 'color_title_'~language.code, IS_EDIT ? trans.title : '', language.code~'_title') }}
+                                    </div>
+                                </div><!-- Col -->
+                            {% endfor %}
+                        </div><!-- Row -->
+                    </form>
+                    {{ form.button('color_submit', 'btn btn-primary submit', 'Sačuvaj', 'button') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
+        const ID = '{{ app.request.attributes.get('id') }}';
+    </script>
+{% endblock %}

@@ -1,0 +1,106 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $uploadAdsDir: '%upload_image_dir%'
+            $tmpDir: '%upload_tmp_dir%'
+            $fileTypes: '%file_types%'
+            $languages: '%languages%'
+            $logDir: '%kernel.logs_dir%'
+
+    SiteBundle\:
+        resource: '../../src/SiteBundle/*'
+        exclude: '../../src/SiteBundle/{DependencyInjection,Entity,Migrations,Tests,Resources}'
+    AdminBundle\:
+        resource: '../../src/AdminBundle/*'
+        exclude: '../../src/AdminBundle/{DependencyInjection,Entity,Migrations,Tests,Resources}'
+    LogBundle\:
+        resource: '../../src/LogBundle/*'
+        exclude: '../../src/LogBundle/{DependencyInjection,Entity,Migrations,Tests,Resources}'
+
+    AdminBundle\Parser\ProductEditRequestParser: ~
+
+    AdminBundle\Parser\RequestParserInterface $productEditRequestParser: '@AdminBundle\Parser\ProductEditRequestParser'
+
+    SiteBundle\Repository\ExtendedEntityRepository:
+        class: SiteBundle\Repository\ExtendedEntityRepository
+        arguments:
+            $entityClass: ~
+
+    Liip\ImagineBundle\Service\FilterService:
+        alias: 'liip_imagine.service.filter'
+
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    app.sitemap_ads_listener:
+        class: SiteBundle\EventListeners\SiteMapAdsSubscriber
+        arguments:
+            - "@router"
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: "kernel.event_subscriber", priority: 100 }
+
+    app.base_service:
+        class: SiteBundle\Services\ServiceContainer
+        abstract: true
+        arguments:
+          - '@doctrine.orm.entity_manager'
+          - '@security.token_storage'
+
+    app.auth_failure_listener:
+        class: SiteBundle\EventListeners\LoginListener
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
+
+    app.auth_success_listener:
+        class: SiteBundle\EventListeners\LoginListener
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
+
+    app.array_helper:
+        class: SiteBundle\Helper\ArrayHelper
+        arguments:
+            - '@jms_serializer'
+
+    app.app_helper:
+        class: SiteBundle\Helper\AppHelper
+        arguments:
+            - '@request_stack'
+            - '%kernel.environment%'
+            - '%assetic_base_path%'
+
+    app.text_helper:
+        class: SiteBundle\Helper\TextHelper
+    app.constants_helper:
+        class: SiteBundle\Helper\ConstantsHelper
+    app.finder_service:
+        class: Symfony\Component\Finder\Finder
+        public: false
+    app.asset_remove_version:
+        class: SiteBundle\Asset\RemoveVersionStrategy
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+    gedmo.listener.sluggable:
+        class: Gedmo\Sluggable\SluggableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]

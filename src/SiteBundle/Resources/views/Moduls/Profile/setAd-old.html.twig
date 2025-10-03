@@ -1,0 +1,421 @@
+<div id="ads" class="tab-pane fade">
+    <h2>Dodavanje - Izmena oglasa</h2>
+    <form action="" id="setAd">
+        <div class="tab-container">
+            <ul class="ads-tab tabs full-width wizard" data-type="tabs">
+                <li class="active"><a href="#base-info" data-toggle="tab">Osnovni podaci</a></li>
+                <li><a href="#service-info" data-toggle="tab">Dodatni podaci</a></li>
+                <li><a href="#additional-info" data-toggle="tab">Opis</a></li>
+                <li><a href="#contact-info" data-toggle="tab">Kontakt</a></li>
+                <li><a href="#media" data-toggle="tab">Media</a></li>
+            </ul>
+            <div class="tab-content full-width">
+                <div class="tab-pane fade in active" id="base-info">
+                    <h4>Osnovni podaci</h4>
+                    <div class="toggle-container box wizard" data-type="accordion" id="basicInfo">
+
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#basicInfoAcc1" data-toggle="collapse" data-parent="#basicInfo">Osnovni
+                                    podaci</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="basicInfoAcc1">
+                                <div class="panel-content">
+                                    <div class="row form-group">
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Title">Naziv</label>
+                                            <input type="text" name="Title" id="Title" class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="category">Tip smeštaja</label>
+                                            <div class="selector">
+                                                <select class="full-width" name="CategoryId" id="category"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="city">Mesto</label>
+                                            <input type="text" id="city"
+                                                   class="input-text full-width city" name="CityAd" autocomplete="false">
+                                        </div>
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium" disabled>
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium">Sledeći</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#priceInfoAccordion" data-toggle="collapse" data-parent="#basicInfo">Cenovnik</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="priceInfoAccordion">
+                                <div class="panel-content">
+                                    <div class="row form-group">
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+                                            <label for="prePriceFrom">Cena u predsezoni od:</label>
+                                            <input type="text" name="PrePriceFrom" id="prePriceFrom"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+                                            <label for="prePriceTo">do:</label>
+                                            <input type="text" name="PrePriceTo" id="prePriceTo"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+                                            <label for="priceFrom">Cena u sezoni od:</label>
+                                            <input type="text" name="PriceFrom" id="priceFrom"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+                                            <label for="priceTo">do:</label>
+                                            <input type="text" name="PriceTo" id="priceTo"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+                                            <label for="postPriceFrom">Cena u postsezoni od:</label>
+                                            <input type="text" name="PostPriceFrom" id="postPriceFrom"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+                                            <label for="postPriceTo">do:</label>
+                                            <input type="text" name="PostPriceTo" id="postPriceTo"
+                                                   class="input-text full-width">
+                                        </div>
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium">
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium"
+                                            data-move-to-tab="true">Sledeći
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="service-info">
+                    <h4>Usluge</h4>
+                    <div class="toggle-container box wizard" data-type="accordion" id="serviceInfo">
+
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#roomTypeAccordion" data-toggle="collapse" data-parent="#serviceInfo">Tip soba</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="roomTypeAccordion">
+                                <div class="panel-content">
+                                    <div class="row form-group" id="accomodation-type">
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium">
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium">Sledeći
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#rangeInfoAccordion" data-toggle="collapse" data-parent="#rangeInfo">Udaljenost od</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="rangeInfoAccordion">
+                                <div class="panel-content">
+                                    <div class="row form-group" id="range">
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium">
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium">Sledeći
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#accomodationInfoAccordion" data-toggle="collapse" data-parent="#accomodationInfo">Oprema</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="accomodationInfoAccordion">
+                                <div class="panel-content">
+                                    <div class="row form-group" id="accomodation">
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium">
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium">Sledeći
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#servicesInfoAccordion" data-toggle="collapse" data-parent="#servicesInfo">Usluge</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="servicesInfoAccordion">
+                                <div class="panel-content">
+                                    <div class="row form-group" id="services">
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium">
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium">Sledeći
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#foodInfoAccordion" data-toggle="collapse" data-parent="#foodInfo">Hrana</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="foodInfoAccordion">
+                                <div class="panel-content">
+                                    <div class="row form-group" id="food">
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium">
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium">Sledeći
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="additional-info">
+                    <h4>Opis</h4>
+                    <div class="toggle-container box wizard" data-type="accordion" id="descriptionAccordion">
+
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#acc1" data-toggle="collapse" data-parent="#descriptionAccordion">Opis</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="acc1">
+                                <div class="panel-content">
+                                    <div class="row form-group">
+                                        <div class="col-xs-12">
+                                            <label for="editor">Naziv</label>
+                                            <textarea class="full-width" name="Description" id="editor"
+                                                      rows="10"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group wizard-buttons">
+                                        <button type="button" data-direction="prev"
+                                                class="close-btn pull-left btn-medium">Prethodni
+                                        </button>
+                                        <button type="button" class="close-btn pull-right btn-medium"
+                                                data-move-to-tab="true">Sledeći
+                                        </button>
+                                    </div>
+                                </div><!-- end content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="contact-info">
+                    <h4>Kontakt podaci</h4>
+                    <div class="toggle-container box wizard" data-type="accordion" id="basicContactInfo">
+
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#basicContactInfoAcc1" data-toggle="collapse" data-parent="#basicContactInfo">Osnovni
+                                    podaci</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="basicContactInfoAcc1">
+                                <div class="panel-content">
+                                    <div class="row form-group">
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-FirstName">Ime</label>
+                                            <input type="text" name="contact[FirstName]" id="Contact-FirstName"
+                                                   class="input-text full-width" value="{{ app.user.firstname }}">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-LastName">Prezime</label>
+                                            <input type="text" name="contact[LastName]" id="Contact-LastName" value="{{ app.user.lastname }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-ContactEmail">Email</label>
+                                            <input type="email" id="Contact-ContactEmail" name="contact[ContactEmail]" value="{{ app.user.email }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-Address">Adresa</label>
+                                            <input type="text" id="Contact-Address" name="contact[Address]" value="{{ app.user.address }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-City">Mesto</label>
+                                            <input type="text" id="Contact-City"
+                                                   class="input-text full-width city" name="ContactCity" value="{{ app.user.cityid is defined and app.user.cityid is not null ? app.user.cityid.name : '' }}" autocomplete="false">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-Telephone">Telefon</label>
+                                            <input type="number" name="contact[Telephone]" id="Contact-Telephone" value="{{ app.user.telephone }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-MobilePhone">Mobilni Telefon</label>
+                                            <input type="number" name="contact[MobilePhone]" id="Contact-MobilePhone" value="{{ app.user.mobilephone }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-Viber">Viber</label>
+                                            <input type="number" name="contact[Viber]" id="Contact-Viber" value="{{ app.user.viber }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-Website">Web sajt</label>
+                                            <input type="text" name="contact[WebSite]" id="Contact-Website" value="{{ app.user.website }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label for="Contact-Facebook">Facebook stranica</label>
+                                            <input type="text" name="contact[Facebook]" id="Contact-Facebook" value="{{ app.user.website }}"
+                                                   class="input-text full-width">
+                                        </div>
+                                    </div>
+                                </div><!-- end content -->
+                                <div class="row form-group wizard-buttons">
+                                    <button type="button" data-direction="prev" class="close-btn pull-left btn-medium">
+                                        Prethodni
+                                    </button>
+                                    <button type="button" class="close-btn pull-right btn-medium"
+                                            data-move-to-tab="true">Sledeći
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade panel" data-type="tabs" id="media">
+                    <h4>Slike i video</h4>
+                    <div class="toggle-container box wizard" data-type="accordion" id="imageAndYoutube">
+
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#image-acc" data-toggle="collapse" data-parent="#imageAndYoutube">Slike</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="image-acc">
+                                <div class="panel-content">
+                                    <div id="dropzone" class="dropzone" data-files="mainImages">
+                                        <div>
+                                            <input type="file" multiple="multiple"
+                                                   accept="image/gif, image/jpeg, image/png">
+                                            <div class="dropzone-placeholder">Kliknite ili prevucite slike</div>
+                                            <ul class="dropzone-file-wrapper clearfix"></ul>
+                                        </div>
+                                    </div>
+                                    <em id="dropzone-error" class="hide">Slike su obavezne</em>
+                                    <div class="row form-group wizard-buttons">
+                                        <button type="button" data-direction="prev"
+                                                class="close-btn pull-left btn-medium">Prethodni
+                                        </button>
+                                        <button type="button" class="close-btn pull-right btn-medium">Sledeći</button>
+                                    </div>
+                                </div><!-- end content -->
+                            </div>
+                        </div>
+                        <div class="panel style1">
+                            <h4 class="panel-title">
+                                <a href="#youtube-acc" data-toggle="collapse" data-parent="#imageAndYoutube">Youtube</a>
+                            </h4>
+                            <div class="panel-collapse collapse" id="youtube-acc">
+                                <div class="panel-content">
+                                    <div class="row form-group">
+                                        <div class="col-xs-12">
+                                            <label for="youtubeUrl">Youtube Url:</label>
+                                            <input type="text" name="youtubeUrl" id="youtubeUrl"
+                                                   class="input-text col-xs-12 col-sm-8 col-md-10">
+                                            <button type="button" class="button btn-medium col-xs-12 col-sm-4 col-md-2 youtube-add-btn">Dodaj</button>
+                                        </div>
+                                        <div class="col-xs-12 sm-section">
+                                            <ul id="youtube-video-lists"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group wizard-buttons">
+                                        <button type="button" data-direction="prev"
+                                                class="close-btn pull-left btn-medium">Prethodni
+                                        </button>
+                                        <button type="button" class="close-btn pull-right btn-medium" id="saveAds"
+                                                data-last-step="true">Sačuvaj
+                                        </button>
+                                    </div>
+                                </div><!-- end content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-xs-12 edit-buttons">
+            <button type="button"
+                    class="close-btn pull-left btn-medium" id="dismissEditAd">Otkaži
+            </button>
+            <button type="button" class="close-btn pull-right btn-medium" id="saveEditAds">
+                Sačuvaj
+            </button>
+        </div>
+    </form>
+</div>
+
+<div id="add-room" class="travelo-login-box travelo-box">
+    <p id="room-title"></p>
+    <div class="seperator"></div>
+    <form action="">
+        <input type="hidden" name="InfoId" id="InfoId">
+        <div class="row form-group">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label for="Title">Kapacitet od</label>
+                <input type="text" name="CapacityMin" id="CapacityMin"
+                       class="input-text full-width">
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <label for="category">Do</label>
+                <input type="text" name="CapacityMax" id="CapacityMax"
+                       class="input-text full-width">
+            </div>
+            <div class="col-xs-12">
+                <label for="Email">Opis</label>
+                <textarea class="full-width" name="Description" id="adsInfoDescription"
+                          rows="10"></textarea>
+            </div>
+            <div class="col-xs-12">
+                <div id="dropzone" class="dropzone" data-files="additionalImages">
+                    <div>
+                        <input type="file" multiple="multiple"
+                               accept="image/gif, image/jpeg, image/png">
+                        <div class="dropzone-placeholder">Kliknite ili prevucite slike</div>
+                        <ul class="dropzone-file-wrapper clearfix"></ul>
+                    </div>
+                </div>
+                <p>
+                    <small>Maksimalan broj slika je {{ image['max_image_upload'] }}</small>
+                    <br>
+                    <small>Dozvoljeni tipovi slika su: jpg, jpeg, png, gif</small>
+                    <br>
+                    <small>Maksimalna veličina slike je 2MB</small>
+                </p>
+            </div>
+        </div>
+        <div class=" form-group wizard-buttons">
+            <button type="button" class="close-btn pull-left btn-medium">Odustani
+            <button type="button"
+                    class="close-btn pull-right btn-medium" id="save-additional">Sačuvaj
+            </button>
+            </button>
+        </div>
+    </form>
+</div>

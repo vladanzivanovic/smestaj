@@ -1,0 +1,24 @@
+hwi_oauth:
+    # list of names of the firewalls in which this bundle is active, this setting MUST be set
+    firewall_names: [site_login]
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           '%fb_id%'
+            client_secret:       '%fb_secret%'
+            scope:               "email public_profile"
+            authorization_url:   "https://www.facebook.com/dialog/oauth"
+            access_token_url:    "https://graph.facebook.com/oauth/access_token"
+            revoke_token_url:    "https://graph.facebook.com/me/permissions"
+            infos_url:           "https://graph.facebook.com/me?fields=id,first_name,last_name,name,email,picture.type(square)"
+            paths:
+                email:          email
+                profilepicture: picture.data.url
+            options:
+                display:        popup #dialog is optimized for popup window
+                auth_type:      rerequest # Re-asking for Declined Permissions
+        google:
+            type:                google
+            client_id:           1083016604740-jukd985vpfo9ha9fb5feiqbpm2acq3bv.apps.googleusercontent.com
+            client_secret:       Z6sUqPDTS_EqPZs5EbZNBjGd
+            scope:               "email profile"

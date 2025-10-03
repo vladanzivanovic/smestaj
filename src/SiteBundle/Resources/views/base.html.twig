@@ -1,0 +1,193 @@
+{# src/SiteBundle/Resources/views/base.html.html.twig #}
+{% set locale = app.request.locale %}
+{% set user = app.user %}
+{% set routeName = app.request.attributes.get('_route') %}
+{% set categoryParam = app.request.attributes.get('category') ?? null %}
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="ie ie8" lang="{{ locale|split('_')[0] }}"> <![endif]-->
+<!--[if IE 9]><html class="ie ie9" lang="{{ locale|split('_')[0] }}"> <![endif]-->
+<!--[if gt IE 9]><!-->  <html lang="{{ locale|split('_')[0] }}"> <!--<![endif]-->
+<head>
+    {% set GLOBAL_CONSTANTS = constants_service.getAllConstants() %}
+    <!-- Page Title -->
+    <title>{% block title %}{{ site_info.site_title }}{% endblock %}</title>
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="keywords" content="smestaj, crna gora, apartmani, budva, sutomore, kotor, apartmani, sobe, privatni smestaj" />
+    <meta name="description" content="{% block metaDescription %}{{ site_info.site_description }}{% endblock %}">
+    <meta name="author" content="Vladan Zivanovic">
+    <meta property="fb:app_id" content="{{ app_params('fb_id') }}" />
+
+    {% block robotFollow %}{% endblock %}
+
+    {% block social_open_graph %}
+    {% endblock %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('images/favicon/apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('images/favicon/apple-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('images/favicon/apple-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('images/favicon/apple-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('images/favicon/apple-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('images/favicon/apple-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('images/favicon/apple-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('images/favicon/apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('images/favicon/android-icon-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/favicon/favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('images/favicon') }}/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ asset('images/favicon/ms-icon-144x144.png') }}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{{ asset('build/css/site/app.css') }}">
+    {% block customStylesheets %}
+    {% endblock %}
+    <!-- Theme Styles -->
+    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+    <!-- CSS for IE -->
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="{{ asset("bundles/site/css/ie.css") }}" />
+    <![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type='text/javascript' src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+</head>
+<body class="{% block bodyClass %}{% endblock %}">
+{% block body %}
+    <div id="page-loader" class="hide"></div>
+
+    {% set categories = categories() %}
+    <div id="page-wrapper">
+        {% block header %}
+            <header id="header" class="navbar-static-top">
+                {% block headerTop %}
+                    {{ include("@Site/Moduls/headerTop.html.twig") }}
+                {% endblock %}
+                {% block headerMiddle %}
+                    {{ include("@Site/Moduls/headerMiddle.html.twig") }}
+                {% endblock %}
+            </header>
+            <header id="header" class="navbar-static-top style7">
+            </header>
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+        {% block footer %}
+            {{ include("@Site/Moduls/footer.html.twig") }}
+        {% endblock %}
+    </div>
+{% endblock %}
+{% block javascript %}
+
+{#<script src="{{ asset('js/fos_js_routes.js') }}"></script>#}
+
+{#{% javascripts#}
+{#%}#}
+{#<script src="{{ asset_url }}" type="text/javascript"></script>#}
+{#{% endjavascripts %}#}
+<script nonce="{{ csp_nonce('script') }}" type="text/javascript">
+    var CaptchaCallback = function() {
+        let recaptcha = document.querySelectorAll('.g-recaptcha');
+
+        for( let i = 0; i < recaptcha.length; i++) {
+            let el = recaptcha[i];
+            let name = el.dataset.recaptchaName;
+            let key = el.dataset.sitekey;
+            window[name] = grecaptcha.render(el, {
+                'sitekey' : key,
+                'size': 'invisible',
+            });
+        };
+    };
+
+    // SocialService.fbInit();
+
+    <!--Start of Tawk.to Script-->
+    // var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    // (function(){
+    //     var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    //     s1.async=true;
+    //     s1.src='https://embed.tawk.to/5a25073dd0795768aaf8d2fa/default';
+    //     s1.charset='UTF-8';
+    //     s1.setAttribute('crossorigin','*');
+    //     s0.parentNode.insertBefore(s1,s0);
+    // })();
+    <!--End of Tawk.to Script-->
+
+    {#tjq(document).ready(function () {#}
+        {#{% set flashMessage = app.session.flashBag.get('loginFacebookFault') %}#}
+
+        {#{% if(flashMessage|length > 0 ) %}#}
+            {#NotificationService.show('error', '{{ flashMessage[0]}}', true);#}
+        {#{% endif %}#}
+    {#})#}
+<!--End of Tawk.to Script-->
+
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>
+<!-- Google tag (gtag.js) -->
+<script nonce="{{ csp_nonce('script') }}" async src="https://www.googletagmanager.com/gtag/js?id=G-62LPM3E4N4"></script>
+<script nonce="{{ csp_nonce('script') }}">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-62LPM3E4N4');
+</script>
+
+<script nonce="{{ csp_nonce('script') }}">
+    const LOCALE = '{{ locale }}';
+    const ROUTE_NAME = '{{ routeName }}';
+    const GLOBAL_CONSTANTS = JSON.parse('{{ GLOBAL_CONSTANTS|json_encode|raw }}');
+    const FACEBOOK_CONFIG = JSON.parse('{{ facebook|json_encode|raw }}');
+    const CATEGORIES = JSON.parse('{{ search_categories() | json_encode | raw }}');
+    const YOUTUBE_API_KEY = '{{ app_params('youtube_api_key') }}';
+    const LOCALES = JSON.parse('{{ languages|json_encode|raw }}');
+    const IS_MOBILE = window.matchMedia("only screen and (max-width: 767px)").matches;
+    const IS_TABLET = window.matchMedia("only screen and (min-width: 768px) and (max-width: 968px)").matches;
+    const IS_DESKTOP = window.matchMedia("only screen and (min-width: 969px)").matches;
+
+    const BASE_PATH = '{{ assetic_base_path }}';
+    const SITE_EMAIL = '{{ site_info['site_email'] }}';
+    window.URL_PARAMS = {{ app.request.attributes.get('_route_params')|json_encode|raw }} || null;
+    window.Messages = {{ app.session.flashBag.get('message')|json_encode|raw }};
+    const USER_HAS_ROLE = '{{ app.user|hasanyrole }}';
+    const LOGO = '{{ path('site_logo') }}';
+    const APP_ENV = '{{ app is defined and app.environment == 'prod' ? 'prod' : 'dev' }}';
+    const SENTRY_DSN = '{{ app_params('sentry_javascript_dns') }}';
+
+    const DEFAULT_ALT_TEXT = '{{ default_alt_text }}';
+    const DEFAULT_TITLE_TEXT = '{{ default_title_text }}';
+
+    window.evt = null;
+
+    {#(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){#}
+    {#    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),#}
+    {#    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)#}
+    {#})(window,document,'script','//www.google-analytics.com/analytics.js','ga');#}
+
+    {#ga('create', '{{ google_analytics }}', '{{ base_url }}');#}
+    {#ga('send', 'pageview');#}
+</script>
+
+<script type="text/javascript" src="{{ asset('js/bundles/bazingajstranslation/js/translator.min.js') }}"></script>
+<script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': locale_codes()|join(',') }) }}"></script>
+<script type="text/javascript" src="{{ url('bazinga_jstranslation_js', { 'domain': 'validators', 'locales': locale_codes()|join(',') }) }}"></script>
+<script src="{{ preload(asset('build/runtime.js')) }}"></script>
+<script type="text/javascript" src="{{ preload(asset('build/js/site/app.js'), {as: 'script'}) }}"></script>
+<script type="text/javascript" src="{{ asset('js/router.min.js') }}"></script>
+<script type="text/javascript" src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-{{ adsense_key }}"
+     crossorigin="anonymous"></script>
+{% endblock %}
+{% block customJavascript %}{% endblock %}
+</body>

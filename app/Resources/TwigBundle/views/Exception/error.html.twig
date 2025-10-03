@@ -1,0 +1,30 @@
+{% extends("@Site/base.html.twig") %}
+
+{% set titleTrans = 'title.not_exits_page' | trans %}
+
+{% block content %}
+    <div class="page-title-container">
+        <div class="container">
+            <div class="page-title pull-left">
+                <h2 class="entry-title">{{ titleTrans }}</h2>
+            </div>
+        </div>
+    </div>
+    <section id="content" class="gray-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="booking-information travelo-box">
+                        <h2>{{ titleTrans }}</h2>
+                        <hr/>
+                        <div class="booking-confirmation clearfix">
+                            <div class="message">
+                                <h4 class="main-message">{{ 'not_exists_page.description' | trans }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,99 @@
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 10000; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: #111; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav #mobile-filte {
+    overflow-y: scroll;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav header {
+    background: #2d3e52;
+    box-shadow: 0px 4px 9px 1px #384e67;
+    position: relative;
+    height: 60px;
+    margin-bottom: 2px;
+    z-index: 1000;
+}
+
+.sidenav header h2 {
+    color: #818181;
+    font-size: 30px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    color: #818181;
+    font-size: 30px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* Style the links inside the sidenav */
+#sideBtn a {
+    position: fixed; /* Position them relative to the browser window */
+    left: -200px; /* Position them outside of the screen */
+    transition: 0.3s; /* Add transition on hover */
+    padding: 15px 6px; /* 15px padding */
+    width: 30px; /* Set a specific width */
+    text-decoration: none; /* Remove underline */
+    font-size: 20px; /* Increase font size */
+    color: white; /* White text color */
+    border-radius: 0 5px 5px 0; /* Rounded corners on the top right and bottom right side */
+    z-index: 1;
+}
+
+#sideBtn a:hover {
+    left: 0; /* On mouse-over, make the elements appear as they should */
+}
+
+/* The about link: 20px from the top with a green background */
+#filter {
+    top: 40%;
+    background-color: #4CAF50;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+@media screen and (max-width: 480px) {
+    #main {
+        padding: 0;
+    }
+}

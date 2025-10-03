@@ -1,0 +1,31 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+    bind:
+      $uploadAdsDir: '%upload_image_dir%'
+
+  SiteBundle\EventListener\AdsFileUploadListener:
+    class: SiteBundle\EventListeners\AdsFileUploadListener
+    tags:
+      - { name: doctrine.event_listener, event: postPersist }
+      - { name: doctrine.event_listener, event: postUpdate }
+      - { name: doctrine.event_listener, event: postRemove }
+
+  SiteBundle\EventListener\UserEmailListener:
+    class: SiteBundle\EventListeners\UserEmailListener
+    tags:
+      - { name: doctrine.event_listener, event: postPersist }
+      - { name: doctrine.event_listener, event: postUpdate }
+
+  SiteBundle\EventListener\AdsSetListener:
+    class: SiteBundle\EventListeners\AdsSetListener
+    tags:
+      - { name: doctrine.event_listener, event: postPersist }
+      - { name: doctrine.event_listener, event: postUpdate }
+
+  SiteBundle\EventListener\ReservationEmailListener:
+    class: SiteBundle\EventListeners\ReservationEmailListener
+    tags:
+      - { name: doctrine.event_listener, event: postPersist }

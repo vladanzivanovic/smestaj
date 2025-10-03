@@ -1,0 +1,8 @@
+bazinga_js_translation:
+  locale_fallback: '%default_locale%'
+  default_domain: messages
+  active_locales:
+    - rs
+  active_domains:
+    - messages
+    - validators

@@ -1,0 +1,464 @@
+user_activation:
+  success: 'Vaš nalog je uspešno aktiviran. Možete se prijaviti.'
+  already_registered: 'Vaš nalog je već aktivan.'
+Bad credentials.: 'Uneti podaci nisu tačni.'
+
+user.email_exists: 'Korisnik sa tom email adresom je već registrovan.'
+
+data_success_send: 'Podaci su uspešno poslati.'
+data_success_deleted: 'Podaci su uspešno obrisani.'
+set_new_password_success: 'Nova lozinka je uspešno postavljena. Možete se sada ulogovati.'
+reset_password_token_not_valid: 'Molimo vas da ponovo zatražite reset lozinke.'
+
+reservation:
+  any: 'sve jedno'
+  sms: 'sms'
+  email: 'email'
+  phone: 'telefon/viber'
+
+pending: 'na čekanju'
+active: 'aktivan'
+disabled: 'zaključan'
+archived: 'zaključan'
+
+view: 'pogledaj'
+view_product: pogledaj proizvod
+
+default_title: Online prodaja ženske odeće | Modna kuća Elipsa
+
+images: Slike
+accomodation_availability: Slanje upita
+video: Video
+
+new: 'novo'
+discount: 'popust'
+down: dole
+up: gore
+
+choose: Izaberite
+
+data:
+  success_send: 'Podaci su uspešno poslati.'
+  success_deleted: 'Podaci su uspešno obrisani.'
+  success_save: Podaci su uspšno sačuvani.
+
+generic_error: 'Došlo je do greške prilikom slanja zahteva.'
+
+error:
+  in_use: '%item% je u upotrebi'
+
+notifications:
+  please_wait: 'Molimo vas sačekajte.'
+
+price: cena
+
+navi:
+  home: Početna
+  about_us: O nama
+  locations: Prodajna mesta
+  loyalty: Loyalty
+  catalogue: Katalog
+  shop: Prodavnica
+  blog: Blog
+  ask_us: Pitajte nas
+  contact: Kontakt
+  account: Moj nalog
+  trends: Trendovi
+  collaborators: Saradnici
+  career_form: Zaposlenje forma
+  policy_and_privacy: Politika privatnosti
+  use_conditions: Uslovi korišćenja
+  career: Zaposlenje
+  cookie_policy: Politika kolačića
+
+shop.total_products: "{0} Nema rezultata|{1} 1 rezultat|]1,Inf[ %count% rezultata"
+
+serbian: Srpski
+english: Engleski
+serbia: Srbija
+
+size: veličina
+color: boja
+categories: kategorije
+filters: filteri
+sort: sortiranje
+limit: limit
+show_per_page: prikaži
+search: pretraga
+brands: proizvođači
+
+set_price: unseite cenu
+
+menu: Meni
+
+product_categories: Kategorije proizvoda
+
+all_products: Svi proizvodi
+
+next_page: sledeća
+prev_page: prethodna
+last_page: poslednja
+first_page: prva
+save: Sačuvaj
+
+available_sizes: dostupne veličine
+available_colors: dostupne boje
+
+sort.slug.most_selled: najprodavanije
+sort.slug.from_lowest_price: najjeftinije-prvo
+sort.slug.from_highest_price: najskuplje-prvo
+sort.slug.on_sale: na-rasprodaji
+sort.slug.first_new: najnoviji
+sort.slug.our_selection: izdvojeno
+sort.slug.by_name_from_a: po-nazivu-a-ž
+sort.slug.by_name_from_z: po-nazivu-ž-a
+sort.slug.basic: osnovno
+
+sort.title.most_selled: Najprodavanije
+sort.title.from_lowest_price: Najjeftinije prvo
+sort.title.from_highest_price: Najskuplje prvo
+sort.title.on_sale: Na rasprodaji
+sort.title.first_new: Najnoviji
+sort.title.our_selection: Izdvojeno
+sort.title.by_name_from_a: Po nazivu A-Ž
+sort.title.by_name_from_z: Po nazivu Ž-A
+sort.title.basic: Osnovno
+
+najprodavanije: most_selled
+najjeftinije-prvo: from_lowest_price
+najskuplje-prvo: from_highest_price
+na-rasprodaji: on_sale
+najnoviji: first_new
+izdvojeno: our_selection
+po-nazivu-a-ž: by_name_from_a
+po-nazivu-ž-a: by_name_from_z
+
+home.our_selection: izdvojeno
+home.on_sale: na rasprodaji
+
+select.color: izaberite boju
+select.size: izberite veličinu
+add_to_cart: dodaj u korpu
+
+tags: tagovi
+page: stranica
+
+share_link: Link za deljenje
+
+product.description: opis proizvoda
+product.material_cleaning: materijali i održavanje
+product.size_table: tabela veličina
+
+related_products: slični proizvodi
+
+cart.name: korpa
+cart.total_products: ukupno
+cart.total_shipping: ukupno sa poštarinom
+cart.view: pogledaj korpu
+cart.checkout: naruči
+cart.personal_data: vaši podaci
+cart.order_completed_successful: uspešna narudžbina
+cart.continue_shopping: nastavi kupovinu
+cart.update: osveži korpu
+cart.next_step: sledeći korak
+cart.shipping: poštarina
+cart.empty: vaša korpa je prazna
+cart.total_cost: iznos vaše korpe
+cart.promo_coupon: promotivni kod
+cart.promo_coupon_text: unesite promotivni kod ukoliko ga imate.
+cart.add_coupon_btn: dodaj kod
+
+cart.table.image: slika
+cart.table.product_name: proizvod
+cart.table.price: cena
+cart.table.quantity: količina
+cart.table.total: ukupno
+
+title.your_cart: Vaša korpa
+title.cart_personal_data: Vaša korpa - unos ličnih podataka
+title.checkout_completed_successful: Uspešna narudžbina
+title.checkout_completed_unsuccessful: Neuspešna narudžbina
+title.location: Lokacije
+title.blog_detailed_page: Blog stranica
+title.shop_page: Proizvodi
+title.account_activation_page: Aktivacija naloga
+title.my_account: Moj nalog
+title.ask_us: Pitajte nas
+title.catalog: Katalog
+title.about_us: O nama
+title.contact_us: Kontakt
+title.privacy_policy: Politika privatnosti
+title.reset_password: Promena lozinke
+title.not_exits_page: Nepostojeća stranica
+title.career: Radna mesta
+title.trends: Trendovi
+
+checkout.have_account: Da li ste već registrovani? <a href="#" class="open-login">Kliknite ovde</a> da bi ste se prijavili
+checkout.billing_address: podaci o platiocu
+checkout.order_notes: dodatni tekst o naružbini
+checkout.login_text: unesite ostatak informacija ukoliko želite da kreirate nalog. Ukoliko imate nalog kliknite "Prijava" na vrhu stranice.
+checkout.your_order: vaša narudžbina
+checkout.product_total: proizvodi <span>ukupno</span>
+checkout.create_account: kreirajte nalog
+checkout.payment.by_taking: pouzećem
+checkout.paymeny.credit_card: karticom
+checkout.complete_order: završi narudžbinu
+checkout.account_exists: Nalog sa email adresom %email% je već registrovan.
+checkout.account_deactivated: Nalog sa email adresom %email% je deaktiviran.
+checkout.finish.transaction_detail: Podaci o transakciji
+checkout.finish.transaction_status_label: Status transakcije
+checkout.finish.transaction_status_success: Uspešno ste izvršili plaćanje – račun Vaše platne kartice je zadužen.
+checkout.finish.transaction_status_failed: Plaćanje nije uspešno, vaš račun nije zadužen, najčešći uzrok je pogrešno unet broj kartice, datum isteka ili sigurnosni kod, pokušaje ponovo, u slučaju uzastopnih greški pozovite vašu banku
+checkout.finish.transaction_date_time: Datum transakcije
+checkout.finish.auth_code: Autorizacioni kod
+checkout.finish.order_id: Broj narudžbine
+checkout.finish.response: Status transakcije
+checkout.finish.proc_return_code: Kod statusa transakcije
+checkout.finish.transaction_id: Broj transakcije
+checkout.finish.md_status: Statusni kod 3D transakcije
+checkout.finish.payment_id: Broj plaćanja
+checkout.finish.credit_card_no: Broj platne kartice
+checkout.checkbox.terms_and_conditions: Klikom na dugme prihvatate naše <a href="%link%">Opšte uslove korišćenja i prodaje.</a>
+
+checkout_completed.title: uspešno ste naručili proizvode.
+checkout_completed.details: detalji vaše narudžbine su vam poslati na email.
+checkout_fail.title: Neuspešna narudžbina.
+
+Approved: Odobreno
+Declined: Odbijeno
+
+country: država
+countries: države
+first_name: ime
+First_name: Ime
+Last_name: Prezime
+last_name: prezime
+Full_name: Ime i prezime
+address: adresa
+city: mesto
+zip_code: poštanski broj
+email: email adresa
+mobile_telephone: mobilni telefon
+telephone: telefon
+create_account: napravite nalog
+password: lozinka
+Password: Lozinka
+Re_password: Ponovite lozinku
+occupation: zanimanje
+message: poruka
+Message: Poruka
+birth_date: datum rođenja
+subject: tema
+Subject: Tema
+website: websajt
+position: pozicija
+about_company: podaci o kampaniji
+
+email.order.title: Narudžbenica #%orderId%
+email.order.seller: Prodavac
+email.order.seller.name: Naziv
+email.order.seller.account: Žiro račun
+email.order.seller.address: Adresa
+email.order.seller.telephone: Telefon
+email.order.seller.mobile: Mobilni telefon
+email.order.failed.message: Plaćanje nije uspešno.<br> Vas racun nije zaduze, najcesci uzrok je pogresano unet brtoj kartice, datum isteka ili sigurnosni kod. Pokusajte ponovo, u slucaju uzastopnih gresaka pozovite vasu banku.
+
+email.order.buyer: Kupac
+email.order.buyer.full_name: Ime i prezime
+email.order.buyer.city: Grad
+email.order.buyer.street_number: Ulica i broj
+email.order.buyer.payment_type: Plaćanje
+
+email.order.data.title: Podaci o porudžbini
+email.order.data.title_unsucessfull: Neuspešna porudžbina
+email.order.table.product_name: Naziv proizvoda
+email.order.table.size: Veličina
+email.order.table.color: Boja
+email.order.table.quantity: Količina
+email.order.table.shipping: Poštarina
+email.order.table.promo_coupon: Promotivni kod
+email.order.total_shipping: Ukupno sa poštarinom
+
+email.registration.title: Registracija na sajtu %siteName%
+email.registration.success.text: Uspešno ste izvršili registraciju
+email.registration.message: Kako bi ste završili proces registracije neophodno je da akivirate nalog,<br>molimo vas kliknite na link u nastavku.
+
+email.reset_password.title: Reset lozinke na sajtu %siteName%
+email.reset_password.headline.text: Zahtev za promenu lozinke
+email.reset_password.message: Kako bi ste završili proces promene lozinke molimo vas da kliknete na link ispod.
+
+payment_type.on_delivering: Pouzećem
+payment_type.credit_card: Platna kartica
+
+location.modal.work_time: Radno vreme
+location.modal.work_time_weekend: Subota
+location.look_btn: pogledaj
+location.map: mapa
+
+all: sve
+
+read_more: detaljnije
+
+blog.posted: postavljeno
+
+form: forma
+submit: Pošalji
+
+loyalty.rate: Ocenite brend ELIPSA ocenama od 1-5
+loyalty.message.success: Uspešno ste se registrovali u loyalty program.
+loyalty.message.user_exists: Vi ste se već prijavili u loyalty program.
+loyalty.btn: Prijavi se
+
+January: Januar
+February: Februar
+March: Mart
+April: April
+May: Maj
+June: Jun
+July: Jul
+August: Avgust
+September: Septembar
+October: Oktobar
+November: Novembar
+December: Decembar
+
+login.text: prijava
+login.btn: Prijavi se
+login.remember_me: zapamti me
+login.successful: Uspešno ste se ulogovali
+
+reset_password.text: zaboravili ste lozinku?
+reset_password.label: resetovanje lozinke
+reset_password.successful:  Na vašu email adresu je poslat link za promenu lozinke
+reset_password.user_not_exists: Nepostojeći korisnik.
+reset_password.page.text: Unesite novu lozinku.
+reset_password.page.error.expired_token: Zahtev za promenu lozinke je istekao. Molimo vas zatražite novi.
+reset_password.page.success: Uspešno ste promenili lozinku.
+
+logout.text: odjavite se
+
+registration.text: registracija
+registration.btn: Registruj se
+registration.via: registracija putem
+registration.error.user_exists: Vi ste već registrovani
+registration.success.message: Uspešno ste se registrovali.<br/> Na vašu email adresu je poslat email za potvrdu registracije
+registration.activation.title: Vaš nalog je aktiviran
+registration.activation.message: Sada se možete ulogovati
+
+inactive_user: Vaša email adresa nije aktivirana.<br/> Molimo vas da pratite link iz email kako bi ste aktivirali nalog.
+
+my_account.welcome_text: dobrodošli
+my_account.personal_info.text: lični podaci
+my_account.personal_info.success.message: podaci su uspešno izmenjeni
+my_account.address_info: podaci o adresi
+my_account.wish_list: lista želja
+my_account.order_list: lista narudžbina
+my_account.order_table.image: slika
+my_account.order_table.name: proizvod
+my_account.order_table.description: opis
+my_account.order_table.price: cena
+my_account.order_table.color: boja
+my_account.order_table.size: veličina
+my_account.order_table.quantity: količina
+my_account.order_table.view_product: pogledaj proizvod
+
+wish_list.success.add.message: Proizvod je dodat na listu želja
+wish_list.success.remove.message: Proizvod je uklonjen iz liste
+
+login_required: Morate biti ulogovani
+
+ask_us.message.success: Uspešno ste poslali upit.
+
+newsletter.text: budite o svemu prvi obavešteni
+newsletter.notShowBtn: ne prikazuj više
+newsletter.existingUser: Vi ste se već prijavili na newsletter
+newsletter.success.add.message: Uspešno ste se prijavili na newsletter
+
+contact.telephone.main: Fiksni
+contact.telephone.mobile: Mobilni
+contact.company_activity: Delatnost
+contact.company_id: Matični broj
+contact.tax_id: PIB
+contact.account: Žiro račun
+
+
+links: linkovi
+store: prodavnica
+info: informacije
+
+yes: da
+no: ne
+
+all_rights: Sva prava su zadržana.
+
+ROLE_USER: korisnik
+ROLE_ADMIN: administrator
+ROLE_SUPER_ADMIN: super admin
+
+chat.message.greeting: Dobrodošli. Kako vam možemo pomoći?
+
+text.type.policy_and_privacy: Politika privatnosti
+text.type.use_conditions: Uslovi korišćenja
+text.type.collaborator: Saradnici
+text.type.career_form: Zaposlenje Forma
+text.type.career: Radna mesta
+text.type.cookie_policy: Politika kolačića
+text.type.about_us: O nama
+
+not_exists_page.description: Žao nam je, ali stranica koju tražite ne postoji.
+
+banner.loyalty: loyalty
+banner.news_letter: newsletter
+banner.pop_up: Običan popup
+banner.home_slider: Ispod slider-a
+banner.home_middle: Sredina stranice
+banner.home_size.full_page: Cela širina stranice
+banner.home_size.half_page: Polovina stranice
+banner.home_size.third_size_page: Trećina stranice
+
+job.applied_for_form: Postani i ti deo našeg tima
+job.application_form: Popunite prijavu
+job.form.personal_data: lični podaci
+job.form.education: obrazovanje
+job.form.job_place_apply: radno mesto za koje se prijavljujete
+job.form.school: naziv završene škole/fakulteta
+job.form.school_level: stručna sprema
+job.form.school_title: stečeno zvanje
+job.form.position: pozicija
+job.form.policy_accept: Prihvatam navedene uslove i način konkurisanja i pristajem da se moji podaci koriste u svrhe selekcije i zapošljavanja
+
+eu.cookies.accept.title: Ovaj website koristi kolačiće.
+eu.cookies.accept.text: Da bi omogućili korisnicima lakše i bolje korišćenje našeg sajta koristimo kolačiće (Cookies). Koristeći sajt elipsa.rs pristaješ na upotrebu kolačića.
+eu.cookies.accept.btn: Pristajem
+eu.cookies.learn_more.btn: Detaljnije
+
+intesa.already_payed: Transakcija je već naplaćena.
+intesa.already_refunded: Transakcija je već refudirana.
+intesa.already_void: Transakcija je već otkazana.
+
+order.status.new: Nova narudžbina
+order.status.awaiting_authorization: Račun zadužen
+order.status.post_auth: Naplaćeno
+order.status.completed: Naplaćeno
+order.status.refund: Sredstva su vraćena
+order.status.void: Narudžbina je otkazana
+order.status.failed: Greška prilikom naručivanja
+order.type.on_delivering: pouzećem
+order.type.credit_card: platna kartica
+
+search_site: Pretražite sajt
+
+payment_type.on_delivery: Pouzećem
+payment_type.card: Kartica
+payment_type.paypal: Paypal
+payment_type.bank_transfer: Uplatnica
+
+product.discount.save: Sačuvaj
+product.code: Šifra artikla
+product.characteristics: Karakteristike proizvoda
+product.category: Kategorija
+product.brand: Robna marka
+
+follow_us: pratite nas
+
+ads: oglasi

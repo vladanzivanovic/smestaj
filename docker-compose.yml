@@ -1,0 +1,45 @@
+version: '3.6'
+services:
+  lamp:
+    build: ./docker/lamp
+    image: lamp
+    container_name: smestaj-lamp
+    ports:
+      - "9500:80"
+    volumes:
+      - "./:/var/www/html:rw,cached"
+    depends_on:
+      - mysql
+    environment:
+      PHP_IDE_CONFIG: "serverName=local"
+      XDEBUG_SESSION: "PHPSTORM"
+
+  mysql:
+    image: mariadb:10
+    container_name: smestaj-mysql
+    volumes:
+      - "./docker/mysql-mount:/var/lib/mysql:rw"
+    ports:
+      - "9501:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=vlada123!!!
+      - MYSQL_DATABASE=smestaj
+
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: smestaj-phpmyadmin
+    restart: always
+    ports:
+      - '9502:80'
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: vlada123!!!
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    container_name: smestaj-mailcatcher
+    ports:
+      - "9503:1025" # changed to 1026 to avoid local instance of mailcatcher
+      - "9504:1080"

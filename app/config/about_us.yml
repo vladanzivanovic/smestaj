@@ -1,0 +1,8 @@
+parameters:
+  category:
+    muzika: 'muziku (orkestar,bend,pevača,svirača,zvezdu)'
+    svecane-sale-i-restorani: 'salu za veselje'
+    foto-video: 'fotografa i kamermana'
+    torte-kolaci: 'torte i poslastice'
+    dekoracija-organizacija: 'dekoraciju i organizaciju veselja'
+    saloni-lepote: 'frizerski ili kozmetički salon'

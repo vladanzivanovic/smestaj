@@ -1,0 +1,177 @@
+{# src/SiteBundle/Resources/views/Site/index.html.html.twig #}
+{% extends("@Site/base.html.twig") %}
+
+{#{% set category = ads.categoryid %}#}
+{#{% set parentCategory = ads.categoryid.parent %}#}
+{#{% set city = ads.cityid %}#}
+
+{% block bodyClass %}{{ 'single-ad-view' }}{% endblock %}
+
+{% block social_open_graph %}
+    <meta property="og:url" content="{{ absolute_url(app.request.requestUri) }}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{ _social_meta_data.title }}"/>
+    <meta property="og:description" content="{{ _social_meta_data.short_description }}"/>
+    <meta property="og:image" content="{{ _social_meta_data.image._links.single }}"/>
+{% endblock %}
+
+{% set routeParams = app.request.attributes.get('_route_params') %}
+{% block title %}{{ title }} | {{ site_info.site_title }}{% endblock %}
+{% block metaDescription %}{{ _social_meta_data.short_description }}
+{% endblock %}
+
+{% block content %}
+    <div class="page-title-container">
+        <div class="container">
+            <div class="page-title pull-left">
+                <h1 class="entry-title">{{ title }} - {{ address.city.title }}</h1>
+            </div>
+            <ul class="breadcrumbs pull-right">
+                <li><a href="{{ path('site_index') }}">{{ 'navi.home' | trans }}</a></li>
+                {% if 0 < ad_categories.parents|length %}
+                    {% for index, category in ad_categories.parents %}
+                    <li>
+                        <a href="{{ path('site_ads_view', {'category': category.slug}) }}">{{ category.name }}</a>
+                    </li>
+                    {% endfor %}
+                {% endif %}
+                <li><a href="{{ path('site_ads_view', {'category': ad_categories.main.slug}) }}">{{ ad_categories.main.title }}</a></li>
+                <li class="active">{{ title }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <section id="content" class="single-item">
+        <div class="container">
+            <div class="row">
+                <div id="main" class="col-md-9">
+                    <div class="tab-container style1" id="hotel-main-content">
+                        <ul class="tabs">
+                            <li class="active"><a data-toggle="tab" href="#photos-tab">{{ 'images' | trans }}</a></li>
+                            {#<li><a data-toggle="tab" href="#calendar-tab">Kalendar</a></li>#}
+                            {% if address.coordinates.lat is not null %}
+                                <li><a data-toggle="tab" href="#map-tab">{{ 'location.map' | trans }}</a></li>
+                            {% endif %}
+                        </ul>
+                        <div class="tab-content">
+                            <div id="photos-tab" class="tab-pane fade in active">
+                                <div class="photo-gallery style1 fotorama" data-allowfullscreen="native" data-nav="thumbs"></div>
+                            </div>
+                            <div id="calendar-tab" class="tab-pane fade">
+                                {{ include('@Site/Moduls/calendar-template.html.twig') }}
+                            </div>
+                            {% if address.coordinates.lat is not null %}
+                                <div id="map-tab" class="tab-pane fade">
+                                    {% include ('@Site/Moduls/googleMaps.html.twig') %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div id="hotel-features" class="tab-container">
+                        <ul class="tabs">
+                            <li class="active"><a href="#hotel-description" data-toggle="tab">{{ 'info' | trans }}</a></li>
+                            {% if additionalInfo is defined and additionalInfo|length > 0 %}
+                                <li><a href="#additional-info" data-toggle="tab">Sale</a></li>
+                            {% endif %}
+                            {#<li><a href="#raiting" data-toggle="tab">Rejting</a></li>#}
+                            {#<li><a href="#awards" data-toggle="tab">Nagrade</a></li>#}
+
+                            {% if 0 < media.videos|length %}
+                                <li><a href="#hotel-availability" data-toggle="tab">{{ 'video' | trans }}</a></li>
+                            {% endif %}
+                        </ul>
+                        </ul>
+                        <div class="tab-content">
+                            {% include('@Site/Moduls/AdsInfo/description.html.twig') %}
+                            {% include('@Site/Moduls/AdsInfo/adRooms.html.twig') %}
+                            {#{{ include('@Site/Moduls/AdsInfo/review.html.twig') }}#}
+                            {% if 0 < media.videos|length %}
+                            <div class="hotel fade" id="hotel-availability">
+                                <div class="tab-pane">
+                                    <h2>Video</h2>
+                                    <div class="row add-clearfix image-box style1">
+                                        {% for video in media.videos %}
+                                            <div class="col-sm-6 video-tab-list">
+                                                <article class="box">
+                                                    <figure>
+                                                        <iframe src="{{ video._link }}"
+                                                                frameborder="0"
+                                                                allowfullscreen></iframe>
+                                                    </figure>
+                                                    <div class="details">
+                                                        <h4 class="box-title">{{ video.title }}</h4>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            {% endif %}
+{#                            {{ include('@Site/Moduls/AdsInfo/reservation.html.twig') }}#}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="sidebar col-md-3">
+                    {% if false == is_mobile_view() and false == is_tablet_view() %}
+                        {% include ('@Site/Moduls/AdsInfo/reservation.html.twig') %}
+                    {% endif %}
+                    {% include ('@Site/Moduls/AdsInfo/suggestedAds.html.twig') %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {{ include('@Site/Moduls/social-bar.html.twig') }}
+
+    {% if is_mobile_view() or is_tablet_view() %}
+        <!-- shop-left-sidebar-area-end -->
+        <div id="myNav" class="overlay" style="overflow: hidden">
+
+            <!-- Overlay content -->
+            <div class="overlay-content">
+                {% include ('@Site/Moduls/AdsInfo/reservation.html.twig') %}
+            </div>
+
+        </div>
+
+        <span id="filter-btn-open" class="letter-capitalize">{{ 'accomodation_availability' | trans }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block customStylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/single_ads_view.css') }}"/>
+{% endblock %}
+{% block customJavascript %}
+    <script nonce="{{ csp_nonce('script') }}" type="text/javascript">
+        const IS_SINGLE_AD = true;
+        {% if address.coordinates.lat is not null %}
+            const COORDINATES = {lat: {{ address.coordinates.lat }}, lng: {{ address.coordinates.lng }} };
+        {% endif %}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            window.adsAlias = '{{ slug }}';
+            window.slideImages = [];
+            window.isMobile = {{ is_mobile() ? 1 : 0 }};
+
+            window.slideImages.push({
+                img: '{{ media.images.main._links.single }}',
+                thumb: '{{ media.images.main._links.single_thumb }}',
+                full: '{{ media.images.main._links.single_full }}',
+            });
+
+            {% for image in media.images.additional %}
+                window.slideImages.push({
+                    img: '{{ image._links.single }}',
+                    thumb: '{{ image._links.single_thumb }}',
+                    full: '{{ image._links.single_full }}',
+                });
+            {% endfor %}
+        });
+    </script>
+    <script type="application/ld+json">
+        {{ json_ld_data | json_encode |raw }}
+    </script>
+{% endblock %}

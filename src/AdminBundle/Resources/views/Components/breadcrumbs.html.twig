@@ -1,0 +1,11 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('admin.dashboard') }}">Početna</a></li>
+        {% if pages is defined %}
+            {% for page in pages %}
+                <li class="breadcrumb-item"><a href="{{ path(page.routeName) }}">{{ page.name }}</a></li>
+            {% endfor %}
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">{{ activePage }}</li>
+    </ol>
+</nav>

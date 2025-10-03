@@ -1,0 +1,88 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+security:
+  # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        our_db_provider:
+            entity:
+                class: SiteBundle:User
+        my_custom_hwi_provider:
+            id: SiteBundle\Provider\Provider
+
+    encoders:
+        SiteBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 4
+            encode_as_base64: false
+            iterations: 0
+
+    access_control:
+        admin_login:
+            path: /admin/login
+            roles: IS_AUTHENTICATED_ANONYMOUSLY
+        admin_area:
+            path: /admin
+            roles: ROLE_ADMIN
+        site_login:
+            path: site.user_dashboard
+            roles: ROLE_USER
+        site_user_profile:
+            path: /korisnicki-profil
+            roles: ROLE_ADVANCED_USER
+        log_area:
+            path: ^/logs
+            roles: ROLE_ADMIN
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin:
+            pattern: ^/admin
+            anonymous: ~
+            provider: our_db_provider
+            json_login:
+                check_path: admin.api.login_check
+                success_handler: AdminBundle\Handler\AuthenticationHandler
+                failure_handler: AdminBundle\Handler\AuthenticationHandler
+            access_denied_handler: AdminBundle\Handler\AccessDeniedHandler
+            entry_point: AdminBundle\Handler\AuthenticationEntryPointHandler
+            logout:
+                path:   admin.logout
+                target: /admin
+
+        site_login:
+            pattern: ^/
+            anonymous: ~
+            provider: our_db_provider
+
+            remember_me:
+                secret: '%secret%'
+                lifetime: 2592000
+                path: /
+
+            form_login:
+                login_path: /login
+                check_path: site_login_check
+                success_handler: SiteBundle\Handler\AuthenticationHandler
+                failure_handler: SiteBundle\Handler\AuthenticationHandler
+                require_previous_session: false
+
+            oauth:
+                resource_owners:
+                    facebook: "/login/check-facebook"
+                    google: "/login/check-google"
+                login_path: /
+                use_forward: false
+                oauth_user_provider:
+                    service: SiteBundle\Provider\Provider
+                success_handler: SiteBundle\Handler\AuthenticationHandler
+                failure_handler: SiteBundle\Handler\AuthenticationHandler
+
+            logout:
+                path: site_logout
+                target: /
+    role_hierarchy:
+        ROLE_ADMIN: [ ROLE_ADVANCED_USER, ROLE_USER ]

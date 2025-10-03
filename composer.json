@@ -1,0 +1,130 @@
+{
+    "name": "vladapoz/smestaj",
+    "license": "proprietary",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SiteBundle\\": "src/SiteBundle",
+            "AdminBundle\\": "src/AdminBundle",
+            "LogBundle\\": "src/LogBundle"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "files": [
+            "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
+        ]
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "beberlei/doctrineextensions": "1.1.*",
+        "doctrine/doctrine-bundle": "^1.6.10|^2.0",
+        "doctrine/doctrine-cache-bundle": "1.3.*",
+        "doctrine/doctrine-migrations-bundle": "^1.3|^2.0",
+        "doctrine/migrations": "1.8.*",
+        "doctrine/orm": "2.6.*",
+        "exercise/htmlpurifier-bundle": "^2.0",
+        "friendsofsymfony/jsrouting-bundle": "2.2.*",
+        "gedmo/doctrine-extensions": "^2.4",
+        "http-interop/http-factory-guzzle": "^1.2",
+        "hwi/oauth-bundle": "^0.6.3",
+        "incenteev/composer-parameter-handler": "^2.0",
+        "jms/serializer-bundle": "^2.4",
+        "liip/imagine-bundle": "^2.1",
+        "nelmio/security-bundle": "^2.10",
+        "patchwork/jsqueeze": "^2.0",
+        "php-http/guzzle6-adapter": "^1.1",
+        "php-http/httplug-bundle": "^1.11",
+        "presta/sitemap-bundle": "^1.5",
+        "sensio/framework-extra-bundle": "^5.2",
+        "sentry/sentry": "1.9.*",
+        "sentry/sentry-symfony": "^2.3",
+        "suncat/mobile-detect-bundle": "^1.0",
+        "symfony/monolog-bundle": "3.3.*",
+        "symfony/swiftmailer-bundle": "3.2.*",
+        "symfony/symfony": "^4.3",
+        "symfony/webpack-encore-bundle": "^1.6",
+        "twig/extensions": "1.4.*",
+        "twig/twig": "^1.41|^2.10",
+        "webmozart/assert": "^1.10",
+        "willdurand/js-translation-bundle": "^4.0"
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.8",
+        "symfony/phpunit-bridge": "^3.0"
+    },
+    "scripts": {
+        "symfony-scripts": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+        ],
+        "post-install-cmd": [
+            "@symfony-scripts"
+        ],
+        "post-update-cmd": [
+            "@symfony-scripts"
+        ],
+        "develop": [
+            "composer dump-autoload --classmap-authoritative --ansi",
+            "composer install",
+            "composer dump-autoload --classmap-authoritative --ansi",
+            "php bin/console doctrine:cache:clear-metadata",
+            "php bin/console doctrine:migrations:migrate --no-interaction --ansi",
+            "php bin/console assets:install --symlink --relative web/js",
+            "php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json",
+            "php bin/console bazinga:js-translation:dump web/js --format json --merge-domains",
+            "npm install",
+            "npm run dev"
+        ],
+        "deploy": [
+            "composer dump-autoload --optimize --no-dev --classmap-authoritative",
+            "composer install --no-dev --optimize-autoloader",
+            "composer dump-autoload --optimize --no-dev --classmap-authoritative",
+            "php bin/console doctrine:cache:clear-metadata -e prod",
+            "php bin/console doctrine:migrations:migrate --no-interaction --ansi -e prod",
+            "php bin/console cache:clear --no-warmup --ansi -e prod",
+            "php bin/console cache:warmup -e prod",
+            "php bin/console assets:install --symlink --relative web/js -e prod",
+            "php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json -e prod",
+            "npm install",
+            "npm run build",
+            "php bin/console presta:sitemaps:dump web --gzip -e prod",
+            "php bin/console liip:imagine:cache:remove -e prod",
+            "chown -R www-data:www-data ."
+        ],
+        "cache:clear": [
+            "php bin/console cache:clear --no-warmup --ansi",
+            "php bin/console cache:warmup"
+        ],
+        "route-locale-generate": [
+            "php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json",
+            "php bin/console bazinga:js-translation:dump web/js --format=json --merge-domains"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web",
+        "symfony-tests-dir": "tests",
+        "symfony-assets-install": "relative",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
+        "branch-alias": null,
+        "symfony": {
+            "allow-contrib": false,
+            "require": "4.4.*"
+        }
+    }
+}

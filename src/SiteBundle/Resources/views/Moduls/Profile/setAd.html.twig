@@ -1,0 +1,218 @@
+{% import '@Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+<div id="ads-origin" class="hide">
+    <h2>Dodavanje - Izmena oglasa</h2>
+    <form action="" id="setAd-origin">
+        <div id="smartwizard-origin">
+            <ul>
+                <li class="step-tab"><a href="#step-basic-info">Osnovni podaci</a></li>
+                <li class="step-tab"><a href="#step-price-info">Cene</a></li>
+                <li class="step-tab"><a href="#step-description">Opis</a></li>
+                <li class="step-tab"><a href="#step-tags">Usluge i oprema</a></li>
+                <li class="step-tab"><a href="#step-tags-range">Udaljenost</a></li>
+                <li class="step-tab"><a href="#step-image">Slike i video</a></li>
+                <li class="step-tab"><a href="#step-contact-info">Podaci o vlasniku</a></li>
+                <li class="step-tab"><a href="#step-ad-pricing-type">Tip oglasa</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="step-basic-info">
+                    <div class="row form-group">
+                        {% for language in languages %}
+                            <div class="col-xs-12 col-sm-6">
+                                {{ form.input('Naziv', 'title_'~language.code, '', 'title_'~language.code, '', 'text', '', 'input-text full-width') }}
+                            </div>
+                        {% endfor %}
+                        <div class="col-xs-12 col-sm-6">
+{#                            <label for="category">Tip smeštaja</label>#}
+{#                            <div class="selector">#}
+                                {{ form.select('Tip smeštaja', 'category', 'category', '', categoryOptions, '', 'full-width') }}
+{#                            </div>#}
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Website', 'website', '', 'website', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Facebook', 'facebook', '', 'facebook', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Instagram', 'instagram', '', 'instagram', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12 col-sm-6">
+                            {{ form.input('Mesto', 'city', '', 'place', '', 'text', 'autocomplete="false"', 'input-text full-width city') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            {{ form.input('Ulica i broj', 'street_and_number', '', '_address', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12">
+                            <h4>Lokacija Mapa</h4>
+                            {% include ('@Site/Moduls/googleMaps.html.twig') %}
+                        </div>
+                    </div>
+                </div>
+                <div id="step-price-info" class="ignore-step">
+                    <div class="row form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            {{ form.input('Cena od - Predsezona', 'price_from_pre_season', '', 'pre_price_from', '', 'text', '', 'input-text full-width') }}
+
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            {{ form.input('Cena do - Predsezona', 'price_to_pre_season', '', 'pre_price_to', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            {{ form.input('Cena od - Sezona', 'price_from', '', 'price_from', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            {{ form.input('Cena do - Sezona', 'price_to', '', 'price_to', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            {{ form.input('Cena od - Postsezona', 'price_from_post_season', '', 'post_price_from', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            {{ form.input('Cena do - Postsezona', 'price_to_post_season', '', 'post_price_to', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                    </div>
+                </div>
+                <div id="step-description" class="ignore-step">
+                    <div class="row form-group">
+                        {% for language in languages %}
+                            <div class="col-xs-12">
+                                {{ form.textarea('Opis', 'description_'~language.code, '', 'description_'~language.code, 10, '', 'form-control') }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="step-tags" class="ignore-step">
+                    <div class="row form-group" id="accomodation-type"></div>
+                    <div class="row form-group" id="accomodation"></div>
+                    <div class="row form-group" id="services"></div>
+                    <div class="row form-group" id="food"></div>
+                </div>
+                <div id="step-tags-range" class="ignore-step">
+                    <div class="row form-group" id="range"></div>
+                </div>
+                <div id="step-image" class="ignore-step">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            {% include '@Site/Moduls/dropzone.html.twig' with {'dropzoneName': 'ads-origin', 'class': 'mT-30', 'maxFiles': 20} %}
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            {% include '@Site/Moduls/youtube.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+                <div id="step-contact-info" class="ignore-step">
+                    <div class="row form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Ime', 'contact_first_name', app.user.firstname, 'contact[first_name]', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Prezime', 'contact_surname', app.user.lastname, 'contact[surname]', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Email', 'contact_email', '', 'contact[email]', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Ulica i broj', 'contact_street', '', 'contact[address]', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Mesto', 'contact_city', '', 'contact[city]', '', 'text', 'autocomplete="false"', 'input-text full-width city') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Telefon', 'contact_phone', '', 'contact[telephone]', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Mobilni telefon', 'contact_mobile_phone', '', 'contact[mobile_phone]', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            {{ form.input('Viber', 'contact_viber', '', 'contact[viber]', '', 'text', '', 'input-text full-width') }}
+                        </div>
+                    </div>
+                </div>
+                <div id="step-ad-pricing-type" class="ignore-step">
+                    <div class="row block">
+                        <div class="col-sm-6">
+                            <div class="pricing-table white box">
+                                <div class="header clearfix">
+                                    <i class="soap-icon-recommend circle dark-blue-color"></i><h4 class="box-title text-medium-orange"><span>Osnovni<small>paket</small></span></h4>
+                                    <span class="price"><small>godišnje</small>€25</span>
+                                </div>
+{#                                <p class="description">#}
+{#                                    &nbsp;#}
+{#                                </p>#}
+                                <ul class="check-square features">
+                                    <li>Prikaz lokacije u oglasu</li>
+                                    <li>Kontakt putem email forme na sajtu</li>
+                                    <li class="not-exists">Prikaz broja telefona</li>
+                                    <li class="not-exists">Reklama na instagram profilu smestaj.me</li>
+                                    <li class="not-exists">Reklama na 4 Facebook grupe</li>
+                                    <li class="not-exists">Reklama na 2 Facebook stranice</li>
+                                    <li class="not-exists">Sponzorisana reklama na Instagramu u trajanju od 15 dana</li>
+                                </ul>
+                                <button class=" uppercase full-width outline" type="button">
+                                    {{ form.radio('Izaberite ovaj plan', 'basic-plan', constant('SiteBundle\\Entity\\AdsPayedDate::PAYMENT_PLAN_BASIC'), 'price_plan', '', '', 'checked="checked"') }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="pricing-table white box">
+                                <div class="header clearfix">
+                                    <i class="soap-icon-recommend circle dark-blue-color"></i>
+                                    <h4 class="box-title text-medium-orange"><span>Biznis - Naša preporuka<small>paket</small></span></h4>
+                                    <span class="price"><small>godišnje</small>€40</span>
+                                </div>
+{#                                <p class="description">#}
+{#                                    #}
+{#                                </p>#}
+                                <ul class="check-square features">
+                                    <li>Prikaz lokacije u oglasu</li>
+                                    <li>Kontakt putem email forme na sajtu</li>
+                                    <li>Prikaz broja telefona</li>
+                                    <li>Reklama na instagram profilu smestaj.me</li>
+                                    <li>Reklama na 4 Facebook grupe</li>
+                                    <li>Reklama na 2 Facebook stranice</li>
+                                    <li class="not-exists">Sponzorisana reklama na Instagramu u trajanju od 15 dana</li>
+                                </ul>
+                                <button class=" uppercase full-width outline outline-orange" type="button">
+                                    {{ form.radio('Izaberite ovaj plan', 'business-plan', constant('SiteBundle\\Entity\\AdsPayedDate::PAYMENT_PLAN_BUSINESS'), 'price_plan') }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="pricing-table white box">
+                                <div class="header clearfix">
+                                    <i class="soap-icon-recommend circle dark-blue-color"></i><h4 class="box-title text-medium-orange"><span>Premium<small>paket</small></span></h4>
+                                    <span class="price"><small>godišnje</small>€60</span>
+                                </div>
+{#                                <p class="description">#}
+{#                                    &nbsp;#}
+{#                                </p>#}
+                                <ul class="check-square features">
+                                    <li>Prikaz lokacije u oglasu</li>
+                                    <li>Prikaz broja telefona</li>
+                                    <li>Kontakt putem email forme na sajtu</li>
+                                    <li>Reklama na instagram profilu smestaj.me</li>
+                                    <li>Reklama na 4 Facebook grupe</li>
+                                    <li>Reklama na 2 Facebook stranice</li>
+                                    <li>Sponzorisana reklama na Instagramu u trajanju od 15 dana</li>
+                                </ul>
+                                <button class=" uppercase full-width outline outline-dark-blue" type="button">
+                                    {{ form.radio('Izaberite ovaj plan', 'premium-plan', constant('SiteBundle\\Entity\\AdsPayedDate::PAYMENT_PLAN_PREMIUM'), 'price_plan') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

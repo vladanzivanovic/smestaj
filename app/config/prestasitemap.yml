@@ -1,0 +1,7 @@
+presta_sitemap:
+    timetolive: 3600
+
+parameters:
+    router.request_context.host:   '%base_url%'
+    router.request_context.scheme: '%host_schema%'
+    route_annotation_listener: false

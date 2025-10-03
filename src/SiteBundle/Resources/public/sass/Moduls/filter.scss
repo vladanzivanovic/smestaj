@@ -1,0 +1,115 @@
+//#mobile-filter{
+//  padding: 0 1rem;
+//  .panel-title{
+//    a{
+//      font-size: 1rem;
+//      &:hover, &:focus{
+//        color: $medium-orange-color !important;
+//
+//        &:before{
+//          background: $medium-orange-color;
+//          color: $white;
+//        }
+//      }
+//    }
+//    button.reset-filter{
+//      z-index: 10000;
+//      &:focus{
+//        outline: none !important;
+//      }
+//    }
+//  }
+//  .search-btn{
+//    &:focus{
+//      outline: none !important;
+//    }
+//  }
+//}
+
+
+#filter-btn-open {
+  background: #a70303 none repeat scroll 0 0;
+  border: 1px solid #a70303;
+  border-radius: 0;
+  bottom: 35px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0) inset;
+  color: white;
+  cursor: pointer;
+  display: inherit;
+  font-size: 17px;
+  height: 40px;
+  line-height: 20px;
+  outline-color: rgba(255, 255, 255, 0.5);
+  outline-offset: 0;
+  padding-top: 10px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  text-align: center;
+  text-shadow: none;
+  -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  -o-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1) 0s;
+  width: 100px;
+  z-index: 9999;
+  margin: 0 auto;
+}
+
+.overlay {
+  /* Height & width depends on how you want to reveal the overlay (see JS below) */
+  height: 0;
+  width: 100%;
+  position: fixed; /* Stay in place */
+  z-index: 10000; /* Sit on top */
+  left: 0;
+  top: 0;
+  background-color: rgb(0,0,0); /* Black fallback color */
+  background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+  overflow-y: scroll; /* Disable horizontal scroll */
+  transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+  position: relative;
+  top: 0; /* 25% from the top */
+  width: 100%; /* 100% width */
+  margin-top: 0; /* 30px top margin to avoid conflict with the close button on smaller screens */
+}
+
+/* The navigation links inside the overlay */
+.overlay #filter-btn-close {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 36px;
+  color: #818181;
+  display: block; /* Display block instead of inline */
+  transition: 0.3s; /* Transition effects on hover (color) */
+}
+
+/* When you mouse over the navigation links, change their color */
+.overlay #filter-btn-close:hover, .overlay #filter-btn-close:focus {
+  color: #f1f1f1;
+}
+
+/* Position the close button (top right corner) */
+.overlay .closebtn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+}
+
+#mobile-filter {
+  padding: 20px;
+}
+
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+@media screen and (max-height: 450px) {
+  .overlay a {font-size: 20px}
+  .overlay .closebtn {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+  }
+}

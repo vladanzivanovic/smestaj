@@ -1,0 +1,70 @@
+<div class="car-list">
+    <div class="row image-box car listing-style1 item-list">
+        {% for ad in ads.data %}
+        <div class="product-grid">
+            <article class="box">
+                <figure>
+                    <a title="{{ ad.title | slice(0, 40) }}" href="{{ ad._link }}">
+                        {%  if ad.media.images.main is not null %}
+                            <img alt="{{ ad.title | slice(0, 40) }}" src="{{ ad.media.images.main._links.list_thumb }}" title="{{ ad.title | slice(0, 40) }}">
+                        {% endif %}
+                    </a>
+                </figure>
+                <div class="details">
+                    <span class="price pad-r-1"><small>Već od:</small>{{ ad.prices.price_pre_season.from }}</span>
+                    <h4 class="box-title pad-l-1">{{ ad.title | slice(0, 40) }}<small>{{ ad.address.city.title }}</small></h4>
+                    <div class="amenities">
+                        <ul class="pad-side-1">
+                            {% for tag in ad.tags %}
+                                <li class="ad-tag-icon" title="{{ tag.title }}">
+                                    <i class="{{ tag.icon }} circle"></i>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <p class="mile pad-side-1">{{ ad.ad_categories.main.title }}</p>
+                    <div class="action">
+                        <a class="button btn-small full-width dark-blue1" href="{{ ad._link }}" title="{{ ad.title | slice(0, 40) }}">POGLEDAJ</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+{#<div class="ads-list">#}
+{#    <div class="ads-list__grid">#}
+{#        {% set imageFilter = is_mobile() or is_tablet() ? 'mobile_list_thumb' : 'list_thumb' %}#}
+{#        {% for ad in ads.data %}#}
+{#            <div class="col-sm-6 col-md-4 {{ is_mobile_view() or is_tablet_view() ? 'row' : ''  }}">#}
+{#                <article class="ads-list__grid--box {{ true == ad['isPayed'] ? 'payed-product' : '' }}" itemscope itemtype="http://schema.org/Accommodation">#}
+{#                    <figure class="">#}
+{#                        <a itemprop="url" href="{{ path('site_ads_view', {'category': ad.category_alias, 'extraParams': ad.city_slug ~'/'~ ad.alias}) }}" class="hover-effect">#}
+{#                            <img itemprop="photo" src="{{ path('app.image_show', {entity: 'ads' | trans, filter: imageFilter, name: ad.image}) }}" alt="{{ default_alt_text }}"#}
+{#                                 title="{{ default_title_text }}">#}
+{#                        </a>#}
+{#                    </figure>#}
+{#                    <div class="details">#}
+{#                            <span class="price">#}
+{#                                već od €{{ ad['pre_price_from'] }}#}
+{#                            </span>#}
+{#                        <h4 class="box-title"><span itemprop="name">{{ ad['title'] }}</span></h4>#}
+{#                        <div class="feedback">#}
+{#                            <h3 class="ads-category">{{ ad['category'] }}</h3>#}
+{#                        </div>#}
+{#                        <p class="text-middle description"><span>{{ ad['short_description'][:100] }}</span></p>#}
+{#                        <div class="action">#}
+{#                            <a itemprop="url" class="button btn-small dark-blue-bg"#}
+{#                               href="{{ path('site_ads_view', {'category': ad.category_alias, 'extraParams': ad.city_slug ~'/'~ ad.alias}) }}">POGLEDAJ</a>#}
+{#                            #}{#<a class="button btn-small yellow popup-gallery" href="{{ path('site_popup_ads_video', {'id': ad['adsId']}) }}">POGLEDAJ VIDEO</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </article>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#</div>#}

@@ -1,0 +1,59 @@
+#footer {
+  .footer {
+    &-wrapper {
+      padding: 30px 0;
+    }
+
+    &__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+
+      &:before {
+        display: none;
+      }
+
+      &:after {
+        display: none;
+      }
+
+      &__back-to-top {
+        position: absolute;
+        right: -20px;
+        top: 0;
+        @media (max-width: 480px) {
+          position: relative;
+          right: 0;
+        }
+        > a {
+          margin-top: 0;
+        }
+      }
+    }
+
+    &__logo {
+      margin-top: 0 !important;
+      @media (max-width: 480px) {
+        display: none;
+      }
+
+      img {
+        height: 50px;
+      }
+    }
+  }
+  .city-list {
+    &__item {
+      &:hover {
+        color: $yellow-theme-color;
+        &:before {
+          color: inherit;
+        }
+        a {
+          color: inherit;
+        }
+      }
+    }
+  }
+}

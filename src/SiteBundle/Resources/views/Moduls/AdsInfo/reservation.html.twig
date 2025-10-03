@@ -1,0 +1,121 @@
+<div class="booking-section travelo-box reservation-section">
+    <div class="icon-box style1">
+        <i class="soap-icon-generalmessage"></i>
+        <span>{{ 'accomodation_availability' | trans }}</span>
+        {% if is_mobile() or is_tablet() %}
+            <a href="javascript:void(0)" class="cancel-btn" id="filter-btn-close">&times;</a>
+        {% endif %}
+    </div>
+    <form id="booking-form" enctype="multipart/form-data" autocomplete="off">
+        <input type="hidden" class="input-text full-width" value="{{ id }}" name="adsid" id="adsId" placeholder=""/>
+        <input type="hidden" name="token" value="{{ csrf_token('ad_reservation') }}"/>
+        <div class="card-information">
+            <h6>Vaši podaci</h6>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <label for="resFirstName">Ime *</label>
+                    <input type="text" id="resFirstName" class="input-text full-width" name="firstname"
+                           value="{{ param_exist(app.user) and param_exist(app.user.firstname) ? app.user.firstname : '' }}"
+                           placeholder=""/>
+                </div>
+                <div class="col-sm-12">
+                    <label for="resLastName">Prezime *</label>
+                    <input type="text" class="input-text full-width" name="lastname" id="resLastName"
+                           value="{{ param_exist(app.user) and param_exist(app.user.lastname) ? app.user.lastname : '' }}"
+                           placeholder=""/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <label for="resUserEmail">Email *</label>
+                    <input type="email" id="resUserEmail" class="input-text full-width" name="email"
+                           value="{{ param_exist(app.user) and param_exist(app.user.email) ? app.user.email : '' }}"
+                           placeholder=""/>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label for="resAdultNumber">Broj odraslih *</label>
+                            <input type="number" class="input-text full-width" name="adultnumber" id="resAdultNumber"
+                                   value=""
+                                   placeholder=""/>
+                        </div>
+                        <div class="col-sm-12">
+                            <label for="resChildrenNumber">Broj dece *</label>
+                            <input type="number" class="input-text full-width" name="childrennumber" id="resChildrenNumber" min="0"
+                                   value=""
+                                   placeholder=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <h6 class="title">Datum boravka</h6>
+                <div class="row">
+                    <div class="col-sm-12 errorParent">
+                        <label for="resCheckIn">Od *</label>
+                        <div class="datepicker-wrap">
+                            <input type="text" name="checkin" class="input-text full-width reservation__datepicker"
+                                   placeholder="dd.mm.yyyy" data-range="yes"  id="resCheckIn"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 errorParent">
+                        <label for="resCheckOut">Do *</label>
+                        <div class="datepicker-wrap">
+                            <input type="text" name="checkout" class="input-text full-width reservation__datepicker"
+                                   placeholder="dd.mm.yyyy" data-range="yes" id="resCheckOut"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <h6 class="title">Telefon</h6>
+                <div class="row">
+                    <div class="col-sm-12 errorParent">
+                        <label for="resMobile">Mobilni *</label>
+                        <input type="tel" name="mobile" id="resMobile" class="input-text full-width"/>
+                    </div>
+                    <div class="col-sm-12 errorParent">
+                        <label for="resViber">Viber</label>
+                        <input type="tel" name="viber" id="resViber" class="input-text full-width"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-xs-12">
+                    <label for="resNote">Dodatni text</label>
+                    <textarea name="note" id="resNote" class="full-width" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Želim da dobijem obaveštenjem putem:</label>
+                <label class="radio radio-inline col-md-12 col-xs-12">
+                    <input name="notificationtype" type="radio" value="0"> Sve jedno
+                </label>
+                <label class="radio radio-inline col-md-12 col-xs-12">
+                    <input name="notificationtype" type="radio" value="1"> SMS
+                </label>
+                <label class="radio radio-inline col-md-12 col-xs-12">
+                    <input name="notificationtype" type="radio" value="2"> Email
+                </label>
+                <label class="radio radio-inline col-md-12 col-xs-12">
+                    <input name="notificationtype" type="radio" value="3" data-show-error-after="yes"> Telefon/Viber
+                </label>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <hr/>
+        <div class="g-recaptcha ignore"
+             data-recaptcha-name="reservation"
+             data-sitekey="{{ re_captcha_key }}">
+        </div>
+        <div class="form-group row reservation-button">
+            <div class="center-block">
+                <button type="button" id="reservation-submit-btn">Pošalji upit</button>
+                {% if is_mobile() or is_tablet() %}
+                    <button type="button" class="silver cancel-btn" >Otkazi</button>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>

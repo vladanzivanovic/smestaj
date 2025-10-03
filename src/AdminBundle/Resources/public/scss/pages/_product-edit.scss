@@ -1,0 +1,10 @@
+@import "~bootstrap-datepicker/dist/css/bootstrap-datepicker.css";
+
+.product-edit {
+  .select2-selection--single {
+    padding: 6px 10px;
+  }
+  .select2-selection__arrow {
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,83 @@
+nelmio_security:
+    # prevents framing of the entire site
+    clickjacking:
+        paths:
+            '^/.*': DENY
+
+    # disables content type sniffing for script resources
+    content_type:
+        nosniff: true
+
+    # forces Microsoft's XSS-Protection with
+    # its block mode
+    xss_protection:
+        enabled: true
+        mode_block: true
+
+    # Send a full URL in the `Referer` header when performing a same-origin request,
+    # only send the origin of the document to secure destination (HTTPS->HTTPS),
+    # and send no header to a less secure destination (HTTPS->HTTP).
+    # If `strict-origin-when-cross-origin` is not supported, use `no-referrer` policy,
+    # no referrer information is sent along with requests.
+    referrer_policy:
+        enabled: true
+        policies:
+            - 'no-referrer'
+            - 'strict-origin-when-cross-origin'
+
+    csp:
+        enabled: true
+        report_logger_service: logger
+        hosts: [ ]
+        content_types: [ ]
+        enforce:
+            # see full description below
+            level1_fallback: true
+            # only send directives supported by the browser, defaults to false
+            # this is a port of https://github.com/twitter/secureheaders/blob/83a564a235c8be1a8a3901373dbc769da32f6ed7/lib/secure_headers/headers/policy_management.rb#L97
+            browser_adaptive:
+                enabled: false
+            default-src: [ 'self' ]
+            frame-src:
+                - 'self'
+                - 'https://www.youtube.com'
+                - 'https://youtube.com'
+                - 'https://www.google.com/'
+                - 'https://googleads.g.doubleclick.net/'
+                - 'https://tpc.googlesyndication.com/'
+            style-src:
+                - 'self'
+                - 'fonts.googleapis.com/css'
+                - 'unsafe-inline'
+            script-src:
+                - 'self'
+                - 'blob:'
+                - 'connect.facebook.net'
+                - 'https://maps.googleapis.com/'
+                - 'https://www.google.com/'
+                - 'www.google-analytics.com/'
+                - 'pagead2.googlesyndication.com'
+                - 'www.googletagmanager.com'
+                - 'www.gstatic.com'
+                - 'tpc.googlesyndication.com'
+            font-src:
+                - 'self'
+                - 'fonts.gstatic.com'
+            connect-src:
+                - 'self'
+                - 'o4504852626538496.ingest.sentry.io'
+                - 'maps.googleapis.com'
+                - 'mapsresources-pa.googleapis.com'
+                - 'pagead2.googlesyndication.com'
+                - 'www.gstatic.com'
+                - 'www.facebook.com'
+                - 'https://www.google-analytics.com/'
+            img-src:
+                - 'self'
+                - 'data:'
+                - 'maps.gstatic.com'
+                - 'maps.googleapis.com'
+                - 'google-analytics.com'
+                - 'pagead2.googlesyndication.com'
+                - '*.googleapis.com'
+            block-all-mixed-content: true

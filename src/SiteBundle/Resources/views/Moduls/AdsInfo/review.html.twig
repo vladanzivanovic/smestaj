@@ -1,0 +1,31 @@
+<div class="hotel fade" id="raiting">
+    <div class="tab-pane">
+        <div class="guest-reviews">
+            <h2>Naši klijenti su rekli...</h2>
+            {% if reviews is defined and reviews is not null %}
+                {% for review in reviews %}
+                    <div class="guest-review table-wrapper">
+                        <div class="col-xs-3 col-md-2 author table-cell">
+                            <p class="name">{{ review['NickName'] }}</p>
+                            <p class="date">{{ review['ReviewDateTime']|localizeddate('none', 'none', 'sr_Latn_RS', null, date_format)|capitalize }}</p>
+                        </div>
+                        <div class="col-xs-9 col-md-10 table-cell comment-container">
+                            <div class="comment-header clearfix">
+                                <h4 class="comment-title">{{ review['ReviewTitle'] }}</h4>
+                                <div class="review-score">
+                                    <div class="five-stars-container">
+                                        <div class="five-stars" style="width: {{ review['AveragePercent'] }}%;"></div>
+                                    </div>
+                                    <span class="score">{{ review['Average'] }}/5.0</span>
+                                </div>
+                            </div>
+                            <div class="comment-content">
+                                <p>{{ review['ReviewDescription'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>

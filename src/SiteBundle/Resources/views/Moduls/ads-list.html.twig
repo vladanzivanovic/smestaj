@@ -1,0 +1,66 @@
+<div class="hotel-list listing-style3 hotel">
+    {% set imageFilter = is_mobile() or is_tablet() ? 'mobile_list_thumb' : 'list_thumb' %}
+    {% for ad in ads.data %}
+        <article class="box {{ true == ad.isPayed ? 'payed-product' : '' }}" itemscope itemtype="http://schema.org/Accommodation">
+            <figure class="col-sm-5 col-md-4">
+                <a itemprop="url" title="" href="{{ path('site_ads_view', {'category': ad.category_alias, 'extraParams': ad.city_slug ~'/'~ ad.alias}) }}" class="hover-effect">
+                    <img itemprop="photo" src="{{ path('app.image_show', {entity: 'ads' | trans, filter: imageFilter, name: ad.image}) }}" alt="{{ default_alt_text }}" title="{{ default_title_text }}">
+                </a>
+            </figure>
+            <div class="details col-sm-7 col-md-8">
+                <div>
+                    <div>
+                        <a itemprop="url" href="{{ path('site_ads_view', {'category': ad.category_alias, 'extraParams': ad.city_slug ~'/'~ ad.alias}) }}">
+                            <h4 class="box-title" itemprop="name">{{ ad.title }}<small><i class="soap-icon-departure"></i> {{ ad['city'] }}</small></h4>
+                        </a>
+                    </div>
+                    <div class="price-wrapper">
+                        <span class="price">
+                            već od €{{ ad.pre_price_from }}
+                        </span>
+                    </div>
+                </div>
+                <div class="detail-text">
+                    <p>{{ ad.short_description }}</p>
+                    <div class="button-wrapper">
+                        <a itemprop="url" class="button btn-small full-width text-center dark-blue-bg letter-capitalize" title="{{ default_title_text }}" href="{{ path('site_ads_view', {'category': ad.category_alias, 'extraParams': ad.city_slug ~'/'~ ad.alias}) }}">{{ 'view' | trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+</div>
+
+
+
+
+{#<div class="hotel-list">#}
+{#    <div class="row image-box hotel listing-style1">#}
+{#        {% for ad in data %}#}
+{#            <div class="col-sm-6 col-md-4">#}
+{#                <article class="box">#}
+{#                    <figure class="img-270-175">#}
+{#                        <a href="{{ path('site_popup_ads_gallery', {'id': ad['adsId']}) }}" class="hover-effect popup-gallery">#}
+{#                            <img width="270" height="160" src="{{ asset("uploads/images/"~ ad['adsId'] ~"/thumb/"~ ad['MediaName']) }}" alt="{{ default_alt_text }}" title="{{ default_title_text }}">#}
+{#                        </a>#}
+{#                    </figure>#}
+{#                    <div class="details">#}
+{#                                                            <span class="price">#}
+{#                                                                {{ ad['PriceFrom'] }} - {{ ad['PriceTo'] }}#}
+{#                                                            </span>#}
+{#                        <h4 class="box-title"><span>{{ ad['title'] }}</span></h4>#}
+{#                        <div class="feedback">#}
+{#                            <div data-placement="bottom" data-toggle="tooltip" class="five-stars-container" title="4 stars"><span style="width: 80%;" class="five-stars"></span></div>#}
+                            {#<span class="review">270 reviews</span>#}
+                        {#</div>#}
+                        {#<p class="text-middle description"><span>{{ ad['ShortDescription'][:100] }}</span></p>#}
+                        {#<div class="action">#}
+                            {#<a class="button btn-small" href="{{ path('site_single_ads', {'category': ad['catAlias'],'id': ad['adsId'], 'title': generate_seo_url.generateSeoUrl(ad['title'])}) }}">POGLEDAJ</a>#}
+                            {#<a class="button btn-small yellow popup-image "href="#">POGLEDAJ VIDEO</a>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</article>#}
+            {#</div>#}
+        {#{% endfor %}#}
+    {#</div>#}
+{#</div>#}

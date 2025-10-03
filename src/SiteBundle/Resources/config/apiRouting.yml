@@ -1,0 +1,144 @@
+#site_popup_ads_gallery:
+#  path: /popup-gallery/{slug}/{infoId}
+#  defaults: { _controller: SiteBundle:Ads\AdsGet:popupAdsImage, infoId: null }
+#  methods: [GET]
+#
+#site_popup_ads_video:
+#  path: /popup-video/{alias}
+#  defaults: { _controller: SiteBundle:Ads\AdsGet:popupAdsVideo}
+#  methods: [GET]
+
+#site_all_cities:
+#  path: /all-cities
+#  defaults: { _controller: SiteBundle:City:getCities }
+#  methods: [GET]
+
+#site_cities_by_criteria:
+#  path: /cities/{criteria}
+#  defaults: { _controller: SiteBundle:City:getCitiesByCriteria }
+#  methods: [GET]
+
+site_set_ads_view:
+  path: /product-view/{view}
+  defaults: { _controller: SiteBundle:Ads\AdsIndex:changeAdsView }
+  methods: [GET]
+
+#site_registration_post:
+#  path: /add-new-user
+#  defaults: { _controller: SiteBundle:User\UserEdit:addNewUser }
+#  methods: [POST]
+
+site_user_update:
+  path: /user/{id}
+  defaults: { _controller: SiteBundle:User\UserEdit:updateUser }
+  methods: [PUT]
+  requirements:
+      id: '\d+'
+
+site_general_search:
+  path: /general-search/{criteria}
+  defaults: { _controller: SiteBundle:Index:getGeneralSearchData }
+  methods: [GET]
+
+site_ad_reservation_days:
+  path: /ad-reserved-days/{dateTime}/{adsId}
+  defaults: { _controller: SiteBundle:Reservation\ReservationGet:getReservationForAd }
+  methods: [GET]
+  requirements:
+    adsId: '\d+'
+
+site_ads_id:
+  path: /product/{id}
+  defaults: { _controller: SiteBundle:Ads\AdsGet:getAdsById }
+  methods: [GET]
+  requirements:
+      id: '\d+'
+
+#site_ads_save:
+#  path: /product
+#  defaults: { _controller: SiteBundle:Ads\AdsEdit:insertAds }
+#  methods: [POST]
+
+#site_ads_update:
+#  path: /product/{id}
+#  defaults: { _controller: SiteBundle:Ads\AdsEdit:updateAds }
+#  methods: [PUT]
+#  requirements:
+#      id: '\d+'
+
+site_ads_remove:
+  path: /product/{id}
+  defaults: { _controller: SiteBundle:Ads\AdsEdit:removeAd }
+  methods: [DELETE]
+  requirements:
+      id: '\d+'
+
+#site_ads_paginate:
+#  path: /product-pagination
+#  defaults: { _controller: SiteBundle:Ads\AdsIndex:adsPagination, page: 1, category: null }
+#  methods: [POST]
+
+site_event_types:
+  path: /event-types
+  defaults: { _controller: SiteBundle:Eventtype:getAll }
+  methods: [GET]
+
+#site_categories:
+#  path: /category-all
+#  defaults: { _controller: SiteBundle:Category:getCategoryLists }
+#  methods: [GET]
+
+#site_user_reset_password:
+#  path: /reset-password
+#  defaults: { _controller: SiteBundle:User\UserEdit:resetPassword }
+#  methods: [PUT]
+
+site_send_contact_us:
+  path: /contact-us
+  defaults: { _controller: SiteBundle:Index:sendContactForm }
+  methods: [POST]
+
+site_check_ads_exist:
+  path: /product/check-exist
+  defaults: { _controller: SiteBundle:Ads\AdsGet:checkAdsExistByTitle }
+  methods: [GET]
+
+site_get_user_by_email:
+  path: /user-by-email/{email}
+  defaults: { _controller: SiteBundle:User\UserGet:getUserByEmail }
+  methods: [GET]
+
+site_reservation_status:
+  path: /reject-reservation-reason/{reservation}
+  defaults: { _controller: SiteBundle:Reservation\ReservationEdit:setReservationConfirmation}
+  methods: [PUT]
+  requirements:
+    reservation: \d+
+
+site_share_on_facebook:
+  path: /share-post-facebook/{adsType}
+  defaults: { _controller: SiteBundle:SocialShare:postToFacebook}
+  methods: [GET]
+  requirements:
+    adsType: \d+
+
+site_goo_map:
+  path: /change-city-name/{id}
+  defaults: { _controller: SiteBundle:Index:changeCityName}
+  methods: [GET]
+  requirements:
+    id: \d+
+
+site_api_ads_view:
+  path: /ads-list/{category}/{extraParams}
+  controller: SiteBundle:Api\Ads\AdsIndex:index
+  defaults:
+    extraParams: null
+    requirements:
+      extraParams: .*
+    methods: [ GET ]
+
+#site_ads_image_resize_on_fly:
+#  path: /ads-image/resize
+#  defaults: { _controller: SiteBundle:Ads\AdsImages:resizeImageOnFly}
+#  methods: [POST]

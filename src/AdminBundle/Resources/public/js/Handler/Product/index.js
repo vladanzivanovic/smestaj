@@ -1,0 +1,2 @@
+import './ProductEditHandler'
+import './ProductRemoveHandler'

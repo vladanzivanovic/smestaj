@@ -1,0 +1,219 @@
+services:
+  #  site.paginate_service:
+  #    class: SiteBundle\Services\PaginationService
+  #    arguments:
+  #      - '%limit%'
+  #
+  #
+  #
+  #
+  #
+  #  site.user_service:
+  #    class: SiteBundle\Services\UserService
+  #    parent: app.base_service
+  #    arguments:
+  #      - '@site.user_handler'
+  #      - '@site.email_helper'
+  #      - '%site_info%'
+  #
+  #  site.user_handler:
+  #    class: SiteBundle\Handler\UserHandler
+  #    parent: app.base_service
+  #    arguments:
+  #      - '@security.password_encoder'
+  #      - '@site.role_handler'
+  #
+  ##  site.email_helper:
+  ##    class: SiteBundle\Helper\Email
+  ##    parent: app.base_service
+  ##    public: false
+  ##    arguments:
+  ##      - '@doctrine.orm.logger_entity_manager'
+  ##      - '@mailer'
+  ##      - '@templating'
+  ##      - '%site_info%'
+  #
+  ##  site.user_reservation_handler:
+  ##    class: SiteBundle\Handler\UserReservationHandler
+  ##    parent: app.base_service
+  ##    arguments:
+  ##      - '@site.email_helper'
+  ##      - '@site.user_service'
+  ##      - '@site.user_handler'
+  ##      - '@site.reservation_formatter'
+  ##      - '%site_info%'
+  #
+  #  site.search_service:
+  #    class: SiteBundle\Services\SearchService
+  #    parent: app.base_service
+  #
+  #  site.reservation_service:
+  #    class: SiteBundle\Services\ReservationService
+  #    parent: app.base_service
+  #
+  #  site.role_handler:
+  #    class: SiteBundle\Handler\RoleHandler
+  #    parent: app.base_service
+  #
+  #  site.contact_us_service:
+  #    class: SiteBundle\Services\ContactService
+  #    parent: app.base_service
+  #    arguments:
+  #        - '%site_info%'
+  #        - '@site.email_helper'
+  #
+  #
+#  site.user_provider:
+#    class: SiteBundle\Provider\Provider
+#    arguments:
+#      - '@request_stack'
+#      - '@session'
+#      - '@security.token_storage'
+#      - SiteBundle\Repository\UserToSocialNetworkRepository
+#      - SiteBundle\Repository\UserRepository
+#      - SiteBundle\Handler\UserToSocialHandler
+#      - SiteBundle\Handler\UserHandler
+#      - SiteBundle\Handler'RoleHandler
+#
+#  site.user_to_social_handler:
+#    class: SiteBundle\Handler\UserToSocialHandler
+#    parent: SiteBundle\Services\ServicesContainer
+#    public: false
+#
+#  site.additional_info_service:
+#    class: SiteBundle\Services\Ads\AdsAdditionalInfoService
+#    parent: app.base_service
+#    arguments:
+#      - '@app.app_helper'
+#      - '%upload_image_dir%'
+#
+#  site.ads_email_preparation:
+#    class: SiteBundle\Services\Ads\AdsEmailDataPreparation
+#
+#  site.reservation_formatter:
+#    class: SiteBundle\Formatter\ReservationEmailFormatter
+#    parent: app.base_service
+#    arguments:
+#      - '@site.random_generator'
+#      - '%site_info%'
+#
+#  site.geomap_service:
+#    class: SiteBundle\Services\GoogleGeoCodeService
+#    parent: app.base_service
+#
+#  site.tag_service:
+#    class: SiteBundle\Services\TagService
+#    parent: app.base_service
+#
+#  site.ads_handler:
+#      class: SiteBundle\Handler\AdsHandler
+#      parent: app.base_service
+#      arguments:
+#        - '@site.url_service'
+#        - '@site.youtube_handler'
+#        - '@site.ads_image_service'
+#        - '@site.email_helper'
+#        - '@site.ads_additional_info_handler'
+#        - '%site_info%'
+#        - '@app.text_helper'
+#
+#  site.gender_handler:
+#    class: SiteBundle\Handler\GenderHandler
+#    parent: app.base_service
+#    arguments:
+#      - '@site.url_service'
+#
+#  site.event_type_handler:
+#    class: SiteBundle\Handler\EventTypeHandler
+#    parent: app.base_service
+#    arguments:
+#      - '@site.url_service'
+#
+#  site.badges_handler:
+#    class: SiteBundle\Handler\BadgesHandler
+#    parent: app.base_service
+#    arguments:
+#      - '%upload_badges_dir%'
+#      - '@site.image_service'
+#
+#  site.category_handler:
+#    class: SiteBundle\Handler\CategoryHandler
+#    parent: app.base_service
+#    arguments:
+#      - '%upload_category_dir%'
+#      - '@site.image_service'
+#      - '@site.url_service'
+#
+#  site.youtube_handler:
+#    class: SiteBundle\Handler\YoutubeHandler
+#    parent: app.base_service
+#
+#  site.ads_image_service:
+#    class: SiteBundle\Services\Ads\AdsImageService
+#    parent: app.base_service
+#    arguments:
+#      - '@site.image_service'
+#      - '%upload_image_dir%'
+#      - '%file_types%'
+#
+#  site.reservation_handler:
+#    class: SiteBundle\Handler\ReservationHandler
+#    parent: app.base_service
+#    arguments:
+#      - '@site.user_reservation_handler'
+#
+#  site.ads_additional_info_handler:
+#    class: SiteBundle\Handler\AdsAdditionalInfoHandler
+#    parent: app.base_service
+#    arguments:
+#      - '@site.ads_additional_info_image_service'
+#
+#  site.ads_additional_info_image_service:
+#    class: SiteBundle\Services\Ads\AdsAdditionalInfoImageService
+#    parent: app.base_service
+#    arguments:
+#      - '@site.image_service'
+#      - '%upload_image_dir%'
+#
+#  site.upload_service:
+#    class: SiteBundle\Services\UploadService
+#    arguments:
+#      - '%kernel.root_dir%'
+#      - '%upload_tmp_dir%'
+#
+#  site.image_service:
+#    class: SiteBundle\Services\ImageService
+#    arguments:
+#      - '%image_resize%'
+#      - '%upload_tmp_dir%'
+#      - '@filesystem'
+#      - '@app.finder_service'
+#      - '@site.upload_service'
+#      - '%file_types%'
+#
+#  site.ads_formatter:
+#    class: SiteBundle\Services\Ads\AdsFormatter
+#
+#  site.ads_tag_service:
+#    class: SiteBundle\Services\Ads\AdsTagService
+#    parent: app.base_service
+#    arguments:
+#        - '@site.adshastags_repository'
+#
+#  site.ads_image_resizer:
+#    class: SiteBundle\Services\Ads\AdsImageResizer
+#    arguments:
+#        - '%kernel.root_dir%'
+#        - '%upload_tmp_dir%'
+#        - '@liip_imagine.controller'
+#
+#  site.random_generator:
+#    class: SiteBundle\Helper\RandomCodeGenerator
+
+#  site.share_service:
+#    class: SiteBundle\Services\SocialShareService
+#    parent: app.base_service
+#    arguments:
+#      - '@social_post'
+#      - '@router'
+#      - '@twig.extension.httpfoundation'

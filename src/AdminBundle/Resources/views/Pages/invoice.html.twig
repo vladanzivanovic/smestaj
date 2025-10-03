@@ -1,0 +1,138 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Narudžbenica #{{ id }}{% endblock %}
+{% block bodyClass %}about-us-edit{% endblock %}
+{% block content %}
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Narudžbenica #'~id    } %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="container-fluid d-flex justify-content-between">
+                            <div class="col-lg-3 pl-0">
+                                <a href="#" class="noble-ui-logo logo-light d-block mt-3">{{ fullName }}</a>
+                                <p>{{ email }},<br> {{ phone }}.</p>
+                                <h5 class="mt-5 mb-2 text-muted">Adresa naručioca :</h5>
+                                <p>{{ address }},<br> {{ zipCode }} {{ city }},<br> {{ country }}.</p>
+                            </div>
+                            <div class="col-lg-3 pr-0">
+                                <h4 class="font-weight-medium text-uppercase text-right mt-4 mb-2">narudžbenica</h4>
+                                <h6 class="text-right mb-5 pb-4"># {{ id }}</h6>
+                                <p class="text-right mb-1">Ukupno</p>
+                                <h4 class="text-right font-weight-normal">{{ total | number_format(2) }} RSD</h4>
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Naručeno dana :</span> {{ orderDate }}</h6>
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Tip naplate:</span> {{ orderTypeText | trans }}</h6>
+                                <h6 class="mb-0 mt-3 text-right font-weight-normal mb-2"><span class="text-muted">Status plaćanja:</span> {{ statusText | trans }}</h6>
+                            </div>
+                        </div>
+                        {% if orderType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                            <div class="container-fluid d-flex justify-content-between">
+                                <div class="col-lg-12 pl-0">
+                                    <h5 class="mt-5 mb-2 text-muted">Podaci o naplati:</h5>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Zaduženo dana:</span> {{ preAuthorizedDate | date('d.m.Y H:i:s') }}</h6>
+
+                                    {% if postAuthorizedDate is defined %}
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Realizovano dana:</span> {{ postAuthorizedDate | date('d.m.Y H:i:s') }}</h6>
+                                    {% endif %}
+
+                                    {% if refundedDate is defined %}
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Refundirano dana:</span> {{ refundedDate | date('d.m.Y H:i:s') }}</h6>
+                                    {% endif %}
+
+                                    {% if voidDate is defined %}
+                                        <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Refundirano dana:</span> {{ voidDate | date('d.m.Y H:i:s') }}</h6>
+                                    {% endif %}
+
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Broj transakcije:</span> {{ transactionId }}</h6>
+                                    <h6 class="mb-0 mt-3 font-weight-normal mb-2"><span class="text-muted">Broj kartice:</span> {{ cardNumber }}</h6>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="container-fluid mt-5 d-flex justify-content-center w-100">
+                            <div class="table-responsive w-100">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Proizvod</th>
+                                        <th class="text-right">Količina</th>
+                                        <th class="text-right">Cena</th>
+                                        <th class="text-right">Ukupno</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for product in products %}
+                                        <tr class="text-right">
+                                            <td class="text-left">{{ product.id }}</td>
+                                            <td class="text-left">{{ product.name }}</td>
+                                            <td>{{ product.quantity }}</td>
+                                            <td>{{ product.price | number_format(2) }} RSD</td>
+                                            <td>{{ product.priceWithQuantity | number_format(2) }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="container-fluid mt-5 w-100">
+                            <div class="row">
+                                <div class="col-md-6 ml-auto">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <td>Cena proizvoda</td>
+                                                <td class="text-right">{{ productPrices }}</td>
+                                            </tr>
+                                            {% if promoCode is not null %}
+                                                <tr>
+                                                    <td>Promo kod ({{ promoCode.code }})</td>
+                                                    <td class="text-right">{{ promoCode.discount }} %</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ukupno sa popustom</td>
+                                                    <td class="text-right">{{ priceWithDiscount | number_format(2) }} RSD</td>
+                                                </tr>
+                                            {% endif %}
+                                            <tr>
+                                                <td>Poštarina</td>
+                                                <td class="text-right">{{ shippingPrice | number_format(2) }} RSD</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-bold-800">Ukupno</td>
+                                                <td class="text-bold-800 text-right">{{ total | number_format(2) }} RSD</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if orderType == constant('App\\Entity\\ShopOrder::PAYMENT_TYPE_CREDIT_CARD') %}
+                            <div class="container-fluid w-100">
+                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+                                    <a href="#" id="void_btn" class="btn btn-outline-primary float-right mt-4 ml-2 ">Otkazi</a>
+                                {% endif %}
+
+                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') or
+                                    status == constant('App\\Entity\\ShopOrder::STATUS_COMPLETED')
+                                %}
+                                    <a href="#" id="refund_btn" class="btn btn-outline-primary float-right mt-4 ml-2">Refundiraj</a>
+                                {% endif %}
+
+                                {% if status == constant('App\\Entity\\ShopOrder::STATUS_AWAITING_AUTHORIZATION') %}
+                                    <a href="#" id="post_auth_btn" class="btn btn-primary float-right mt-4 ml-2">Naplati</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const ID = '{{ app.request.attributes.get('id') }}';
+    </script>
+{% endblock %}

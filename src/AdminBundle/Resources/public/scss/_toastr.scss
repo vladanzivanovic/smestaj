@@ -1,0 +1,7 @@
+#toast-container {
+  >.toast-info, >.toast-error, >.toast-success {
+    background-color: #0b1327;
+    box-shadow: none;
+    border: 1px solid #162240;
+  }
+}

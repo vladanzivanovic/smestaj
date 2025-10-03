@@ -1,0 +1,5 @@
+User-Agent: *
+Disallow:
+Allow: /web
+
+Sitemap: http://dev.mojeveselje.com/sitemap.xml

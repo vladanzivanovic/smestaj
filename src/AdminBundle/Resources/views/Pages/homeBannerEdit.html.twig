@@ -1,0 +1,147 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Dodavanje/Izmena banera{% endblock %}
+{% block bodyClass %}banner-edit{% endblock %}
+{% set IS_EDIT = routeName() == 'admin.edit_home_banner_page' %}
+{% block content %}
+
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena banera' } %}
+
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Baner</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Veličine slika</h4>
+                    <ul>
+                        <li>Levo/Desno - 1000x1300 </li>
+                        <li>Sredina - 1000x610 </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="edit_form" enctype="multipart/form-data">
+        {{ form.input('', '', 1, 'type', '', 'hidden') }}
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Slika</h6>
+                        <div class="row">
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
+                        </div><!--Row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Hrvatski</h6>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    {{ form.textarea('Kratak opis', 'description_rs', IS_EDIT ? rs_description : '', 'rs_description', 10, '', 'form-control') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Teks dugmeta', 'button_rs', IS_EDIT ? rs_button : '', 'rs_button') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Link', 'link_rs', IS_EDIT ? rs_link : '', 'rs_link') }}
+                                </div>
+                            </div><!-- Row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Engleski</h6>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    {{ form.textarea('Kratak opis', 'description_en', IS_EDIT ? en_description : '', 'en_description', 10, '', 'form-control') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Teks dugmeta', 'button_en', IS_EDIT ? en_button : '', 'en_button') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Link', 'link_en', IS_EDIT ? en_link : '', 'en_link') }}
+                                </div>
+                            </div><!-- Row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Pozicija banera</h6>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-check form-check-inline">
+                                    {{ form.radio('Levo', 'position_1', 1, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 1 ? 'checked=checked' : null) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-3">
+                                <div class="form-check form-check-inline">
+                                    {{ form.radio('Sredina gore', 'position_2', 2, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 2 ? 'checked=checked' : null) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-3">
+                                <div class="form-check form-check-inline">
+                                    {{ form.radio('Sredina dole', 'position_3', 3, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 3 ? 'checked=checked' : null) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-3">
+                                <div class="form-check form-check-inline">
+                                    {{ form.radio('Desno', 'position_4', 4, 'position', 'form-check-label', 'form-check-input', IS_EDIT and position == 4 ? 'data-show-error-after=yes checked=checked' : 'data-show-error-after=yes') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {{ form.button('banner_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
+        const ID = '{{ app.request.attributes.get('id') }}';
+        const IS_SPEED_LINKS = true;
+
+        {% if IS_EDIT %}
+            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+        {% endif %}
+    </script>
+{% endblock %}

@@ -1,0 +1,166 @@
+/* dropzone css */
+.dropzone{
+    background: #fff;
+    position: relative;
+    border: 5px dotted grey;
+    border-radius: 15px;
+    color: grey;
+    min-height: 220px;
+    margin-bottom: 30px;
+    .dz-preview, &-previews {
+        display: block;
+        margin: 0;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: none;
+        .dz-progress {
+            top: 50%;
+        }
+        .dz-details{
+            width: 100%;
+            height: auto;
+            background: none;
+            .dz-filename {
+                overflow: visible;
+            }
+        }
+    }
+    [type="file"] {
+        cursor: pointer;
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+    &-hover{
+        opacity: 0.3;
+    }
+    &-file {
+        display: flex;
+        flex-wrap: wrap;
+        height: 150px;
+        background: #fff;
+        padding: 0;
+        justify-content: center;
+        line-height: normal;
+        font-size: 13px;
+        text-align: center;
+        position: relative;
+        width: 150px;
+        margin: 5px;
+        float: left;
+        img{
+            padding: 5px 10px;
+            max-width: 100px;
+            max-height: 100px;
+        }
+        &__buttons {
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            padding: 5px;
+            justify-content: space-between;
+
+            .main-image-btn > i {
+                color: $purple;
+            }
+            .dropdown-colors {
+                border: none;
+                border-radius: 0;
+                width: 40px;
+                background: #e6e6e6;
+            }
+        }
+    }
+    &-close > i {
+        color: $red;
+    }
+    &-main:before {
+        font-family: FontAwesome;
+        content: "\f00c";
+        font-size: 2em;
+    }
+
+    &__loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    &--error {
+        border-color: $red !important;
+    }
+}
+
+#dropzone {
+    position: relative;
+    border: 5px dotted grey;
+    border-radius: 15px;
+    color: grey;
+    min-height: 220px;
+    margin-bottom: 30px;
+    .dropzone-placeholder{
+        font: bold 14px/200px arial;
+        text-align: center;
+    }
+    p{
+        word-wrap: break-word;
+    }
+    [type="file"] {
+        cursor: pointer;
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+    .main-image {
+        border: 2px solid #40aa95;
+        cursor: auto;
+    }
+
+    &-input-error {
+        position: absolute;
+        bottom: -30px;
+    }
+}
+
+#youtube-video-lists {
+    li {
+        iframe{
+            width: 100%;
+            height:200px;
+        }
+        &:hover {
+            .youtube-close {
+                position: absolute;
+                color: #fff;
+                z-index: 999;
+                cursor: pointer;
+                top: -7px;
+                left: 94%;
+                text-shadow: 0 0 6px #000;
+                &:before {
+                    font-family: FontAwesome;
+                    content: "\f00d";
+                    font-size: 2em;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 481px) {
+    #dropzone {
+        .dropzone-placeholder {
+            font: bold 20px/200px arial;
+            text-align: center;
+        }
+    }
+}

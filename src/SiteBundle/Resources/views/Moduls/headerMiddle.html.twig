@@ -1,0 +1,124 @@
+{# src/SiteBundle/Resources/views/Moduls/headerMiddle.html.html.twig #}
+{% block headerMiddle %}
+
+    <div class="main-header">
+
+        <a href="#mobile-menu-01" data-toggle="collapse" class="mobile-menu-toggle">
+            Mobile Menu Toggle
+        </a>
+
+        <div class="container">
+            <h3 class="logo navbar-brand">
+                <a href="{{ path('site_index') }}" title="{{ default_title_text }}">
+                    <img src="{{ path('site_logo') }}" alt="{{ default_alt_text }}"/>
+                </a>
+            </h3>
+
+            <nav id="main-menu" role="navigation">
+                {% include('@Site/Moduls/navigation.html.twig') %}
+            </nav>
+        </div>
+
+        <nav id="mobile-menu-01" class="mobile-menu collapse">
+            {% include('@Site/Moduls/navigation.html.twig') %}
+
+            <ul class="mobile-topnav container">
+                {% if app.user is null or app.user is not defined %}
+                    <li><a href="#mojeveselje-login" class="soap-popupbox">PRIJAVA</a></li>
+                    <li><a href="#mojeveselje-signup" class="soap-popupbox">REGISTRACIJA OGLAŠIVAČA</a></li>
+                {% else %}
+                    <li><a href="{{ path('site_user_profile') }}">VAŠ PROFIL</a></li>
+                    <li><a href="{{ path('site_logout') }}">ODJAVA</a></li>
+                {% endif %}
+            </ul>
+
+        </nav>
+    </div>
+    <div id="mojeveselje-signup" class="travelo-signup-box travelo-box">
+        <div class="login-social">
+            <a href="#" class="button login-facebook" onclick="loginService.registerWithFb()"><i class="soap-icon-facebook"></i>Facebook</a>
+            {#<a href="{{ url("hwi_oauth_service_redirect", {service: "google"}) }}" class="button login-googleplus"><i class="soap-icon-googleplus"></i>Prijava sa Google+</a>#}
+        </div>
+        <div class="seperator"><label>ILI</label></div>
+        <div class="simple-signup">
+            <div class="text-center signup-email-section">
+                <a href="#" class="signup-email"><i class="soap-icon-letter"></i>Registracija</a>
+            </div>
+        </div>
+        <div class="email-signup">
+            <form action="{{ path('site_registration_post') }}" method="post" enctype="multipart/form-data" id="signup-form" class="signupForm" data-toggle="validator">
+                <div class="form-group">
+                    <input type="text" name="firstname" id="registration-firstName" class="input-text full-width" placeholder="Ime" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="lastname" id="registration-lastName" class="input-text full-width" placeholder="Prezime" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" id="email" class="input-text full-width" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" id="registration-password" class="input-text full-width" placeholder="Lozinka" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="repassword" id="registration-rePassword" class="input-text full-width" placeholder="Ponovljena lozinka" required>
+                </div>
+                <div class="g-recaptcha ignore"
+                     data-recaptcha-name="user_registration"
+                     data-sitekey="{{ re_captcha_key }}">
+                </div>
+                <button type="button" id="signup-btn" class="full-width btn-medium">REGISTRUJ SE</button>
+            </form>
+        </div>
+        <div class="seperator"></div>
+        <p>Već ste registrovani? <a href="#mojeveselje-login" class="goto-login soap-popupbox">Prijavite se</a></p>
+    </div>
+    <div id="mojeveselje-login" class="travelo-login-box travelo-box">
+        <div class="login-social">
+            <a href="{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}" class="button login-facebook"><i class="soap-icon-facebook"></i>Facebook</a>
+            {#<a href="{{ url("hwi_oauth_service_redirect", {service: "google"}) }}" class="button login-googleplus"><i class="soap-icon-googleplus"></i>Google+</a>#}
+        </div>
+        <div class="seperator"><label>ILI</label></div>
+        <form id="login_form_ajax" action="{{ path("site_login_check") }}" method="post" class="parent-form">
+            <div class="form-group">
+                <input type="email" class="input-text full-width" name="_username" id="username" placeholder="email adresa">
+            </div>
+            <div class="form-group">
+                <input type="password" class="input-text full-width" name="_password" id="password" placeholder="password">
+            </div>
+            <div class="form-group">
+                <a href="#travelo-reset-password" class="forgot-password pull-right soap-popupbox">Zaboravili ste lozinku?</a>
+                <div class="checkbox checkbox-inline">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Zapamti me
+                    </label>
+                </div>
+            </div>
+            <button id="signin-button" type="button" class="full-width btn-medium master">Prijavi se</button>
+        </form>
+        <div class="seperator"></div>
+        <p>Niste registrovani? <a href="#mojeveselje-signup" class="goto-signup soap-popupbox">Registruj se</a></p>
+    </div>
+    <div id="travelo-reset-password" class="travelo-login-box travelo-box">
+        <p>Unesite email adresu</p>
+        <div class="seperator"></div>
+        <form id="reset-password-form">
+            <div class="form-group">
+                <input type="text" class="input-text full-width" id="resetEmail" name="email" placeholder="email adresa">
+            </div>
+            <button type="button" id="reset-password-button" class=" full-width btn-medium">Pošalji</button>
+        </form>
+    </div>
+    {#<div id="travelo-set-password-form" class="travelo-login-box travelo-box">#}
+        {#<p>Unesite novu lozinku</p>#}
+        {#<div class="seperator"></div>#}
+        {#<form id="set-password-form">#}
+            {#<div class="form-group">#}
+                {#<input type="password" class="input-text full-width" id="setPassword" name="password" placeholder="Lozinka">#}
+            {#</div>#}
+            {#<div class="form-group">#}
+                {#<input type="password" class="input-text full-width" id="setRePassword" name="password" placeholder="Ponovite lozinku">#}
+            {#</div>#}
+            {#<button type="button" id="set-password-button" class="close-btn full-width btn-medium">Pošalji</button>#}
+        {#</form>#}
+    {#</div>#}
+{% endblock %}

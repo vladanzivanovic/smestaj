@@ -1,0 +1,39 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: symfony
+    database_user: root
+    database_password: ~
+    # You should uncomment this if you want to use pdo_sqlite
+    #database_path: '%kernel.root_dir%/../var/data/data.sqlite'
+
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_port: 1030
+    mailer_user: ~
+    mailer_password: ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret: ThisTokenIsNotSoSecretChangeIt
+    assetic_base_path: ''
+    fb_id: ''
+    fb_secret: ''
+    fb_page_id: ''
+    fb_graph_version: ''
+    fb_page_token: ''
+    adsense_key: ''
+    re_captcha_key: ''
+    base_url: ''
+    host_schema: https
+    google_api_key: ""
+    google_analytics: ""
+    google_maps_key: ""
+    sentry_dns: "https://3b1a983b3aea49aab54b4c7393d32c9b:5be6577b54414399b01f4d814bc373f5@sentry.io/599385"
+    sentry_javascript_dns: ""
+    email_address: vladapoz85@gmail.com
+    default_locale: rs
+    youtube_api_key: ""
+

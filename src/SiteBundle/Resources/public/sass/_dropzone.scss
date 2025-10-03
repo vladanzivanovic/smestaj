@@ -1,0 +1,145 @@
+/* dropzone css */
+.dropzone{
+    background: #fff;
+    position: relative;
+    border: 5px dotted grey;
+    border-radius: 15px;
+    color: grey;
+    min-height: 220px;
+    margin-bottom: 30px;
+    .dz-preview, &-previews {
+        display: block;
+        margin: 0;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: none;
+        .dz-progress {
+            top: 50%;
+        }
+        .dz-details{
+            width: 100%;
+            height: auto;
+            background: none;
+            .dz-filename {
+                overflow: visible;
+            }
+        }
+    }
+    [type="file"] {
+        cursor: pointer;
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+    &-hover{
+        opacity: 0.3;
+    }
+    &-file {
+        padding: 5px 10px;
+        line-height: normal;
+        font-size: 13px;
+        display: inline-block;
+        text-align: center;
+        position: relative;
+        width: 100px;
+        min-height: 100px;
+        margin: 5px;
+        border-radius: 20px;
+        background: #999;
+        background: linear-gradient(to bottom, #eee, #ddd);
+        float: left;
+        cursor: pointer;
+        img{
+            max-width:100%;
+            max-height:100%;
+        }
+    }
+    &-close {
+        position: absolute;
+        top: -8px;
+        right: -23px;
+        color: #f00;
+        cursor: pointer;
+        &:before {
+            font-family: FontAwesome;
+            content: "\f00d";
+            font-size: 2em;
+        }
+    }
+    &-main:before {
+        font-family: FontAwesome;
+        content: "\f00c";
+        font-size: 2em;
+    }
+}
+
+#dropzone {
+    position: relative;
+    border: 5px dotted grey;
+    border-radius: 15px;
+    color: grey;
+    min-height: 220px;
+    margin-bottom: 30px;
+    .dropzone-placeholder{
+        font: bold 24px/200px arial;
+        text-align: center;
+    }
+    p{
+        word-wrap: break-word;
+    }
+    [type="file"] {
+        cursor: pointer;
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+    .main-image {
+        border: 2px solid #40aa95;
+        cursor: auto;
+    }
+    &-error {
+        color: $red-color;
+    }
+}
+
+#youtube-video-lists {
+    li {
+        iframe{
+            width: 100%;
+            height:200px;
+        }
+        &:hover {
+            .youtube-close {
+                position: absolute;
+                color: #fff;
+                z-index: 999;
+                cursor: pointer;
+                top: -7px;
+                left: 94%;
+                text-shadow: 0 0 6px #000;
+                &:before {
+                    font-family: FontAwesome;
+                    content: "\f00d";
+                    font-size: 2em;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 481px) {
+    #dropzone {
+        .dropzone-placeholder {
+            font: bold 20px/200px arial;
+            text-align: center;
+        }
+    }
+}

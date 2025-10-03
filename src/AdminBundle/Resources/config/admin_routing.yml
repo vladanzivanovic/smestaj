@@ -1,0 +1,30 @@
+admin:
+    resource: "@AdminBundle/Controller/"
+    prefix: /
+    options:
+        expose: true
+
+admin.login:
+    path: /login
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: AdminBundle:Pages:login.html.twig
+
+admin.logout:
+    path: /logout
+
+admin.dashboard:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: AdminBundle:Pages:dashboard.html.twig
+
+admin.users:
+    path: /users
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: AdminBundle:Pages:users.html.twig
+
+
+
+

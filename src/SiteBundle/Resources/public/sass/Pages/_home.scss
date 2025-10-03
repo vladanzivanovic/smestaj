@@ -1,0 +1,14 @@
+.index {
+  &__section {
+    @extend .section;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .recomended-hotels {
+    ul.image-box {
+      li {
+        max-height: 240px;
+      }
+    }
+  }
+}

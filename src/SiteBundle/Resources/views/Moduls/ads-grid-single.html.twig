@@ -1,0 +1,32 @@
+{# 0 - alias #}
+{# 1 - pageUrl #}
+{# 2 - Title #}
+{# 3 - imageUrl #}
+{# 4 - PriceFrom #}
+{# 5 - ShortDescription #}
+{# 6 - popupUrl#}
+
+<div class="col-sm-6 col-md-4 ads-grid-single" style="display: none">
+    <article class="box">
+        <figure class="img-290-160">
+            <a href="{1}" class="hover-effect">
+                <img src="{3}" alt="{{ default_alt_text }}"
+                     title="{{ default_title_text }}" data-default-image="no">
+            </a>
+        </figure>
+        <div class="details">
+                        <span class="price">
+                            Od {4}
+                        </span>
+            <h4 class="box-title"><span>{2}</span></h4>
+            <p class="text-middle description"><span>{5}</span></p>
+            <div class="action">
+                <a class="button btn-small outline outline-dark-blue" href="{1}">POGLEDAJ</a>
+                {% if is_granted('ROLE_ADVANCED_USER') %}
+                    <a class="button btn-small outline outline-orange change-ad" href="#" data-alias="{0}">IZMENI</a>
+                    <a class="button btn-small remove-ad outline outline-red" href="#" data-alias="{0}">OBRIŠI</a>
+                {% endif %}
+            </div>
+        </div>
+    </article>
+</div>

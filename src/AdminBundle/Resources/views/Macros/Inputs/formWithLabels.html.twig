@@ -1,0 +1,50 @@
+ {% macro input(title, id, value, name, placeholder = "", type = "text", additionalAttributes = null, class = 'form-control', labelClass = '') %}
+    <label for="{{ id }}" class="{{ labelClass }}">{{ title }}</label>
+    {% import '@Admin/Macros/Inputs/input.html.twig' as form %}
+    {{ form.input(id, value, name, placeholder, type, class, additionalAttributes) }}
+{% endmacro %}
+
+{% macro select(title, id, name, selected, options, placeholder = "", class = "", multiple = false, labelClass = "") %}
+    <label for="{{ id }}" class="{{ labelClass }}">{{ title }}</label>
+    {% import '@Admin/Macros/Inputs/input.html.twig' as form %}
+    {{ form.selectbox(id, name, selected, options, placeholder, class, multiple) }}
+{% endmacro %}
+
+{% macro selectGroup(title, id, name, selected, options, placeholder = "", class = "", multiple = false, labelClass = "") %}
+    <label for="{{ id }}" class="{{ labelClass }}">{{ title }}</label>
+    {% import '@Admin/Macros/Inputs/input.html.twig' as form %}
+    {{ form.selectboxGroup(id, name, selected, options, placeholder, class, multiple) }}
+{% endmacro %}
+
+{% macro radio(title, id, value, name, class, radioClass, additionalAttributes = null) %}
+    <label class="{{ class }}" for="{{ id }}">
+        {% import '@Admin/Macros/Inputs/input.html.twig' as form %}
+        {{ form.input(id, value, name, '', 'radio', radioClass, additionalAttributes) }} {{ title }}
+    </label>
+{% endmacro %}
+
+{% macro checkbox(title, id, value, name, class, checkboxClass, additionalAttributes = null) %}
+    <label class="{{ class }}" for="{{ id }}">
+        {% import '@Admin/Macros/Inputs/input.html.twig' as form %}
+        {{ form.input(id, value, name, '', 'checkbox', checkboxClass, additionalAttributes) }} {{ title }}
+    </label>
+{% endmacro %}
+
+{% macro textarea(title, id, value, name, rows = "10", placeholder = "", class = "") %}
+    <label for="{{ id }}">{{ title }}</label>
+    {% import '@Admin/Macros/Inputs/input.html.twig' as form %}
+    {{ form.textarea(id, value, name, rows, placeholder, class) }}
+{% endmacro %}
+
+{% macro datePicker(title, id, value, name, placeholder = "", type = "text", additionalAttributes = null) %}
+    <label for="{{ id }}">{{ title }}</label>
+    <div class="input-group date datepicker" id="datePicker_{{ id }}">
+        {% import '@Admin/Macros/Inputs/input.html.twig' as form %}
+        {{ form.input(id, value, name, placeholder, type, 'form-control', additionalAttributes) }}<span class="input-group-addon"><i data-feather="calendar"></i></span>
+    </div>
+{% endmacro %}
+
+{% macro button(id, class, text, type = "submit") %}
+    <label class="hidden-xs">&nbsp;</label>
+    <button id="{{ id }}" class="{{ class }}" data-animation-type="bounce" data-animation-duration="1" style="animation-duration: 1s; visibility: visible;" type="{{ type }}">{{ text }}</button>
+{% endmacro %}

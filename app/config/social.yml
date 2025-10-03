@@ -1,0 +1,13 @@
+social_post:
+    publish_on: [facebook]         # List which Social networks you will be publishing to and configure your access to them as shown below
+    providers:
+        facebook:
+            app_id: '%fb_id%'
+            app_secret: '%fb_secret%'
+            default_access_token: '%fb_page_token%'
+            page_id: '%fb_page_id%'
+            enable_beta_mode: true
+            default_graph_version: "v2.9"             # Optional, also supports "mcrypt" and "urandom". Default uses the latest graph version.
+            persistent_data_handler: "memory"         # Optional, also supports "session". Default is "memory".
+            pseudo_random_string_generator: "openssl" # Optional, also supports "mcrypt" and "urandom". Default is "openssl".
+            http_client_handler: "curl"               # Optional, also supports "stream" and "guzzle". Default is "curl".

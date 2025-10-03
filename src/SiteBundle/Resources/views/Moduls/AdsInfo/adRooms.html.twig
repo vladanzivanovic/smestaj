@@ -1,0 +1,33 @@
+{% if additionalInfo is defined and additionalInfo|length > 0 and ads['CatAlias'] == 'sale-za-veselja' %}
+    <div class="hotel fade" id="additional-info">
+        <div class="tab-pane">
+            <div class="guest-reviews">
+                <h2>Sale</h2>
+                <div class="room-list image-box style12">
+                    {% for key, room in additionalInfo %}
+                        <article class="box">
+                            <figure class="img-130-90">
+                                <a href="{{ path('site_popup_ads_gallery', {'id': ads['adsId'], 'infoId': room['InfoId']}) }}"
+                                   class="hover-effect popup-gallery">
+                                    <img src="{{ room['Media'][0]['ThumbUrl'] }}" class="img-center"
+                                         alt="{{ default_alt_text }}"
+                                         title="{{ default_title_text }}">
+                                </a>
+                            </figure>
+                            <div class="details">
+                                {% set roomNo = key + 1 %}
+                                <h4 class="box-title">{{ 'Sala' ~ roomNo }}</h4>
+                                <p>{{ room['Description']|raw }}</p>
+                            </div>
+                            <div class="action">
+                                <span class="price"><small>Kapacitet</small>{{ room['CapacityMin'] ~ ' - ' ~ room['CapacityMax'] }}</span>
+                                {#<a href="flight-booking.html" class="button btn-small">SELECT NOW</a>#}
+                            </div>
+                        </article>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

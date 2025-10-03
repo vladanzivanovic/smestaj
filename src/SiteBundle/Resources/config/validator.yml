@@ -1,0 +1,9 @@
+services:
+    site_validator.container:
+        class: Smestaj\SiteBundle\Validators\ValidatorContainer
+        abstract: true
+        parent: app.base_service
+
+    site_validator.user:
+        class: Smestaj\SiteBundle\Validators\UserValidator
+        parent: site_validator.container

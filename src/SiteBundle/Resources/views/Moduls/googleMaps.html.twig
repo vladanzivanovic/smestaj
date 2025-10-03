@@ -1,0 +1,7 @@
+<div id='map_canvas'></div>
+<input type="hidden" value="" id="lat" name="lat">
+<input type="hidden" value="" id="lng" name="lng">
+
+<script nonce="{{ csp_nonce('script') }}">
+    window.mapsApiKey = '{{ google_maps_key }}';
+</script>

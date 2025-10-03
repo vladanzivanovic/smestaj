@@ -1,0 +1,42 @@
+{% set selectedTags = search | length > 0 and search.tags is defined ? search.tags : [] %}
+{% set selectedCity = search | length > 0 and search.city is defined ? search.city : [] %}
+
+{#<div id="mySidenav" class="sidenav">#}
+    <div id="mobile-filter" class="toggle-container filters-container parent-form hidden-md hidden-lg">
+        {% for alias, type in tags %}
+            <div class="panel style1 arrow-right">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#{{ alias }}-filter" class="collapsed" id="{{ alias }}-label">
+                        {{ type.name }}
+                    </a>
+                </h4>
+                <div id="{{ alias }}-filter" class="panel-collapse collapse">
+                    <div class="panel-content">
+                        <ul class="check-square filters-option tag-filter">
+                            {% for tag in type.tags %}
+                                <li class="{{ tag.slug in selectedTags ? 'active' : '' }} tag-btn" data-search-name="tags" data-search="{{ tag.slug }}">
+                                    <span>{{ tag.name|capitalize }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="panel style1 arrow-right">
+            <h4 class="panel-title">
+                <a href="#modify-search-panel" class="without-collapse">Mesto</a>
+            </h4>
+            <div id="modify-search-panel">
+                <div class="panel-content selector">
+                    <select class="full-width" name="city" id="city">
+                        <option value="-1" >{{ 'choose' | trans }}</option>
+                        {% for city in cities %}
+                            <option value="{{ city.alias }}" {{ selectedCity == city.alias ? 'selected="selected"' : '' }}>{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+{#</div>#}

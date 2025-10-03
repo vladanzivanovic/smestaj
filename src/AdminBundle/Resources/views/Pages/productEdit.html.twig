@@ -1,0 +1,344 @@
+{% extends '@Admin/base.html.twig' %}
+
+{% block title %}Dodavanje/Izmena proizvoda{% endblock %}
+{% block bodyClass %}product-edit{% endblock %}
+
+{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_product_page' %}
+
+{% block content %}
+
+    {% include '@Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena proizvoda' } %}
+
+    {% import '@Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+    {% import '@Admin/Macros/Inputs/input.html.twig' as inputs %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Proizvodi - 1060x1580</h4>
+        </div>
+    </div>
+
+    <form id="edit_form" enctype="multipart/form-data">
+        {{ inputs.input('_csrf_token', csrf_token('set_ad'), '_csrf_token', '', 'hidden') }}
+        {% for language in languages %}
+{#            {% set trans = IS_EDIT ? product.translationByLocale(language.code) : '' %}#}
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ language.name|upper }}</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Naziv', 'title_'~language.code, IS_EDIT ? product.title : '', 'title_'~language.code) }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.textarea('Kratak opis', 'short_description_'~language.code, IS_EDIT ? product.shortDescription : '', 'short_description_'~language.code, 10, '', 'form-control') }}
+                                    </div>
+                                </div><!-- Col -->
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.textarea('Opis', 'description_'~language.code, IS_EDIT ? product.description : '', 'description_'~language.code, 10, '', 'form-control') }}
+                                    </div>
+                                </div><!-- Col -->
+                            </div><!-- Row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Cene</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Cena od - Predsezona', 'price_from_pre_season', IS_EDIT ? product.prepricefrom : '', 'pre_price_from') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Cena do - Predsezona', 'price_to_pre_season', IS_EDIT ? product.prepriceto : '', 'pre_price_to') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Cena od - Sezona', 'price_from', IS_EDIT ? product.pricefrom : '', 'price_from') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Cena do - Sezona', 'price_to', IS_EDIT ? product.priceto : '', 'price_to') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Cena od - Postsezona', 'price_from_post_season', IS_EDIT ? product.postpricefrom : '', 'post_price_from') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Cena do - Postsezona', 'price_to_post_season', IS_EDIT ? product.postpriceto : '', 'post_price_to') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Adresa</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Mesto', 'city', 'city', IS_EDIT ? product.cityId.alias : '', cities, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Ulica i broj', 'street_and_number', IS_EDIT ? product.address : '', '_address') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            {% include ('@Site/Moduls/googleMaps.html.twig') %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Dodatne informacije</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Tip smeštaja', 'category', 'category', IS_EDIT ? product.categoryId.id : '', categories, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Website', 'website', IS_EDIT ? product.website : '', 'website') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Facebook', 'facebook', IS_EDIT ? product.facebook : '', 'facebook') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Instagram', 'instagram', IS_EDIT ? product.instagram : '', 'instagram') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+{#                        <div class="row">#}
+{#                            <div class="col-sm-6">#}
+{#                                <div class="form-check form-check-flat form-check-primary">#}
+{#                                    {% set upValue = constant('App\\Entity\\Product::HOME_PAGE_UP') %}#}
+{#                                    {{ form.checkbox('Početna strana gore', 'home_page_checkbox_up', upValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and product.showHomePage == upValue ? 'checked="checked"' : null ) }}#}
+{#                                </div>#}
+{#                            </div><!-- Col -->#}
+{#                            <div class="col-sm-6">#}
+{#                                <div class="form-check form-check-flat form-check-primary">#}
+{#                                    {% set downValue = constant('App\\Entity\\Product::HOME_PAGE_DOWN') %}#}
+
+{#                                    {{ form.checkbox('Početna strana dole', 'home_page_checkbox_down', downValue, 'show_home_page', 'form-check-label', 'form-check-input', IS_EDIT and product.showHomePage == downValue ? 'checked="checked"' : null ) }}#}
+{#                                </div>#}
+{#                            </div><!-- Col -->#}
+{#                        </div><!-- Row -->#}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Plaćanje</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Tip plaćanja', 'price_plan', 'price_plan', IS_EDIT and product.lastPayment is not null ? product.lastPayment.type : '', paymentPlan, '', 'w-100') }}
+                                    {{ form.datePicker('Datum važenja', 'payment_date', IS_EDIT and product.lastPayment is not null ? product.lastPayment.date | date('d.m.Y') : '', 'payment_date') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tagovi</h4>
+                        {% for tagType, typeTags in tags %}
+                            {% if tagType != 'range' %}
+                                <h6>{{ typeTags.name }}</h6>
+                                <div class="row">
+                                    {% for tag in typeTags.tags %}
+                                        {% set additionalAttributes = 'data-error-after=\'#card_title\' ' %}
+                                        {% if IS_EDIT and selectedTags[tagType][tag.id] is defined %}
+                                            {% set additionalAttributes = additionalAttributes ~ 'checked="checked"' %}
+                                        {% endif %}
+                                        <div class="col-md-4 col-sm-1">
+                                            <div class="form-check form-check-flat form-check-primary">
+                                                {{ form.checkbox(tag.name, 'tags_'~tag.id, 1, 'tags['~tagType~']['~tag.id~']', 'form-check-label', 'form-check-input', additionalAttributes) }}
+                                            </div>
+                                        </div><!-- Col -->
+                                    {% endfor %}
+                                </div><!-- Row -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Udaljenost od - u metrima</h4>
+                        <div class="row">
+                            {% for rangeTag in tags.range.tags %}
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        {{ form.input(rangeTag.name, 'tags_'~rangeTag.id, IS_EDIT and selectedTags.range[rangeTag.id] is defined ? selectedTags.range[rangeTag.id].value : '', 'tags[range]['~rangeTag.id~']', null, 'number') }}
+                                    </div>
+                                </div><!-- Col -->
+                            {% endfor %}
+                        </div><!-- Row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Slike</h6>
+                        <div class="row">
+                            {% include '@Site/Moduls/dropzone.html.twig' with {'dropzoneName': 'product', 'class': 'dropzone-dark w-100', 'maxFiles': 100} %}
+                        </div><!--Row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Video</h6>
+                        <div class="row">
+                            {% include '@Site/Moduls/youtube.html.twig' %}
+                        </div><!--Row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Kontakt podaci</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Ime', 'contact_first_name', IS_EDIT ? product.contact.firstName : '', 'contact[first_name]') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Prezime', 'contact_surname', IS_EDIT ? product.contact.lastName : '', 'contact[surname]') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Email', 'contact_email', IS_EDIT ? product.contact.contactemail : '', 'contact[email]') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Ulica i broj', 'contact_street', IS_EDIT ? product.contact.address : '', 'contact[address]') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Mesto', 'contact_city', 'contact[city]', IS_EDIT ? product.contact.city.alias : '', cities, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Telefon', 'contact_phone', IS_EDIT ? product.contact.telephone : '', 'contact[telephone]') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Mobilni telefon', 'contact_mobile_phone', IS_EDIT ? product.contact.mobilephone : '', 'contact[mobile_phone]') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Viber', 'contact_viber', IS_EDIT ? product.contact.viber : '', 'contact[viber]') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            {% if false == IS_EDIT %}
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Lozinka', 'contact_password', '', 'contact[password]') }}
+                                    </div>
+                                </div><!-- Col -->
+                            {% endif %}
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Vlasnik', 'owner', 'owner', IS_EDIT and product.owner is not null ? product.owner.id : '', owners, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {{ form.button('product_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const IS_EDIT = {{ app.request.attributes.has('id') ? 1 : 0 }};
+        const ID = '{{ app.request.attributes.get('id') }}';
+        const CATEGORIES = JSON.parse('{{ categories|json_encode()|raw }}')
+        const CITIES = JSON.parse('{{ cities | json_encode() | raw }}');
+
+        {% if IS_EDIT %}
+            const COORDINATES = {lat: {{ product.lat ?? 0 }}, lng: {{ product.lng ?? 0 }}};
+            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+        {% endif %}
+
+    </script>
+{% endblock %}

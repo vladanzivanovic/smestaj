@@ -1,0 +1,47 @@
+{# src/SiteBundle/Resources/views/Site/paginate.html..twig #}
+<ul class="pagination clearfix">
+    {% set classFirst = '' %}
+    {% set classLast = '' %}
+    {% set query = app.request.query.all %}
+    {% set params = app.request.attributes.get('_route_params')|merge( query ) %}
+    {% set page = 'page' | trans %}
+    {% if true == pagination['disableFirst'] %}
+        {% set classFirst = 'disabled' %}
+    {% endif %}
+
+    <li class="first {{ classFirst }}">
+        <a href="{{ path(app.request.attributes.get('_route'), params|unset('stranica') ) }}"><<</a>
+    </li>
+    {% if pagination.prevPage == 1 %}
+        {% set prevLinkParams = params|unset('stranica') %}
+    {% else %}
+        {% set prevLinkParams = params|merge( {(page): pagination['prevPage']} ) %}
+    {% endif %}
+    <li class="prev {{ classFirst }}"><a href="{{ path(app.request.attributes.get('_route'), prevLinkParams ) }}"><</a></li>
+
+    {% for prev in pagination['currentPage'] - 3..pagination['currentPage'] - 1 %}
+        {% if prev > 0 %}
+            {% if pagination.prevPage == 1 %}
+                {% set prevLinkParams = params|unset('stranica') %}
+            {% else %}
+                {% set prevLinkParams = params|merge( {(page): pagination['prevPage']} ) %}
+            {% endif %}
+            <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), prevLinkParams ) }}">{{ prev }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    <li class="pages active"><a href="#">{{ pagination['currentPage'] }}</a></li>
+
+    {% for next in pagination['currentPage'] + 1..pagination['currentPage'] + 3 %}
+        {% if next <= pagination['totalPages'] %}
+            <li class="pages"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {(page): next} ) ) }}">{{ next }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if true == pagination['disableLast'] %}
+        {% set classLast = 'disabled' %}
+    {% endif %}
+
+    <li class="next {{ classLast }}"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {(page): pagination['nextPage']} ) ) }}">></a></li>
+    <li class="last {{ classLast }}"><a href="{{ path(app.request.attributes.get('_route'), params|merge( {(page): pagination['totalPages']} ) ) }}">>></a></li>
+</ul>

@@ -1,0 +1,72 @@
+#smartwizard {
+  > ul.step-anchor {
+    display: flex;
+
+    @media screen and (max-width: 768px) {
+      display: block;
+    }
+
+    > li {
+      flex-grow: 1;
+      > a {
+        width: calc(100% - 12px);
+
+        @media screen and (max-width: 768px) {
+          width: auto;
+        }
+      }
+
+      &.active {
+        a {
+          background: $medium-orange-color !important;
+          color: $white !important;
+
+          &:before {
+            border-left: 30px solid $medium-orange-color;
+          }
+
+          &:after {
+            border-left: 30px solid $medium-orange-color !important;
+          }
+
+        }
+      }
+
+      &.done {
+        a {
+          background: $white !important;
+          color: $dark-blue-theme-color !important;
+
+          &:before {
+            border-left: 30px solid $medium-orange-color;
+          }
+
+          &:after {
+            border-left: 30px solid $white !important;
+          }
+        }
+      }
+    }
+  }
+
+  .sw-container {
+    width: 100% !important;
+  }
+
+  .sw-btn {
+    &-prev, &-next {
+      border-radius: 0;
+      border: 1px solid $dark-blue-theme-color;
+      background: transparent !important;
+      color: $dark-blue-theme-color;
+
+      &:focus {
+        outline: 0;
+      }
+    }
+
+    &-group-extra {
+      float: right;
+    }
+  }
+}

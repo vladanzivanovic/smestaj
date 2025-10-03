@@ -1,0 +1,39 @@
+{# src/mestajSiteBundle/Resources/views/Site/aboutUs.html.html.twig #}
+{% extends("@Site/base.html.twig") %}
+{% block content %}
+    <div class="page-title-container">
+        <div class="container">
+            <div class="page-title pull-left">
+                <h2 class="entry-title"> O nama </h2>
+            </div>
+            <ul class="breadcrumbs pull-right">
+                <li><a href="{{ path('site_index') }}">POČETNA</a></li>
+                <li class="active">O nama</li>
+            </ul>
+        </div>
+    </div>
+    <section id="content" class="about_us">
+        <div class="section">
+            <div class="container description">
+                <div class="text-center description">
+                    <h1>Dobrodošli na portal mojeveselje</h1>
+                    <p>﻿jedinstveno mesto na kome možete izabrati i rezervisati sve sto Vam je potrebno da Vaše veselje bude maksimalno dobro organizovano,veselo i nezaboravno.</p>
+                    <p>Portal mojeveselje.com Vam omogućava , gde god da ste u svetu ili u Srbiji , da rezervišete:</p>
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <ul class="check hover box about_us_list">
+                            {% for cat in category_service.getCategories() %}
+                                {% set param = app_params('category') %}
+                                {% if in_array(cat.Alias, param) %}
+                                    <li class="col-md-6"><a class="info-primary" href="{{ path("site_ads_view", {'category': cat.Alias}) }}">{{ param[cat.Alias] }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                    <p>i sve ostalo što Vam je neophodno da Vam skrati vreme organizacije i rezervacije i da Vaše veselje bude posebno , a Vi budete zadovoljni.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

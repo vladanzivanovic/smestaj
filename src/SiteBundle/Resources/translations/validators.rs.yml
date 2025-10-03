@@ -1,0 +1,29 @@
+fields:
+  required: 'Obavezno polje.'
+  email: 'Email nije ispravan.'
+  email_exists: 'Email adresa je već registrovana.'
+  password_not_equal: 'Lozinke se ne poklapaju.'
+  not_blank: 'Obavezno polje.'
+  max_length: 'Maksimalan broj karaktera je {{ limit }}.'
+  min_length: 'Minimalan broj karaktera je %limit%.'
+  min: 'Unesite broj koji je veći ili jednak broju %limit%.'
+  main_image: 'Glavna slika nije postavljena'
+  equal_to: 'Polja nisu ista.'
+  date_not_valid: 'Datum nije validan.'
+  city_not_exits: Mesto nije pronađeno.
+  date_is_higher_then: '%fromDate%" mora biti manje od "%toDate%".'
+
+files:
+  limit_reached: 'Maksimalni broj slika je dostignut.'
+
+product.quantity: 'Količina je obavezna.'
+product.quantity_positive_number: 'Količina mora biti veća od 0.'
+product.color: 'Boja je obavezna.'
+product.size: 'Veličina je obavezna.'
+
+promo_coupon.not_active_yet: Promotivni kod još uvek nije aktivan.
+promo_coupon.expired: Promotivni kod je istekao.
+promo_coupon.used: Vi ste već upotrebili promo kod.
+promo_coupon.not_found: Promotivni kod nije pronađen.
+
+user_not_exists: 'Korisnik nije pronađen.'

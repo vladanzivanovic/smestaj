@@ -1,0 +1,66 @@
+{% extends("@Site/base.html.twig") %}
+{% block content %}
+    <div class="page-title-container">
+        <div class="container">
+            <div class="page-title pull-left">
+                <h2 class="entry-title">Korisnički profil</h2>
+            </div>
+            <ul class="breadcrumbs pull-right">
+                <li><a href="{{ path('site_index') }}">POČETNA</a></li>
+                <li class="active">Korisnički profil</li>
+            </ul>
+        </div>
+    </div>
+    <section id="content" class="gray-area">
+        <div class="container">
+            <div id="main">
+                <div class="profile-tabs tab-container full-width-style arrow-left dashboard">
+                    <ul class="tabs">
+                        <li class="active"><a data-toggle="tab" href="#dashboard"><i class="soap-icon-anchor circle"></i>Pregled</a></li>
+                        {#<li class=""><a data-toggle="tab" href="#profile"><i class="soap-icon-user circle"></i>Profile</a></li>#}
+                        {% if is_granted('ROLE_ADVANCED_USER') %}
+                            <li class=""><a data-toggle="tab" href="#set_ad_wrapper"><i class="soap-icon-businessbag circle"></i>Dodavanje oglasa</a></li>
+                            {#<li class=""><a data-toggle="tab" href="#calendar"><i class="soap-icon-businessbag circle"></i>Kalendar</a></li>#}
+                        {% endif %}
+                        <li class=""><a data-toggle="tab" href="#settings"><i class="soap-icon-settings circle"></i>Podešavanje naloga</a></li>
+                    </ul>
+                    <div id="main-tab" class="tab-content">
+                        <div id="dashboard" class="tab-pane fade in active">
+                            <h1 class="no-margin skin-color">Zdravo {{ app.user.firstname }} {{ app.user.lastname }}, Dobrodošli na
+                                sajt {{ site_info['site_name'] }}!</h1>
+                            <br />
+                            <div class="row block user-profile ads-overview"></div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ include('@Site/Moduls/pagination-ajax.html.twig') }}
+                                </div>
+                            </div>
+                        </div>
+                        {#<div id="calendar" class="tab-pane fade">#}
+                            {#<h1 class="no-margin skin-color">Kalendar događaja</h1>#}
+                            {#<br />#}
+                            {#<div class="row block user-profile">#}
+                                {#{{ include('@Site/Moduls/calendar-template.html.twig') }}#}
+                            {#</div>#}
+                        {#</div>#}
+                        <div id="set_ad_wrapper" class="tab-pane fade"></div>
+                        {% include('@Site/Moduls/Profile/setProfile.html.twig') %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{#    {{ include('@Site/Moduls/ads-grid-single.html.twig') }}#}
+    {{ include('@Site/Moduls/Profile/setAd.html.twig') }}
+{% endblock %}
+{% block customStylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/css/site/user_profile.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block customJavascript %}
+    <script nonce="{{ csp_nonce('script') }}" type="text/javascript">
+        const USER_ID = '{{ app.user.id }}';
+        const TAGS = JSON.parse('{{ tags | json_encode| raw }}');
+        const IS_ADVANCED_USER = {{ is_granted('ROLE_ADVANCED_USER') ? 1 : 0 }};
+    </script>
+{% endblock %}

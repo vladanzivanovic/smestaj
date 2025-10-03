@@ -1,0 +1,67 @@
+_errors:
+    resource: "@TwigBundle/Resources/config/routing/errors.xml"
+    prefix:   /_error
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+    options:
+      expose: true
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /connect
+    options:
+      expose: true
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login
+    options:
+      expose: true
+
+google_login:
+    path: /login/check-google
+
+PrestaSitemapBundle:
+    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+
+_bazinga_jstranslation:
+    resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
+
+admin:
+    resource: "@AdminBundle/Resources/config/admin_routing.yml"
+    prefix: /admin
+    options:
+        expose: true
+
+admin_api:
+    resource: "@AdminBundle/Resources/config/admin_api_routing.yml"
+    prefix: /admin/api
+    options:
+        expose: true
+
+site:
+    resource: "@SiteBundle/Resources/config/routing.yml"
+    prefix:   /
+    options:
+        expose: true
+
+logs-2:
+    resource: "@LogBundle/Controller"
+    prefix:   /logs-2
+    type: annotation
+
+#api_annotation:
+#    resource: "@SiteBundle/Controller/"
+#    type: annotation
+#    prefix: /api/
+#    options:
+#        expose: true

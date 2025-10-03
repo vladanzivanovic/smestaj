@@ -1,0 +1,64 @@
+{% extends("@Site/base.html.twig") %}
+{% set urlStatus = app.request.attributes.get('status') %}
+{% block content %}
+    <div class="page-title-container">
+        <div class="container">
+            <div class="page-title pull-left">
+                <h2 class="entry-title">Potvrda rezevacije {{ title != '' ? '- '~title : '' }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                <div id="main" class="col-md-12">
+                    <div class="travelo-box">
+                        <p>{{ message is defined ? message : '' }}</p>
+                        <form action="" class="{{ urlStatus == 'confirmed' or app.user is null or status == false ? 'hide' : '' }}">
+                            <div class="form-group">
+                                <h4 class="title">Razlog odbijanja rezervacije?</h4>
+                                {% set rejection = app_params('reject_reservation') %}
+                                {% for type in rejection %}
+                                    <div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="rejectionReason" value="{{ type }}">{{ type }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label for="rejectionReasonTxt">Dodatni opis</label>
+                                <textarea name="rejectReasonTxt" id="rejectionReasonTxt" class="full-width" rows="10"></textarea>
+                            </div>
+                            <div class="form-group reservation-button">
+                                <div class="center-block">
+                                    <button type="button" class="full-width btn-large" id="reservation-btn" onclick="ReservationService.setReservationReason();">POŠALJI</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block customJavascript %}
+    {% javascripts
+    '@SiteBundle/Resources/public/js/Services/ReservationService.js'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    <script nonce="{{ csp_nonce('script') }}">
+        window.reservatio_id = '{{ app.request.attributes.get('reservation').id }}';
+        window.reservatio_status = '{{ urlStatus }}';
+        window.user = '{{ app.user is not null ? app.user.id : '' }}';
+
+        tjq(window).load(function () {
+            ReservationService.confirmationInit();
+        })
+    </script>
+    {% endjavascripts %}
+{% endblock %}

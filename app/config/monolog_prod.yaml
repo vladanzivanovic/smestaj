@@ -1,0 +1,20 @@
+monolog:
+  handlers:
+    main:
+      type: fingers_crossed
+      action_level: error
+      handler: nested
+    app_log:
+      type: stream
+      path: '%kernel.logs_dir%/php-errors.log'
+      level: error
+      include-stacktraces: true
+      max-files: 10
+    nested:
+      type: stream
+      path: '%kernel.logs_dir%/%kernel.environment%.log'
+      level: debug
+      include-stacktraces: true
+      max-files: 10
+    console:
+      type: console

@@ -1,0 +1,21 @@
+services:
+#  site.twig.user_extension:
+#    class: SiteBundle\Twig\UserExtension
+#    tags:
+#      - { name: twig.extension }
+  SiteBundle\Twig\HttpExtension:
+    class: SiteBundle\Twig\HttpExtension
+    arguments:
+      - '@twig.extension.httpfoundation'
+    tags:
+      - { name: twig.extension }
+#  site.twig.params_extension:
+#    class: SiteBundle\Twig\ParamsExtension
+#    arguments:
+#      - '@service_container'
+#    tags:
+#      - { name: twig.extension }
+#  site.twig.array_extension:
+#    class: SiteBundle\Twig\ArrayExtension
+#    tags:
+#      - { name: twig.extension }

@@ -1,0 +1,73 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Dodavanje / Izmena plaćanja{% endblock %}
+
+{% block content %}
+    {% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_payment_page' %}
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {
+        activePage: 'Dodavanje - izmena plaćanja',
+        pages: [
+            {routeName: 'admin.payment_page', name: 'Plaćanje'}
+        ]
+    } %}
+
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Dodavanje - izmena plaćanja</h4>
+        </div>
+    </div>
+
+    <form id="edit_form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            {% for language in languages %}
+                                {% set paymentTrans = IS_EDIT ? payment.translationByLocale(language.code) : '' %}
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        {{ form.input('Naziv - '~language.name|upper, 'title_'~language.code, IS_EDIT ? paymentTrans.title : '', 'title_'~language.code) }}
+                                    </div>
+                                </div><!-- Col -->
+                            {% endfor %}
+                        </div><!-- Row -->
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.select('Tip slanja', 'shipping', 'shipping[]', IS_EDIT ? selectedShipping : '', shippingOptions, '', 'w-100', true) }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6 col-md-4">
+                                <div class="form-group">
+                                    {{ form.select('Tip plaćanja', 'payment_type', 'payment_type', IS_EDIT ? payment.paymentType : '', paymentOptions, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div><!-- Row -->
+                        <div class="row">
+                            {% for language in languages %}
+                                {% set trans = IS_EDIT ? payment.translationByLocale(language.code) : '' %}
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        {{ form.textarea('Opis - '~language.name|upper, 'description_'~language.code, IS_EDIT ? trans.description : '', 'description_'~language.code, 10, '', 'form-control') }}
+                                    </div>
+                                </div><!-- Col -->
+                            {% endfor %}
+                        </div><!-- Row -->
+                        {{ form.button('submit_button', 'btn btn-primary submit', 'Sačuvaj', 'button') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const IS_EDIT = {{ app.request.attributes.has('id') ? 1 : 0 }};
+        const ID = '{{ app.request.attributes.get('id') }}';
+    </script>
+{% endblock %}

@@ -1,0 +1,86 @@
+assetic:
+    filters:
+        cssrewrite: ~
+        scssphp:
+            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+    assets:
+        bootstrap_fonts_woff:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/glyphicons-halflings-regular.woff'
+            output: fonts/glyphicons-halflings-regular.woff
+        bootstrap_fonts_woff2:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/glyphicons-halflings-regular.woff2'
+            output: fonts/glyphicons-halflings-regular.woff2
+        bootstrap_fonts_ttf:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/glyphicons-halflings-regular.ttf'
+            output: fonts/glyphicons-halflings-regular.ttf
+        bootstrap_fonts_svg:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/glyphicons-halflings-regular.svg'
+            output: fonts/glyphicons-halflings-regular.svg
+        bootstrap_fonts_eot:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/glyphicons-halflings-regular.eot'
+            output: fonts/glyphicons-halflings-regular.eot
+        soap_icons_eot:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/soap-icons.eot'
+            output: fonts/soap-icons.eot
+        soap_icons_woff:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/soap-icons.woff'
+            output: fonts/soap-icons.woff
+        soap_icons_ttf:
+            inputs:
+                - '@SiteBundle/Resources/public/fonts/soap-icons.ttf'
+            output: fonts/soap-icons.ttf
+        logo_image:
+            inputs:
+                - '@SiteBundle/Resources/public/images/logo.png'
+            output: images/logo.png
+        mobile_menu_image:
+            inputs:
+                - '@SiteBundle/Resources/public/images/icon/mobile-menu.png'
+            output: images/icon/mobile-menu.png
+        icon_check_image:
+            inputs:
+                - '@SiteBundle/Resources/public/images/icon/icon-check.png'
+            output: images/icon/icon-check.png
+        summernote_ttf:
+            inputs:
+                - '@SiteBundle/Resources/public/components/summernote-master/font/summernote.ttf'
+            output: fonts/summernote.ttf
+        summernote_woff:
+            inputs:
+                - '@SiteBundle/Resources/public/components/summernote-master/font/summernote.woff'
+            output: fonts/summernote.woff
+        summernote_eot:
+            inputs:
+                - '@SiteBundle/Resources/public/components/summernote-master/font/summernote.eot'
+            output: fonts/summernote.eot
+        fontawesome_woff:
+            inputs:
+                - '@SiteBundle/Resources/public/components/font-awesome/fonts/fontawesome-webfont.woff'
+            output: fonts/fontawesome-webfont.woff
+        fontawesome_woff2:
+            inputs:
+                - '@SiteBundle/Resources/public/components/font-awesome/fonts/fontawesome-webfont.woff2'
+            output: fonts/fontawesome-webfont.woff2
+        fontawesome_eot:
+            inputs:
+                - '@SiteBundle/Resources/public/components/font-awesome/fonts/fontawesome-webfont.eot'
+            output: fonts/fontawesome-webfont.eot
+        fontawesome_svg:
+            inputs:
+                - '@SiteBundle/Resources/public/components/font-awesome/fonts/fontawesome-webfont.svg'
+            output: fonts/fontawesome-webfont.svg
+        fontawesome_ttf:
+            inputs:
+                - '@SiteBundle/Resources/public/components/font-awesome/fonts/fontawesome-webfont.ttf'
+            output: fonts/fontawesome-webfont.ttf
+        fontawesome_otf:
+            inputs:
+                - '@SiteBundle/Resources/public/components/font-awesome/fonts/FontAwesome.otf'
+            output: fonts/FontAwesome.otf

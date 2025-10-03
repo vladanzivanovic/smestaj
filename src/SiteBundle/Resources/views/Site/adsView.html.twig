@@ -1,0 +1,147 @@
+{# src/SiteBundle/Resources/views/Site/index.html.html.twig #}
+{% extends("@Site/base.html.twig") %}
+
+{% set search = search_criteria is not null ? search_criteria : [] %}
+{% set category = app.request.attributes.get('category') %}
+{% set extraParams = app.request.attributes.get('extraParams') %}
+{% set categoryName = selected_category is defined and selected_category is not null and category != 'Smeštaj' ? selected_category.name : 'Smeštaj' %}
+
+
+{% block title %}{{ categoryName }} {{ selected_city_name }} već od {{ min_price }} eura | {{ site_info.site_title }}
+{% endblock %}
+
+{% block metaDescription %}{{ selected_city_name }} nudi najpovoljnije {{ categoryName | lower }} u Crnoj Gori. Provedite odmor na crnogorskom primorju po pristupačnim cenama. Rezervište brzo i lako danas.
+{% endblock %}
+
+{% set robotIndex = 'index, follow' %}
+
+{% if current_page > 1 %}
+    {% set robotIndex = 'noindex, follow' %}
+{% elseif search_criteria is not null %}
+    {% set robotIndex = 'noindex, nofollow' %}
+{% endif %}
+
+{% block robotFollow %}<meta name="robots" content="{{ robotIndex }}">{% endblock %}
+
+
+{% block bodyClass %}{{ 'ad-view' }}{% endblock %}
+{% block content %}
+    {% set params = app.request.query.all %}
+    {% set categoryAlias = selected_category is defined and selected_category is not null and category != 'Smeštaj' ? selected_category.alias : null %}
+    {% set sortOptions = app_params('shop')['list_sort'] %}
+
+    {% set pagination = ads.pagination %}
+
+    <div class="page-title-container">
+        <div class="container">
+            <div class="page-title pull-left">
+                <h1 class="entry-title">{{ categoryName }} {{ selected_city_name is not null ? '- ' ~ selected_city_name : '' }}</h1>
+            </div>
+            <ul class="breadcrumbs pull-right" itemscope itemtype="http://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemprop="item" href="{{ path('site_index') }}"><span itemprop="name">{{ 'navi.home' | trans }}</span></a><meta itemprop="position" content="1" /></li>
+                {% if(category.parent.alias is defined and category.parent.alias is not null) %}
+                    <li itemprop="itemListElement"><a itemprop="item" href="{{ path('site_ads_view', {'category': category.parent.alias }) }}"><span itemprop="name">{{ category.ParentAlias }}</span></a><meta itemprop="position" content="2" /></li>
+                {% endif %}
+                <li class="active" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    {% set schemaCategory = categoryAlias is null ? 'smestaj' : categoryAlias %}
+                    <meta itemprop="item" content="{{ absolute_url(path("site_ads_view", {'category': schemaCategory })) }}" />
+                    <span itemprop="name">{{ categoryName }}</span>
+                    <meta itemprop="position" content="{{ category.parent.alias is defined and category.parent.alias is not null ? 3 : 2 }}" />
+                </li>
+            </ul>
+        </div>
+    </div>
+
+        {% set bgImage = categoryAlias is not null ? path('category_image_show', {filter: 'category_single', alias: categoryAlias }) : path('category_image_show', {filter: 'category_single' })  %}
+        <div class="global-map-area section header-bg-image-category parallax" data-parallax="scroll" data-image-src="{{ bgImage }}" data-natural-height="700">
+            <div class="text-center description">
+                <div class="text-center description">
+                    <h2 class="page-title">
+                        {{ categoryName }}
+                    </h2>
+                    <h3 class="sub-title">(Budva, Sutomore, Petrovac, Bečići, Kotor, Herceg Novi...)</h3>
+                </div>
+            </div>
+        </div>
+    <section id="content">
+        <div class="container">
+            <div id="main">
+                <div class="row">
+                    {% if is_full_view() %}
+                        {% include("@Site/Moduls/leftSide.html.twig") %}
+                    {% endif %}
+                    <div class="col-sm-8 col-md-9">
+                        <div class="sort-by-section clearfix">
+                            <h4 class="sort-by-title">Sortiraj rezultate po :</h4>
+                            <ul class="sort-bar clearfix">
+                                <li class="sort-by-name">
+                                    <select id="sort-list">
+                                        {% for index, option in sortOptions %}
+                                            {% set transTitleId = 'sort.title.'~option %}
+                                            {% set slugId = 'sort.slug.'~option %}
+                                            {% set transSlug = slugId | trans %}
+
+                                            <option value="{{ option != 'basic' ? transSlug : -1 }}" {{ search.sort is defined and search.sort[0] == transSlug ? 'selected="selected" : ""' }}>{{ transTitleId | trans }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </li>
+                            </ul>
+
+{#                            <ul class="swap-tiles clearfix">#}
+{#                                {% if is_full_view() %}#}
+{#                                <li class="swap-list {{ app.session.get('view') == 'list' ? 'active' : '' }}">#}
+{#                                    <a href="#" class="ads-view" data-view="list" title="Lista"><i class="soap-icon-list"></i></a>#}
+{#                                </li>#}
+{#                                {% endif %}#}
+{#                                <li class="swap-grid {{ app.session.get('view') == 'grid' or is_mobile_view() or is_tablet() ? 'active' : '' }}">#}
+{#                                    <a href="#" class="ads-view" data-view="grid" title="Grid"><i class="soap-icon-grid"></i></a>#}
+{#                                </li>#}
+{#                            </ul>#}
+                        </div>
+                        <div class="search-criteria"></div>
+                        {% if ads.data is defined %}
+                            {% set view = is_mobile_view() or is_tablet_view() ? 'grid' : app.session.get('view') %}
+                                {{ include('@Site/Moduls/ads-grid.html.twig') }}
+                        {% endif %}
+                        <div class="clearfix"></div>
+                        {{ include('@Site/Moduls/paginate.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if is_mobile_view() or is_tablet_view() %}
+        <!-- shop-left-sidebar-area-end -->
+        <div id="myNav" class="overlay">
+
+            <!-- Button to close the overlay navigation -->
+            <a href="javascript:void(0)" id="filter-btn-close">&times;</a>
+
+            <!-- Overlay content -->
+            <div class="overlay-content">
+                {% include('@Site/Moduls/filter.html.twig') %}
+            </div>
+
+        </div>
+
+        <span id="filter-btn-open" class="letter-capitalize">{{ 'filters' | trans }}</span>
+    {% endif %}
+
+{% endblock %}
+{% block customStylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/css/site/pages/ad_view.css') }}"/>
+{% endblock %}
+{% block customJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const SEARCH_CRITERIA = JSON.parse('{{ search | json_encode| raw }}');
+        const CATEGORY = '{{ category }}';
+        const IS_SINGLE_AD = false;
+        window.EXTRA_PARAMS = '{{ extraParams }}';
+    </script>
+
+    <script type="application/ld+json">
+        {{ json_ld_data | json_encode |raw }}
+    </script>
+
+{% endblock %}

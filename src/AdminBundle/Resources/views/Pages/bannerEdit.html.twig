@@ -1,0 +1,116 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% set bannerList = [
+    {'title': 'Loyalty - 1920x533', 'value': constant('App\\Entity\\Banner::TYPE_LOYALTY')},
+    {'title': 'Newsletter - 1500x735 (mobilna - 600x800)', 'value': constant('App\\Entity\\Banner::TYPE_NEWS_LETTER')},
+    {'title': 'PopUp - 1500x735 (mobilna - 600x800)', 'value': constant('App\\Entity\\Banner::TYPE_POP_UP')},
+] %}
+
+{% block title %}Dodavanje/Izmena banera{% endblock %}
+{% block bodyClass %}banner-edit{% endblock %}
+{% set IS_EDIT = app.request.attributes.get('_route') == 'admin.edit_banner_page' %}
+{% block content %}
+
+
+    {% include 'Admin/Components/breadcrumbs.html.twig' with {activePage: 'Dodavanje - izmena banera' } %}
+
+    {% import 'Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Banner</h4>
+        </div>
+    </div>
+
+    <form id="edit_form" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Banner</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.select('Baner', 'banner-select-box', 'type', IS_EDIT ? type : '' , bannerList, '', 'w-100') }}
+                                </div>
+                            </div><!-- Col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Slika</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Desktop slika</label>
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Mobilna slika</label>
+                            {% include 'Moduls/dropzone.html.twig' with {'dropzoneName': 'banner_mobile', 'class': 'dropzone-dark w-100', 'maxFiles': 1} %}
+                            </div>
+                        </div><!--Row-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row links">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Hrvatski</h6>
+                        <div class="row">
+                            <div class="col-sm-6 btn-text">
+                                <div class="form-group">
+                                    {{ form.input('Teks dugmeta', 'button_rs', IS_EDIT ? rs_button : '', 'rs_button') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Link', 'link_rs', IS_EDIT ? rs_link : '', 'rs_link') }}
+                                </div>
+                            </div><!-- Row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row links">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Engleski</h6>
+                        <div class="row">
+                            <div class="col-sm-6 btn-text">
+                                <div class="form-group">
+                                    {{ form.input('Teks dugmeta', 'button_en', IS_EDIT ? en_button : '', 'en_button') }}
+                                </div>
+                            </div><!-- Col -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.input('Link', 'link_en', IS_EDIT ? en_link : '', 'en_link') }}
+                                </div>
+                            </div><!-- Row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {{ form.button('banner_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+{% endblock %}
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
+        const ID = '{{ app.request.attributes.get('id') }}';
+        const IS_SPEED_LINKS = false;
+
+        {% if IS_EDIT %}
+            const IMAGES = JSON.parse('{{ selectedImages|json_encode()|raw }}');
+        {% endif %}
+    </script>
+{% endblock %}

@@ -1,0 +1,5 @@
+User-Agent: *
+Disallow:
+Allow: /web/
+
+Sitemap: https://smestaj.me/sitemap.xml
