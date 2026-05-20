@@ -37,7 +37,15 @@ RUN apt-get install -y php7.4-mbstring
 RUN apt-get install -y php7.4-zip
 RUN apt-get install -y php7.4-intl
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y gnupg ca-certificates
+
+# Node 16.x via NodeSource. The upstream `setup_16.x` bash installer is gone (Node 16 is EOL),
+# so we pin the legacy NodeSource signing key (0x1655A0AB68576280) and the focal/node_16.x repo
+# manually. Single-quote the keyserver URL so the shell does not split on `&`.
+# NOTE: Node 16 is EOL — revisit and upgrade to a supported LTS when feasible.
+RUN curl -fsSL --retry 3 --retry-delay 2 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x1655A0AB68576280&options=mr' | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg \
+ && echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x focal main" > /etc/apt/sources.list.d/nodesource.list \
+ && echo "deb-src [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x focal main" >> /etc/apt/sources.list.d/nodesource.list
 
 RUN apt-get update
 RUN apt-get install -y nodejs

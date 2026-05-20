@@ -1,4 +1,3 @@
-version: '3.6'
 services:
   lamp:
     build: ./docker/lamp
@@ -13,6 +12,8 @@ services:
     environment:
       PHP_IDE_CONFIG: "serverName=local"
       XDEBUG_SESSION: "PHPSTORM"
+    networks:
+      - smestaj
 
   mysql:
     image: mariadb:10
@@ -24,6 +25,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=vlada123!!!
       - MYSQL_DATABASE=smestaj
+    networks:
+      - smestaj
 
   phpmyadmin:
     depends_on:
@@ -36,6 +39,8 @@ services:
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: vlada123!!!
+    networks:
+      - smestaj
 
   mailcatcher:
     image: schickling/mailcatcher
@@ -43,3 +48,7 @@ services:
     ports:
       - "9503:1025" # changed to 1026 to avoid local instance of mailcatcher
       - "9504:1080"
+    networks:
+      - smestaj
+networks:
+    smestaj:
