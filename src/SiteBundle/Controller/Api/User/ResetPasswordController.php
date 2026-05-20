@@ -8,9 +8,11 @@ use SiteBundle\Entity\User;
 use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Handler\UserHandler;
 use SiteBundle\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ResetPasswordController extends SiteController
@@ -35,20 +37,13 @@ class ResetPasswordController extends SiteController
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @Route("/api/reset-password/{email}", name="site_user_reset_password", methods={"PUT"}, options={"expose": true})
-     *
-     * @param string $email
-     *
-     * @return JsonResponse
-     * @throws ApplicationException
-     */
+    #[Route('/api/reset-password/{email}', name: 'site_user_reset_password', options: ['expose' => true], methods: ['PUT'])]
     public function resetPasswordRequest(string $email): JsonResponse
     {
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $this->json(
                 $this->translator->trans('fields.email', [], 'validators'),
-                JsonResponse::HTTP_BAD_REQUEST
+                Response::HTTP_BAD_REQUEST
             );
         }
 
@@ -57,7 +52,7 @@ class ResetPasswordController extends SiteController
         if (null === $user) {
             return $this->json(
                 ['message' => $this->translator->trans('user_not_exists', [], 'validators')],
-                JsonResponse::HTTP_NOT_FOUND
+                Response::HTTP_NOT_FOUND
             );
         }
 
@@ -66,21 +61,17 @@ class ResetPasswordController extends SiteController
         return $this->json([]);
     }
 
-    /**
-     * @Route("/api/set-new-password/{token}", name="site_user_set_password", methods={"POST"})
-     * @param User    $user
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function setNewPassword(User $user, Request $request)
-    {
+    #[Route('/api/set-new-password/{token}', name: 'site_user_set_password', methods: ['POST'])]
+    public function setNewPassword(
+        #[MapEntity(mapping: ['token' => 'token'])] User $user,
+        Request $request
+    ): JsonResponse {
         $data = $this->requestToArray($request);
 
         $response = $this->userHandler->doResetPassword($user, $data);
 
         if (is_array($response)) {
-            return $this->json($response, JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json($response, Response::HTTP_BAD_REQUEST);
         }
 
         $this->addFlash('message', $this->translator->trans('set_new_password_success'));

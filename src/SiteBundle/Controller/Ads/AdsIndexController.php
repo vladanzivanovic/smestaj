@@ -3,20 +3,21 @@
 namespace SiteBundle\Controller\Ads;
 
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SiteBundle\Collector\AdsPageCollector;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Dom\SingleAdsDom;
 use SiteBundle\Entity\Ads;
+use SiteBundle\Entity\Category;
 use SiteBundle\Formatter\AdsPageFormatter;
 use SiteBundle\Parser\SearchDataParser;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class AdsIndexController extends SiteController
 {
-    private SessionInterface $session;
+    private RequestStack $requestStack;
 
     private AdsPageCollector $adsPageCollector;
 
@@ -29,14 +30,14 @@ final class AdsIndexController extends SiteController
     private LoggerInterface $logger;
 
     public function __construct(
-        SessionInterface $session,
+        RequestStack $requestStack,
         AdsPageCollector $adsPageCollector,
         AdsPageFormatter $adsPageFormatter,
         SearchDataParser $searchDataParser,
         SingleAdsDom $singleAdsDom,
         LoggerInterface $logger
     ) {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->adsPageCollector = $adsPageCollector;
         $this->adsPageFormatter = $adsPageFormatter;
         $this->searchDataParser = $searchDataParser;
@@ -44,15 +45,11 @@ final class AdsIndexController extends SiteController
         $this->logger = $logger;
     }
 
-    /**
-     * @param string      $category
-     * @param Request     $request
-     * @param string|null $extraParams
-     *
-     * @return Response
-     */
-    public function indexAction(string $category, Request $request, ?string $extraParams): Response
-    {
+    public function indexAction(
+        #[MapEntity(mapping: ['category' => 'alias'])] Category $category,
+        Request $request,
+        null|string $extraParams = null
+    ): Response {
         try {
             $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
 
@@ -60,7 +57,7 @@ final class AdsIndexController extends SiteController
                 return $this->singleAdsDom->singleAdsAction($searchCriteria['ad']);
             }
 
-            $data = $this->adsPageCollector->collect($category, $searchCriteria);
+            $data = $this->adsPageCollector->collect($category->getAlias(), $searchCriteria);
             $data['extra_params'] = $extraParams;
             $data['selected_city_name'] = $searchCriteria['city'] !== null ? $searchCriteria['city']->getName() : null;
 
@@ -72,7 +69,7 @@ final class AdsIndexController extends SiteController
             $this->logger->error(
                 'Failed render ads list page',
                 [
-                    'category' => $category,
+                    'category' => $category->getAlias(),
                     'request' => $request,
                     'extraParams' => $extraParams,
                 ]
@@ -90,7 +87,7 @@ final class AdsIndexController extends SiteController
      */
     public function changeAdsViewAction($view)
     {
-        $this->session->set('view', $view);
+        $this->requestStack->getSession()->set('view', $view);
 
         return new Response();
     }

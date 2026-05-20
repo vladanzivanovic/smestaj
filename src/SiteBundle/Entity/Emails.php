@@ -4,81 +4,65 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Emails
- *
- * @ORM\Table(name="emails")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\EmailsRepository")
- */
+#[ORM\Table(name: 'emails')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\EmailsRepository::class)]
 class Emails
 {
     const EMAIL_SUCCESS = 'SENT';
     const EMAIL_FAILED = 'FAILED';
     const EMAIL_SEEN = 'SEEN';
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="fromEmail", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'fromEmail', type: 'string', length: 255, nullable: false)]
     private $fromemail;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="toEmail", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: 'toEmail', type: 'string', length: 255, nullable: false)]
     private $toemail;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="rawData", type="text", nullable=true)
      */
+    #[ORM\Column(name: 'rawData', type: 'text', nullable: true)]
     private $rawdata;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="errorMessage", type="text", length=65535, nullable=true)
      */
+    #[ORM\Column(name: 'errorMessage', type: 'text', length: 65535, nullable: true)]
     private $errormessage;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=150, nullable=false)
      */
+    #[ORM\Column(name: 'status', type: 'string', length: 150, nullable: false)]
     private $status;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="script", type="string", length=200, nullable=false)
      */
+    #[ORM\Column(name: 'script', type: 'string', length: 200, nullable: false)]
     private $script;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="sysCreatedUTC", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: 'sysCreatedUTC', type: 'datetime', nullable: true)]
     private $syscreatedutc;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="code", type="string", length=5)
      */
+    #[ORM\Column(name: 'code', type: 'string', length: 5)]
     private $code;
 
     /**

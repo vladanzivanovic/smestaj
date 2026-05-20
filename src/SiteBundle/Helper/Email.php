@@ -2,20 +2,24 @@
 
 namespace SiteBundle\Helper;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Entity\Emails;
 use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email as MimeEmail;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 final class Email extends ServiceContainer
 {
     protected EntityManagerInterface $lem;
-    protected \Swift_Mailer $mailer;
-    protected EngineInterface $templateEngine;
+    protected MailerInterface $mailer;
+    protected Environment $twig;
     private RandomCodeGenerator $codeGenerator;
     private ParameterBagInterface $parameterBag;
 
@@ -23,8 +27,8 @@ final class Email extends ServiceContainer
         ObjectManager $objectManager,
         TokenStorageInterface $tokenStorage,
         EntityManagerInterface $loggerEm,
-        \Swift_Mailer $mailer,
-        EngineInterface $templateEngine,
+        MailerInterface $mailer,
+        Environment $twig,
         RandomCodeGenerator $codeGenerator,
         ParameterBagInterface $parameterBag
     )
@@ -32,7 +36,7 @@ final class Email extends ServiceContainer
         parent::__construct($objectManager, $tokenStorage);
         $this->lem = $loggerEm;
         $this->mailer = $mailer;
-        $this->templateEngine = $templateEngine;
+        $this->twig = $twig;
         $this->codeGenerator = $codeGenerator;
         $this->parameterBag = $parameterBag;
     }
@@ -41,16 +45,14 @@ final class Email extends ServiceContainer
      * Prepare data and send email
      * @param array $data
      * @return string
-     * @throws \Twig_Error
-     * @throws \Swift_SwiftException
-     * @throws \RuntimeException
+     * @throws \Exception
      */
     public function setAndSendEmail(array $data)
     {
         $data['templateData']['code'] = $this->codeGenerator->random();
 
-        $body = $this->templateEngine->render(
-            "SiteBundle:Email:" . $data['template'] . ".html.twig", $data
+        $body = $this->twig->render(
+            "@Site/Email/" . $data['template'] . ".html.twig", $data
         );
         $attachments = $data['attachments'] ?? null;
         $subject = $data['subject'] ?? 'Poruka sa sajta smestaj.me';
@@ -66,33 +68,33 @@ final class Email extends ServiceContainer
      * @param null $subject
      * @param array $attachments
      * @return string
-     * @throws \Swift_SwiftException
+     * @throws \Exception
      */
-    private function send($data, $body, $subject = null, array $attachments = null)
+    private function send($data, $body, $subject = null, ?array $attachments = null)
     {
         try {
             $siteInfo = $this->parameterBag->get('site_info');
-            $emailInstance = (new \Swift_Message())
-                ->setSubject($subject)
-                ->setFrom($siteInfo['site_email'], $siteInfo['site_name'])
-                ->setReplyTo($data['replyTo'], $data['replyToName'] ?? null)
-                ->setTo($data['toEmail'], $data['toEmailName'] ?? null)
-                ->setBody($body, 'text/html');
+            $email = (new MimeEmail())
+                ->subject($subject)
+                ->from(new Address($siteInfo['site_email'], $siteInfo['site_name']))
+                ->replyTo(new Address($data['replyTo'], $data['replyToName'] ?? ''))
+                ->to(new Address($data['toEmail'], $data['toEmailName'] ?? ''))
+                ->html($body);
 
             if (!empty($attachments)) {
                 foreach ($attachments as $attachment) {
-                    $emailInstance->attach(( new \Swift_Attachment())->setFile($attachment));
+                    $email->attachFromPath($attachment);
                 }
             }
 
-            $response = $this->mailer->send($emailInstance);
+            $this->mailer->send($email);
             $data['status'] = Emails::EMAIL_SUCCESS;
             $this->saveEmail($data);
-        } catch (\Swift_TransportException $swift_TransportException){
+        } catch (TransportExceptionInterface $e) {
             $data['status'] = Emails::EMAIL_FAILED;
-            $data['errorMessage'] = $swift_TransportException->getMessage();
+            $data['errorMessage'] = $e->getMessage();
             $this->saveEmail($data);
-            throw new \Swift_SwiftException(MessageConstants::EMAIL_NOT_SENT);
+            throw new \RuntimeException(MessageConstants::EMAIL_NOT_SENT, 0, $e);
         }
         return true;
     }
@@ -112,7 +114,7 @@ final class Email extends ServiceContainer
             $email->setCode($data['templateData']['code']);
 
             $this->lem->persist($email);
-            $this->lem->flush($email);
+            $this->lem->flush();
             $this->lem->clear();
         }
     }

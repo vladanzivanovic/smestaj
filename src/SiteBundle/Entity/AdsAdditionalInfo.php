@@ -5,57 +5,47 @@ namespace SiteBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * AdsAdditionalInfo
- *
- * @ORM\Table(name="adsadditionalinfo")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\AdsAdditionalInfoRepository")
- */
+#[ORM\Table(name: 'adsadditionalinfo')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\AdsAdditionalInfoRepository::class)]
 class AdsAdditionalInfo
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="Id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'Id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Description", type="text", nullable=true)
      */
+    #[ORM\Column(name: 'Description', type: 'text', nullable: true)]
     private $description;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="CapacityMin", type="integer", nullable=true)
      */
+    #[ORM\Column(name: 'CapacityMin', type: 'integer', nullable: true)]
     private $capacitymin;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="CapacityMax", type="integer", nullable=true)
      */
+    #[ORM\Column(name: 'CapacityMax', type: 'integer', nullable: true)]
     private $capacitymax;
 
     /**
      * @var Ads
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\Ads", inversedBy="adsadditionalinfo")
-     * @ORM\JoinColumn(name="AdsId", nullable=true,referencedColumnName="Id")
      */
+    #[ORM\ManyToOne(targetEntity: Ads::class, inversedBy: 'adsadditionalinfo')]
+    #[ORM\JoinColumn(name: 'AdsId', nullable: true, referencedColumnName: 'Id')]
     private $adsid;
 
     /**
      * @var Media
-     *
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Media", mappedBy="adsinfoid", cascade={"persist", "remove"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'adsinfoid', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $mediainfo;
 
 
@@ -157,7 +147,7 @@ class AdsAdditionalInfo
      *
      * @return AdsAdditionalInfo
      */
-    public function addMedia(\SiteBundle\Entity\Media $medium)
+    public function addMedia(Media $medium)
     {
         $this->mediainfo[] = $medium;
 
@@ -169,7 +159,7 @@ class AdsAdditionalInfo
      *
      * @param \SiteBundle\Entity\Media $medium
      */
-    public function removeMedia(\SiteBundle\Entity\Media $medium)
+    public function removeMedia(Media $medium)
     {
         $this->mediainfo->removeElement($medium);
     }
@@ -191,7 +181,7 @@ class AdsAdditionalInfo
      *
      * @return AdsAdditionalInfo
      */
-    public function setAdsid(\SiteBundle\Entity\Ads $adsid = null)
+    public function setAdsid(?Ads $adsid = null)
     {
         $this->adsid = $adsid;
 

@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: siteinfoparameters.yml }
-    - { resource: hwi.yml }
+    # hwi.yml removed — HWIOAuthBundle removed
     - { resource: services.yml }
     - { resource: template.yml }
     - { resource: "@AdminBundle/Resources/config/services.yml" }
@@ -56,27 +56,28 @@ framework:
     translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
-        resource: '%kernel.root_dir%/config/routing.yml'
-        strict_requirements: ~
+        resource: '%kernel.project_dir%/app/config/routing.yml'
     form: ~
     csrf_protection: ~
-    validation: { enable_annotations: true }
-    serializer: { enable_annotations: true }
-    templating:
-        engines: ['twig']
+    validation:
+        email_validation_mode: html5
+    serializer: ~
+    property_info:
+        with_constructor_extractor: true
     trusted_hosts: ~
-#    trusted_proxies: ~
     session:
-        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        handler_id: null
+        save_path: "%kernel.project_dir%/var/sessions/%kernel.environment%"
+        cookie_samesite: lax
+        cookie_secure: auto
     fragments: ~
-    http_method_override: true
+    handle_all_throwables: true
     php_errors:
         log: true
-    web_link: ~
     assets:
         json_manifest_path: '%kernel.project_dir%/web/build/manifest.json'
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
 
 # Twig Configuration
 twig:
@@ -92,13 +93,13 @@ doctrine:
         dbname: '%database_name%'
         user: '%database_user%'
         password: '%database_password%'
-        server_version: '5.7'
+        server_version: 'mariadb-10.11.0'
         charset: UTF8
         mapping_types:
             enum: string
         default_table_options:
             charset: utf8mb4
-            collate: utf8mb4_unicode_ci
+            collation: utf8mb4_unicode_ci
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/../var/data/data.sqlite"
@@ -107,18 +108,12 @@ doctrine:
         #path: '%database_path%'
 
     orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
-
-# Swiftmailer Configuration
-swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    spool: { type: memory }
-    logging: '%kernel.debug%'
+        mappings:
+            SiteBundle:
+                type: attribute
+                is_bundle: true
 
 fos_js_routing:
     cache_control:
@@ -129,9 +124,8 @@ fos_js_routing:
         expires: null   # anything that can be fed to "new \DateTime($expires)", e.g. "5 minutes"
         vary: []        # string or array, e.g. "Cookie" or [ Cookie, Accept ]
 doctrine_migrations:
-    dir_name: "%kernel.root_dir%/DoctrineMigrations"
-    namespace: Application\Migrations
-    table_name: migration_versions
-    name: Application Migrations
-sentry:
-    dsn: '%sentry_dns%'
+    migrations_paths:
+        'Application\Migrations': '%kernel.project_dir%/app/DoctrineMigrations'
+    storage:
+        table_storage:
+            table_name: migration_versions

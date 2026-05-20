@@ -12,7 +12,7 @@ use SiteBundle\Repository\AdsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductListController extends AbstractController
 {
@@ -33,14 +33,13 @@ final class ProductListController extends AbstractController
     }
 
     /**
-     * @Route("/api/get-product-list", name="admin.get_product_list", methods={"POST"}, options={"expose": true})
-     *
      * @param Request $request
      *
      * @return JsonResponse
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    #[Route('/api/get-product-list', name: 'admin.get_product_list', methods: ['POST'], options: ['expose' => true])]
     public function getList(Request $request)
     {
         $formattedRequest = $this->requestParser->formatRequest($request);

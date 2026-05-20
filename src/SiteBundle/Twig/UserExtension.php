@@ -4,15 +4,15 @@ namespace SiteBundle\Twig;
 
 use SiteBundle\Entity\User;
 
-class UserExtension extends \Twig_Extension
+class UserExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('hasanyrole', [$this, 'hasAnyRoleFilter'])
+            new \Twig\TwigFilter('hasanyrole', [$this, 'hasAnyRoleFilter'])
         ];
     }
 

@@ -2,7 +2,7 @@
 
 namespace SiteBundle\EventListeners;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use SiteBundle\Entity\Media;
 use SiteBundle\Services\ImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -24,21 +24,21 @@ class AdsFileUploadListener
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         $this->adjustFile($entity);
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         $this->adjustFile($entity);
     }
 
     public function postRemove(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         $this->adjustFile($entity);
     }

@@ -3,7 +3,7 @@
 namespace SiteBundle\Handler;
 
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Role;
 use SiteBundle\Entity\User;

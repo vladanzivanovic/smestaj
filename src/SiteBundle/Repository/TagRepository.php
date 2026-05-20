@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class TagRepository

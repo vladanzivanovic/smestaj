@@ -14,12 +14,7 @@ export default (() => {
         Public.generalSearch();
         Private.registerEvents();
     }
-    /**
-     * Set typeahead to general search input
-     *
-     * @Url /api/general-search
-     * @Method GET
-     */
+
     Public.generalSearch = () => {
         Public.cityService.citiesTypeahead(Private.mapper.form);
         CategoryService.getCategories()

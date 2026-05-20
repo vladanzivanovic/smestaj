@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class UserEditController extends AbstractController
@@ -35,11 +35,6 @@ final class UserEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/add-user",
-     *     name="admin.add_user_api",
-     *     methods={"POST"},
-     *     options={"expose": true}
-     * )
      * @param Request $request
      *
      * @return JsonResponse
@@ -47,6 +42,7 @@ final class UserEditController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
+    #[Route('/api/add-user', name: 'admin.add_user_api', methods: ['POST'], options: ['expose' => true])]
     public function add(Request $request): JsonResponse
     {
         $csrf = $request->request->get('_csrf_token');
@@ -74,11 +70,6 @@ final class UserEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/update-user/{id}",
-     *     name="admin.edit_user_api",
-     *     methods={"PUT"},
-     *     options={"expose": true}
-     * )
      * @param Request $request
      * @param User    $user
      *
@@ -86,6 +77,7 @@ final class UserEditController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
+    #[Route('/api/update-user/{id}', name: 'admin.edit_user_api', methods: ['PUT'], options: ['expose' => true])]
     public function update(Request $request, User $user): JsonResponse
     {
         $csrf = $request->request->get('_csrf_token');
@@ -113,15 +105,12 @@ final class UserEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/toggle-user-status/{id}/{status}", name="admin.api_toggle_user_status", methods={"PATCH"},
-     *                                                   options={"expose": true})
-     *
      * @param User $user
      * @param int  $status
      *
      * @return JsonResponse
-     *
      */
+    #[Route('/api/toggle-user-status/{id}/{status}', name: 'admin.api_toggle_user_status', methods: ['PATCH'], options: ['expose' => true])]
     public function toggleActivation(User $user, int $status): JsonResponse
     {
         $user->setStatus((int) $status);
@@ -134,12 +123,11 @@ final class UserEditController extends AbstractController
     }
 
     /**
-     * @Route("/api/disable-user/{id}", name="admin.disable_user_api", methods={"DELETE"}, options={"expose": true})
-     *
      * @param User $user
      *
      * @return JsonResponse
      */
+    #[Route('/api/disable-user/{id}', name: 'admin.disable_user_api', methods: ['DELETE'], options: ['expose' => true])]
     public function remove(User $user): JsonResponse
     {
         $user->setStatus(User::STATUS_DISABLED);

@@ -4,7 +4,7 @@ namespace SiteBundle\Repository;
 
 
 use AdminBundle\Model\DataTableModel;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use SiteBundle\Entity\Ads;
@@ -61,7 +61,7 @@ class AdsRepository extends ExtendedEntityRepository
         if (count($searchData) > 0) {
 
             if (isset($searchData['tags'])) {
-                $tagsQuery = $this->_em->createQueryBuilder()
+                $tagsQuery = $this->getEntityManager()->createQueryBuilder()
                     ->select('1')
                     ->from(Adshastags::class, 'aht')
                     ->leftJoin(Tag::class, 't', 'WITH', 'aht.tag = t')
@@ -225,21 +225,21 @@ class AdsRepository extends ExtendedEntityRepository
         ;
 
         if (null !== $tableModel->getSearch()) {
-            $categoryQuery = $this->_em->createQueryBuilder()
+            $categoryQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Category::class, 'cs1')
                 ->leftJoin(Category::class, 'pcs1', 'WITH', 'pcs1.id = cs1.parent')
                 ->where('REGEXP(cs1.alias, :regex) = true OR (pcs1 IS NOT NULL AND REGEXP(pcs1.alias, :regex) = true)')
                 ->andWhere('a.categoryId = cs1');
 
-            $tagsQuery = $this->_em->createQueryBuilder()
+            $tagsQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Adshastags::class, 'aht')
                 ->leftJoin(Tag::class, 't', 'WITH', 'aht.tag = t')
                 ->where('REGEXP(t.slug, :regex) = true')
                 ->andWhere('aht.ads = a');
 
-            $cityQuery = $this->_em->createQueryBuilder()
+            $cityQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(City::class, 'csq')
                 ->where('REGEXP(csq.alias, :regex) = true')
@@ -289,21 +289,21 @@ class AdsRepository extends ExtendedEntityRepository
             ->orderBy($tableModel->getOrderColumn(), $tableModel->getOrderDirection());
 
         if (!empty($tableModel->getSearch())) {
-            $categoryQuery = $this->_em->createQueryBuilder()
+            $categoryQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Category::class, 'cs1')
                 ->leftJoin(Category::class, 'pcs1', 'WITH', 'pcs1.id = cs1.parent')
                 ->where('REGEXP(cs1.alias, :regex) = true OR (pcs1 IS NOT NULL AND REGEXP(pcs1.alias, :regex) = true)')
                 ->andWhere('a.categoryId = cs1');
 
-            $tagsQuery = $this->_em->createQueryBuilder()
+            $tagsQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Adshastags::class, 'aht')
                 ->leftJoin(Tag::class, 't', 'WITH', 'aht.tag = t')
                 ->where('REGEXP(t.slug, :regex) = true')
                 ->andWhere('aht.ads = a');
 
-            $cityQuery = $this->_em->createQueryBuilder()
+            $cityQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(City::class, 'csq')
                 ->where('REGEXP(csq.alias, :regex) = true')
@@ -343,7 +343,7 @@ class AdsRepository extends ExtendedEntityRepository
             ->innerJoin('a.cityId', 'city')
             ->innerJoin('a.categoryId', 'category')
             ->innerJoin(Media::class, 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1')
-            ->leftJoin('SiteBundle:Category', 'pc', 'WITH', 'pc.id = category.parent')
+            ->leftJoin(Category::class, 'pc', 'WITH', 'pc.id = category.parent')
             ->leftJoin(AdsPayedDate::class, 'payed', 'WITH', 'payed.ads = a AND DATEDIFF(DATE_ADD(payed.date, 1, \'YEAR\'), NOW()) > :dateDiff')
             ->where('a.status = :status')
             ->andWhere('(a.categoryId != :category OR pc.id != :category)')
@@ -445,13 +445,13 @@ class AdsRepository extends ExtendedEntityRepository
         if(true === $mainImg) {
             $query
                 ->addSelect('media.name As mediaName')
-                ->join('SiteBundle:Media', 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1');
+                ->join(Media::class, 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1');
 
             return $query;
         }
 
         $query->addSelect('media.name AS mediaName')
-            ->leftJoin('SiteBundle:Media', 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1');
+            ->leftJoin(Media::class, 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1');
 
         return $query;
     }

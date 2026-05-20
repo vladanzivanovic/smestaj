@@ -12,16 +12,16 @@ final class DataTableRequestParser
     public function formatRequest(Request $request)
     {
         $bag = $request->request;
-        $order = $bag->get('order');
+        $order = $bag->all('order');
 
         return new DataTableModel(
             $bag->getInt('draw'),
             $bag->getInt('start'),
             $bag->getInt('length'),
-            $bag->get('columns'),
+            $bag->all('columns'),
             (int)$order[0]['column'],
             $order[0]['dir'],
-            $bag->get('search')['value']
+            $bag->all('search')['value']
         );
     }
 }

@@ -13,7 +13,7 @@ interface RequestParserInterface
      *
      * @return EntityInterface
      */
-    public function parse(ParameterBag $bag, EntityInterface $entity = null): EntityInterface;
+    public function parse(ParameterBag $bag, ?EntityInterface $entity = null): EntityInterface;
 
     /**
      * @return EntityInterface

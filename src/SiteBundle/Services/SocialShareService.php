@@ -43,7 +43,7 @@ class SocialShareService extends ServiceContainer
     public function share($type)
     {
         /** @var AdsRepository $adsRepo */
-        $adsRepo = $this->em->getRepository('SiteBundle:Ads');
+        $adsRepo = $this->em->getRepository(Ads::class);
 
         $adsPayed = [];
         $adsRegular = [];

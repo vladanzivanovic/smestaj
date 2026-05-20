@@ -5,37 +5,28 @@ namespace SiteBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * TagType.
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\TagTypeRepository")
- * @ORM\Table(name="tag_type")
- */
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\TagTypeRepository::class)]
+#[ORM\Table(name: 'tag_type')]
 class TagType
 {
 
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     *
-     * @ORM\Column(name="name", type="string")
      */
+    #[Assert\NotBlank]
+    #[ORM\Column(name: 'name', type: 'string')]
     private $name;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     *
-     * @ORM\Column(name="label", type="string")
      */
+    #[Assert\NotBlank]
+    #[ORM\Column(name: 'label', type: 'string')]
     private $label;
 
     /**

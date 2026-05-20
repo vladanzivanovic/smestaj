@@ -5,9 +5,10 @@ namespace SiteBundle\Controller\Api;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Repository\AdsRepository;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class SingleAdsEditController
@@ -16,32 +17,27 @@ use Symfony\Component\Routing\Annotation\Route;
 final class SingleAdsEditController extends SiteController
 {
     private AdsRepository $adsRepository;
-    private SessionInterface $session;
+    private RequestStack $requestStack;
 
     public function __construct(
         AdsRepository $adsRepository,
-        SessionInterface $session
+        RequestStack $requestStack
     ) {
         $this->adsRepository = $adsRepository;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
-    /**
-     * @Route("/api/set-ad-number-counter/{alias}", methods={"PUT"}, name="set_ad_number_counter")
-     * @param Ads $ads
-     *
-     * @return JsonResponse
-     */
-    public function increasePhoneCount(Ads $ads): JsonResponse
+    #[Route('/api/set-ad-number-counter/{alias}', methods: ['PUT'], name: 'set_ad_number_counter')]
+    public function increasePhoneCount(#[MapEntity(mapping: ['alias' => 'alias'])] Ads $ads): JsonResponse
     {
-        if (false === $this->session->has(Ads::AD_NUMBER_CLICKED)) {
+        if (false === $this->requestStack->getSession()->has(Ads::AD_NUMBER_CLICKED)) {
             $count = $ads->getPhoneNumberCounter();
             $ads->setPhoneNumberCounter($count + 1);
             $ads->setSendEmail(false);
 
             $this->adsRepository->flush();
 
-            $this->session->set(Ads::AD_NUMBER_CLICKED, true);
+            $this->requestStack->getSession()->set(Ads::AD_NUMBER_CLICKED, true);
         }
 
         return $this->json(null);

@@ -3,7 +3,7 @@
 namespace SiteBundle\Handler;
 
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
 use SiteBundle\Entity\EntityStatusInterface;
 use SiteBundle\Entity\User;
@@ -14,12 +14,12 @@ use SiteBundle\Repository\UserRepository;
 use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserHandler extends ServiceContainer
 {
-    protected UserPasswordEncoderInterface $passwordEncoder;
+    protected UserPasswordHasherInterface $passwordEncoder;
     protected RoleHandler $roleHandler;
     private UserRepository $userRepository;
     private ValidatorHelper $validator;
@@ -28,7 +28,7 @@ class UserHandler extends ServiceContainer
     private TranslatorInterface $translator;
 
     public function __construct(
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         RoleHandler $roleHandler,
         UserRepository $userRepository,
         ValidatorHelper $validator,
@@ -63,7 +63,7 @@ class UserHandler extends ServiceContainer
                 return $this->validator->parseErrors($errors);
             }
 
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $data['password']));
+            $user->setPassword($this->passwordEncoder->hashPassword($user, $data['password']));
             $user = $this->roleHandler->setUserToRole($user, $data['role']);
             $user = $this->setSocialData($user, $data);
 
@@ -134,7 +134,7 @@ class UserHandler extends ServiceContainer
             return $this->validator->parseErrors($errors);
         }
 
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $data['password']));
+        $user->setPassword($this->passwordEncoder->hashPassword($user, $data['password']));
         $user->setToken(null);
         $user->setTokenValid(null);
 
@@ -172,10 +172,10 @@ class UserHandler extends ServiceContainer
 
             $user['id'] = $id;
             /** @var User $userObj */
-            $userObj = $this->arrayToEntity($user, 'SiteBundle:User');
+            $userObj = $this->arrayToEntity($user, User::class);
 
             if(isset($user['password']))
-                $userObj->setPassword($this->passwordEncoder->encodePassword($userObj, $user['password']));
+                $userObj->setPassword($this->passwordEncoder->hashPassword($userObj, $user['password']));
 
             if(isset($user['role'])) {
                 $userObj->removeAllRoles();

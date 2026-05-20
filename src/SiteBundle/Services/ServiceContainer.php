@@ -2,7 +2,7 @@
 
 namespace SiteBundle\Services;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -72,7 +72,7 @@ abstract class ServiceContainer
      */
     protected function updateData($dataObject = null)
     {
-        $this->objectManager->flush($dataObject);
+        $this->objectManager->flush();
     }
 
     protected function removeData($dataObject)
@@ -111,9 +111,11 @@ abstract class ServiceContainer
             }
 
             $association = $metaData->getAssociationMapping($fieldName);
-            if(!isset($association['joinColumns']) || (true === $association['joinColumns'][0]['nullable'] && null === $fieldValue))
+            $joinColumns = $association->joinColumns ?? [];
+            if(empty($joinColumns) || (($joinColumns[0]->nullable ?? false) && null === $fieldValue))
                 continue;
-            $fieldValue = ($fieldValue instanceof  $association['targetEntity']) ? $fieldValue : $this->objectManager->getReference($association['targetEntity'], $fieldValue);
+            $targetEntity = $association->targetEntity;
+            $fieldValue = ($fieldValue instanceof $targetEntity) ? $fieldValue : $this->objectManager->getReference($targetEntity, $fieldValue);
 
             unset($fieldValue);
         }

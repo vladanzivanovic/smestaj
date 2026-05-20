@@ -3,7 +3,7 @@
 namespace SiteBundle\Handler;
 
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Entity\Ads;
@@ -34,7 +34,7 @@ class YoutubeHandler extends ServiceContainer
 
             /** @var Youtubeinfo $youTubeObj */
             $youtube['AdsId'] = $ads;
-            $youTubeObj = $this->arrayToEntity($youtube, 'SiteBundle:Youtubeinfo');
+            $youTubeObj = $this->arrayToEntity($youtube, Youtubeinfo::class);
 
             if(isset($youtube['isDeleted']) && true === $youtube['isDeleted'])
                 $ads->removeYoutube($youTubeObj);

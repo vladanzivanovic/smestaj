@@ -26,7 +26,7 @@ final class AuthenticationEntryPointHandler implements AuthenticationEntryPointI
      *
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
+    public function start(Request $request, ?AuthenticationException $authException = null): RedirectResponse
     {
         if (null !== $authException) {
             if (false !== strpos($request->attributes->get('_route'), 'admin')) {

@@ -25,7 +25,7 @@ final class UserEditRequestParser
         $this->roleHandler = $roleHandler;
     }
 
-    public function parse(ParameterBag $bag, User $user = null): User
+    public function parse(ParameterBag $bag, ?User $user = null): User
     {
         if (null === $user) {
             $user = new User();

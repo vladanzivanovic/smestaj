@@ -1,14 +1,15 @@
 admin:
     resource: "@AdminBundle/Controller/"
     prefix: /
+    type: attribute
     options:
         expose: true
 
 admin.login:
     path: /login
     defaults:
-        _controller: FrameworkBundle:Template:template
-        template: AdminBundle:Pages:login.html.twig
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: '@Admin/Pages/login.html.twig'
 
 admin.logout:
     path: /logout
@@ -16,15 +17,11 @@ admin.logout:
 admin.dashboard:
     path: /
     defaults:
-        _controller: FrameworkBundle:Template:template
-        template: AdminBundle:Pages:dashboard.html.twig
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: '@Admin/Pages/dashboard.html.twig'
 
 admin.users:
     path: /users
     defaults:
-        _controller: FrameworkBundle:Template:template
-        template: AdminBundle:Pages:users.html.twig
-
-
-
-
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: '@Admin/Pages/users.html.twig'

@@ -144,11 +144,7 @@ class ImageService
             // TODO set instance for UploadedFile
         }
 
-        try {
-            $movedFile = $file->move($path, $file->getClientOriginalName());
-        } catch (\Throwable $throwable) {
-            dd($throwable);
-        }
+        $movedFile = $file->move($path, $file->getClientOriginalName());
 
         return $movedFile;
     }

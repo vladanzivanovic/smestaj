@@ -1,6 +1,8 @@
 FROM ubuntu:focal
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG PHP_VERSION=8.1
+ENV TZ=Europe/Belgrade
 
 RUN apt-get update -y
 RUN apt-get install -y apt-utils
@@ -17,27 +19,32 @@ RUN add-apt-repository ppa:ondrej/php
 
 RUN apt-get update -y
 
-RUN apt-get update -y && apt-get install -y php7.4
+RUN apt-get update -y && apt-get install -y php$PHP_VERSION
 RUN apt-get install -y php-pear
-RUN apt-get install -y  libapache2-mod-php7.4
-RUN apt-get install -y php7.4-mysql
-RUN apt-get install -y php7.4-bcmath
-RUN apt-get install -y php7.4-json
-RUN apt-get install -y php7.4-cgi
-RUN apt-get install -y php7.4-xsl
-RUN apt-get install -y php7.4-gd
-RUN apt-get install -y php7.4-imagick
-RUN apt-get install -y php7.4-tidy
-RUN apt-get install -y php7.4-xmlrpc
-RUN apt-get install -y php7.4-xml
-RUN apt-get install -y php7.4-cli
-RUN apt-get install -y php7.4-common
-RUN apt-get install -y php7.4-curl
-RUN apt-get install -y php7.4-mbstring
-RUN apt-get install -y php7.4-zip
-RUN apt-get install -y php7.4-intl
+RUN apt-get install -y libapache2-mod-php$PHP_VERSION
+RUN apt-get install -y php$PHP_VERSION-mysql
+RUN apt-get install -y php$PHP_VERSION-bcmath
+RUN apt-get install -y php$PHP_VERSION-cgi
+RUN apt-get install -y php$PHP_VERSION-xsl
+RUN apt-get install -y php$PHP_VERSION-gd
+RUN apt-get install -y php$PHP_VERSION-imagick
+RUN apt-get install -y php$PHP_VERSION-tidy
+RUN apt-get install -y php$PHP_VERSION-xml
+RUN apt-get install -y php$PHP_VERSION-cli
+RUN apt-get install -y php$PHP_VERSION-common
+RUN apt-get install -y php$PHP_VERSION-curl
+RUN apt-get install -y php$PHP_VERSION-mbstring
+RUN apt-get install -y php$PHP_VERSION-zip
+RUN apt-get install -y php$PHP_VERSION-intl
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+#RUN apt-get update && apt-get install -y curl gnupg ca-certificates
+#RUN mkdir -p /etc/apt/keyrings
+#RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+#RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_14.x jammy main" | tee /etc/apt/sources.list.d/nodesource.list
+#RUN apt-get update && apt-get install -y nodejs
+
+RUN curl -sL https://deb.nodesource.com | bash - \
+    && apt-get install -y nodejs
 
 RUN apt-get update
 RUN apt-get install -y nodejs
@@ -48,7 +55,7 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
 # Make sure we're installing what we think we're installing!
 && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
-&& php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot --version=1.10.13 \
+&& php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
 && rm -f /tmp/composer-setup.*
 
 RUN a2enmod headers
@@ -58,7 +65,7 @@ RUN a2enmod http2
 RUN usermod -u 501 www-data
 
 COPY 000-default.conf /etc/apache2/sites-available
-COPY custom.ini /etc/php/7.4/apache2/conf.d/custom.ini
+COPY custom.ini /etc/php/$PHP_VERSION/apache2/conf.d/custom.ini
 
 RUN phpenmod intl
 

@@ -8,54 +8,34 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Media
- *
- * @ORM\Table(name="media", indexes={@ORM\Index(name="MediaAdsId", columns={"AdsId"})})
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\MediaRepository")
- */
+#[ORM\Table(name: 'media', indexes: [new ORM\Index(name: 'MediaAdsId', columns: ['AdsId'])])]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\MediaRepository::class)]
 class Media implements EntityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\Column(name="Name", type="string", length=500, nullable=false)
-     */
+    #[ORM\Column(name: 'Name', type: 'string', length: 500, nullable: false)]
     private string $name;
 
-    /**
-     * @ORM\Column(length=500, nullable=false)
-     * @Gedmo\Slug(fields={"name"})
-     */
+    #[ORM\Column(length: 500, nullable: false)]
+    #[Gedmo\Slug(fields: ['name'])]
     private string $slug;
 
-    /**
-     * @ORM\Column(length=500, nullable=false)
-     */
+    #[ORM\Column(length: 500, nullable: false)]
     private string $originalName;
 
-    /**
-     * @ORM\Column(name="IsMain", type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: 'IsMain', type: 'boolean', nullable: false)]
     private bool $ismain = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Ads", inversedBy="me    dia")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="AdsId", referencedColumnName="Id")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: Ads::class, inversedBy: 'media')]
+    #[ORM\JoinColumn(name: 'AdsId', referencedColumnName: 'Id')]
     private ?Ads $adsid = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\AdsAdditionalInfo", inversedBy="mediainfo")
-     * @ORM\JoinColumn(name="AdsInfoId", referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: AdsAdditionalInfo::class, inversedBy: 'mediainfo')]
+    #[ORM\JoinColumn(name: 'AdsInfoId', referencedColumnName: 'Id')]
     private ?AdsAdditionalInfo $adsinfoid = null;
 
-    /**
-     * @Assert\Image(maxSize="10M")
-     */
+    #[Assert\Image(maxSize: '10M')]
     private ?UploadedFile $file = null;
 
     private bool $isDeleted = false;

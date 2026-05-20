@@ -4,49 +4,25 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * City
- *§
- * @ORM\Table(name="city")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\CityRepository")
- */
+#[ORM\Table(name: 'city')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\CityRepository::class)]
 class City
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="Id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: 'Id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Name", type="string", length=200, nullable=false)
-     */
+    #[ORM\Column(name: 'Name', type: 'string', length: 200, nullable: false)]
     private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Alias", type="string", length=200, nullable=false)
-     */
+    #[ORM\Column(name: 'Alias', type: 'string', length: 200, nullable: false)]
     private $alias;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ZipCode", type="string", length=50, nullable=true)
-     */
+    #[ORM\Column(name: 'ZipCode', type: 'string', length: 50, nullable: true)]
     private $zipcode;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", length=1, nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', length: 1, nullable: true)]
     private $showInHome = false;
 
     /**

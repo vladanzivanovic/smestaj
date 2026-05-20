@@ -2,7 +2,7 @@
 
 namespace SiteBundle\Repository;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use SiteBundle\Entity\Contact;
 
 class ContactRepository extends ExtendedEntityRepository

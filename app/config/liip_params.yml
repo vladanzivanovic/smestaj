@@ -1,4 +1,6 @@
 liip_imagine :
+    twig:
+        mode: lazy
     resolvers:
         ads_photos:
             web_path:

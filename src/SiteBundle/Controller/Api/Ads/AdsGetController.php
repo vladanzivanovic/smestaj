@@ -6,8 +6,9 @@ namespace SiteBundle\Controller\Api\Ads;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Services\Ads\AdsDashboardService;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AdsGetController extends SiteController
 {
@@ -19,14 +20,8 @@ class AdsGetController extends SiteController
         $this->adsDashboardService = $adsDashboardService;
     }
 
-    /**
-     * @Route("/api/product/{alias}", name="get_ad_dashboard_edit", methods={"GET"})
-     *
-     * @param Ads $ads
-     *
-     * @return JsonResponse
-     */
-    public function getAdDashboard(Ads $ads)
+    #[Route('/api/product/{alias}', name: 'get_ad_dashboard_edit', methods: ['GET'])]
+    public function getAdDashboard(#[MapEntity(mapping: ['alias' => 'alias'])] Ads $ads)
     {
         $data = $this->adsDashboardService->getAdDashboard($ads);
 

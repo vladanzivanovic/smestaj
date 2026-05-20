@@ -10,7 +10,7 @@ use SiteBundle\Handler\AdsHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductRemoveController extends AbstractController
@@ -33,12 +33,11 @@ final class ProductRemoveController extends AbstractController
     }
 
     /**
-     * @Route("/api/product/{id}", methods={"DELETE"}, name="admin.remove_product_api")
-     *
      * @param Ads $ads
      *
      * @return JsonResponse
      */
+    #[Route('/api/product/{id}', name: 'admin.remove_product_api', methods: ['DELETE'])]
     public function remove(Ads $ads): JsonResponse
     {
         try {

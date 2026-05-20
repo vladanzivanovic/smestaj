@@ -9,7 +9,7 @@
 namespace SiteBundle\Repository;
 
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use SiteBundle\Entity\Userreservation;
 

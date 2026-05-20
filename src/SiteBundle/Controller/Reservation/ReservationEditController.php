@@ -5,8 +5,6 @@ namespace SiteBundle\Controller\Reservation;
 
 
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\Ads;
@@ -15,10 +13,11 @@ use SiteBundle\Entity\User;
 use SiteBundle\Handler\UserReservationHandler;
 use SiteBundle\Helper\ConstantsHelper;
 use SiteBundle\Services\ReservationService;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ReservationEditController extends SiteController
 {
@@ -39,16 +38,11 @@ class ReservationEditController extends SiteController
         $this->logger = $logger;
     }
 
-    /**
-     * @Route("/api/ad-reservation/{slug}", name="site_ad_reservation", methods={"POST"})
-     * @ParamConverter("ads", options={"mapping": {"slug": "alias"}})
-     * @param Ads     $ads
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function sendReservation( Ads $ads, Request $request): JsonResponse
-    {
+    #[Route('/api/ad-reservation/{slug}', name: 'site_ad_reservation', methods: ['POST'])]
+    public function sendReservation(
+        #[MapEntity(mapping: ['slug' => 'alias'])] Ads $ads,
+        Request $request
+    ): JsonResponse {
         $data = $this->requestToArray($request);
 
         if(!empty($data) && $this->isCsrfTokenValid('ad_reservation', $data['token'])) {

@@ -31,7 +31,6 @@ parameters:
     google_api_key: ""
     google_analytics: ""
     google_maps_key: ""
-    sentry_dns: "https://3b1a983b3aea49aab54b4c7393d32c9b:5be6577b54414399b01f4d814bc373f5@sentry.io/599385"
     sentry_javascript_dns: ""
     email_address: vladapoz85@gmail.com
     default_locale: rs

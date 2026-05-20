@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait StatusTrait
 {
-    /**
-     * @ORM\Column(name="status", type="smallint", options={"default": 0})
-     */
+    #[ORM\Column(name: 'status', type: 'smallint', options: ['default' => 0])]
     private int $status = EntityStatusInterface::STATUS_PENDING;
 
     public function getStatus(): ?int

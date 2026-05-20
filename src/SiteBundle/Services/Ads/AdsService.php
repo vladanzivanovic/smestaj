@@ -31,7 +31,7 @@ class AdsService
      *
      * @return array
      */
-    public function getDashboardAdsList($page = 1, UserInterface $user)
+    public function getDashboardAdsList(UserInterface $user, int $page = 1)
     {
         $adsQuery = $this->adsRepository->getQueryForDashboard($user);
 

@@ -8,7 +8,7 @@ use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\CategoryRepository;
 use SiteBundle\Services\CategoryService;
 
-class CategoryExtension extends \Twig_Extension
+class CategoryExtension extends \Twig\Extension\AbstractExtension
 {
     private AdsRepository $adsRepository;
 
@@ -25,11 +25,11 @@ class CategoryExtension extends \Twig_Extension
     /**
      * @return array
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('categories', [$this, 'getCategories']),
-            new \Twig_SimpleFunction('search_categories', [$this, 'getCategoriesForSearch']),
+            new \Twig\TwigFunction('categories', [$this, 'getCategories']),
+            new \Twig\TwigFunction('search_categories', [$this, 'getCategoriesForSearch']),
         ];
     }
 

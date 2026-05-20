@@ -1,137 +1,132 @@
 #site_popup_ads_gallery:
 #  path: /popup-gallery/{slug}/{infoId}
-#  defaults: { _controller: SiteBundle:Ads\AdsGet:popupAdsImage, infoId: null }
+#  defaults: { _controller: SiteBundle\Controller\Ads\AdsGetController::popupAdsImageAction, infoId: null }
 #  methods: [GET]
 #
 #site_popup_ads_video:
 #  path: /popup-video/{alias}
-#  defaults: { _controller: SiteBundle:Ads\AdsGet:popupAdsVideo}
+#  defaults: { _controller: SiteBundle\Controller\Ads\AdsGetController::popupAdsVideoAction }
 #  methods: [GET]
 
 #site_all_cities:
 #  path: /all-cities
-#  defaults: { _controller: SiteBundle:City:getCities }
+#  defaults: { _controller: SiteBundle\Controller\Api\CityController::getCitiesAction }
 #  methods: [GET]
 
 #site_cities_by_criteria:
 #  path: /cities/{criteria}
-#  defaults: { _controller: SiteBundle:City:getCitiesByCriteria }
+#  defaults: { _controller: SiteBundle\Controller\Api\CityController::getCitiesByCriteriaAction }
 #  methods: [GET]
 
 site_set_ads_view:
   path: /product-view/{view}
-  defaults: { _controller: SiteBundle:Ads\AdsIndex:changeAdsView }
+  defaults: { _controller: SiteBundle\Controller\Ads\AdsIndexController::changeAdsViewAction }
   methods: [GET]
 
 #site_registration_post:
 #  path: /add-new-user
-#  defaults: { _controller: SiteBundle:User\UserEdit:addNewUser }
+#  defaults: { _controller: SiteBundle\Controller\Api\User\UserEditController::addNewUser }
 #  methods: [POST]
 
 site_user_update:
   path: /user/{id}
-  defaults: { _controller: SiteBundle:User\UserEdit:updateUser }
+  defaults: { _controller: SiteBundle\Controller\Api\User\UserEditController::updateUserAction }
   methods: [PUT]
   requirements:
       id: '\d+'
 
-site_general_search:
-  path: /general-search/{criteria}
-  defaults: { _controller: SiteBundle:Index:getGeneralSearchData }
-  methods: [GET]
-
 site_ad_reservation_days:
   path: /ad-reserved-days/{dateTime}/{adsId}
-  defaults: { _controller: SiteBundle:Reservation\ReservationGet:getReservationForAd }
+  defaults: { _controller: SiteBundle\Controller\Reservation\ReservationGetController::getReservationForAdAction }
   methods: [GET]
   requirements:
     adsId: '\d+'
 
 site_ads_id:
   path: /product/{id}
-  defaults: { _controller: SiteBundle:Ads\AdsGet:getAdsById }
+  defaults: { _controller: SiteBundle\Controller\Ads\AdsGetController::getAdsByIdAction }
   methods: [GET]
   requirements:
       id: '\d+'
 
 #site_ads_save:
 #  path: /product
-#  defaults: { _controller: SiteBundle:Ads\AdsEdit:insertAds }
+#  defaults: { _controller: SiteBundle\Controller\Api\Ads\AdsEditController::insert }
 #  methods: [POST]
 
 #site_ads_update:
 #  path: /product/{id}
-#  defaults: { _controller: SiteBundle:Ads\AdsEdit:updateAds }
+#  defaults: { _controller: SiteBundle\Controller\Api\Ads\AdsEditController::update }
 #  methods: [PUT]
 #  requirements:
 #      id: '\d+'
 
 site_ads_remove:
   path: /product/{id}
-  defaults: { _controller: SiteBundle:Ads\AdsEdit:removeAd }
+  defaults: { _controller: SiteBundle\Controller\Api\Ads\AdsEditController::removeAd }
   methods: [DELETE]
   requirements:
       id: '\d+'
 
 #site_ads_paginate:
 #  path: /product-pagination
-#  defaults: { _controller: SiteBundle:Ads\AdsIndex:adsPagination, page: 1, category: null }
+#  defaults: { _controller: SiteBundle\Controller\Ads\AdsIndexController::adsPaginationAction, page: 1, category: null }
 #  methods: [POST]
 
 site_event_types:
   path: /event-types
-  defaults: { _controller: SiteBundle:Eventtype:getAll }
+  defaults: { _controller: SiteBundle\Controller\EventtypeController::getAllAction }
   methods: [GET]
 
 #site_categories:
 #  path: /category-all
-#  defaults: { _controller: SiteBundle:Category:getCategoryLists }
+#  defaults: { _controller: SiteBundle\Controller\Api\CategoryController::getCategoryLists }
 #  methods: [GET]
 
 #site_user_reset_password:
 #  path: /reset-password
-#  defaults: { _controller: SiteBundle:User\UserEdit:resetPassword }
+#  defaults: { _controller: SiteBundle\Controller\Api\User\UserEditController::resetPassword }
 #  methods: [PUT]
 
 site_send_contact_us:
   path: /contact-us
-  defaults: { _controller: SiteBundle:Index:sendContactForm }
+  defaults: { _controller: SiteBundle\Controller\IndexController::sendContactFormAction }
   methods: [POST]
 
 site_check_ads_exist:
   path: /product/check-exist
-  defaults: { _controller: SiteBundle:Ads\AdsGet:checkAdsExistByTitle }
+  defaults: { _controller: SiteBundle\Controller\Ads\AdsGetController::checkAdsExistByTitleAction }
   methods: [GET]
 
 site_get_user_by_email:
   path: /user-by-email/{email}
-  defaults: { _controller: SiteBundle:User\UserGet:getUserByEmail }
+  defaults: { _controller: SiteBundle\Controller\Api\User\UserGetController::getUserByEmailAction }
   methods: [GET]
 
 site_reservation_status:
   path: /reject-reservation-reason/{reservation}
-  defaults: { _controller: SiteBundle:Reservation\ReservationEdit:setReservationConfirmation}
+  defaults: { _controller: SiteBundle\Controller\Reservation\ReservationEditController::setReservationConfirmationAction }
   methods: [PUT]
   requirements:
     reservation: \d+
 
 site_share_on_facebook:
   path: /share-post-facebook/{adsType}
-  defaults: { _controller: SiteBundle:SocialShare:postToFacebook}
+  defaults: { _controller: SiteBundle\Controller\SocialShareController::postToFacebookAction }
   methods: [GET]
   requirements:
     adsType: \d+
 
 site_goo_map:
   path: /change-city-name/{id}
-  defaults: { _controller: SiteBundle:Index:changeCityName}
+  defaults: { _controller: SiteBundle\Controller\IndexController::changeCityNameAction }
   methods: [GET]
   requirements:
     id: \d+
 
 site_api_ads_view:
   path: /ads-list/{category}/{extraParams}
-  controller: SiteBundle:Api\Ads\AdsIndex:index
+  controller: SiteBundle\Controller\Api\Ads\AdsIndexController::indexAction
   defaults:
     extraParams: null
     requirements:
@@ -140,5 +135,5 @@ site_api_ads_view:
 
 #site_ads_image_resize_on_fly:
 #  path: /ads-image/resize
-#  defaults: { _controller: SiteBundle:Ads\AdsImages:resizeImageOnFly}
+#  defaults: { _controller: SiteBundle\Controller\Api\Ads\AdsImagesController::resizeImageOnFlyAction }
 #  methods: [POST]

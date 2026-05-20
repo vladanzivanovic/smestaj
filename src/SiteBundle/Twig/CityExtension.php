@@ -7,7 +7,7 @@ use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\CityRepository;
 use SiteBundle\Services\CategoryService;
 
-class CityExtension extends \Twig_Extension
+class CityExtension extends \Twig\Extension\AbstractExtension
 {
     private CityRepository $cityRepository;
 
@@ -20,10 +20,10 @@ class CityExtension extends \Twig_Extension
     /**
      * @return array
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('cities', [$this, 'getCities'])
+            new \Twig\TwigFunction('cities', [$this, 'getCities'])
         ];
     }
 

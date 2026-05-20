@@ -4,7 +4,7 @@
 namespace SiteBundle\EventListeners;
 
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 use SiteBundle\Entity\Category;
@@ -16,13 +16,13 @@ class SiteMapAdsSubscriber implements EventSubscriberInterface
 {
     private UrlGeneratorInterface $urlGenerator;
 
-    private ObjectManager $manager;
+    private EntityManagerInterface $manager;
 
     private AdsRepository $adsRepository;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        ObjectManager $manager,
+        EntityManagerInterface $manager,
         AdsRepository $adsRepository
     ) {
         $this->urlGenerator = $urlGenerator;
@@ -30,18 +30,18 @@ class SiteMapAdsSubscriber implements EventSubscriberInterface
         $this->adsRepository = $adsRepository;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            SitemapPopulateEvent::ON_SITEMAP_POPULATE => [
+            SitemapPopulateEvent::class => [
                 ['registerAdsPerCategoryPages', 0],
             ],
         ];
     }
 
-    public function registerAdsPerCategoryPages(SitemapPopulateEvent $event)
+    public function registerAdsPerCategoryPages(SitemapPopulateEvent $event): void
     {
-        $categories = $this->manager->getRepository('SiteBundle:Category')->findAll();
+        $categories = $this->manager->getRepository(Category::class)->findAll();
 
         /** @var Category[] $categories */
         foreach ($categories as $category) {

@@ -1,34 +1,14 @@
 _errors:
-    resource: "@TwigBundle/Resources/config/routing/errors.xml"
+    resource: "@FrameworkBundle/Resources/config/routing/errors.php"
     prefix:   /_error
 
-hwi_oauth_redirect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-    prefix:   /connect
-    options:
-      expose: true
-
-hwi_oauth_connect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
-    prefix:   /connect
-    options:
-      expose: true
-
-hwi_oauth_login:
-    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-    prefix:   /login
-    options:
-      expose: true
-
-google_login:
-    path: /login/check-google
 
 PrestaSitemapBundle:
-    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
+    resource: "@PrestaSitemapBundle/config/routing.yml"
     prefix:   /
 
 fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.php"
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.yaml"
@@ -53,11 +33,6 @@ site:
     prefix:   /
     options:
         expose: true
-
-logs-2:
-    resource: "@LogBundle/Controller"
-    prefix:   /logs-2
-    type: annotation
 
 #api_annotation:
 #    resource: "@SiteBundle/Controller/"

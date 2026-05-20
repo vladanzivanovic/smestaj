@@ -5,7 +5,7 @@ namespace SiteBundle\Twig;
 use Symfony\Bridge\Twig\Extension\HttpFoundationExtension;
 use Symfony\Component\Routing\RouterInterface;
 
-class HttpExtension extends \Twig_Extension
+class HttpExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var HttpFoundationExtension
@@ -20,10 +20,10 @@ class HttpExtension extends \Twig_Extension
     /**
      * @return array
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('absolute_url_custom', [$this, 'getAbsoluteUrl'])
+            new \Twig\TwigFunction('absolute_url_custom', [$this, 'getAbsoluteUrl'])
         ];
     }
 

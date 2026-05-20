@@ -6,6 +6,9 @@ namespace SiteBundle\Handler;
 use Doctrine\ORM\EntityManager;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Entity\Ads;
+use SiteBundle\Entity\Category;
+use SiteBundle\Entity\Genders;
+use SiteBundle\Entity\Gendertoads;
 use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Services\ServiceContainer;
 use SiteBundle\Services\UrlService;
@@ -58,7 +61,7 @@ class GenderHandler extends ServiceContainer
      */
     public function deleteGender($id)
     {
-        $gender = $this->em->getRepository('SiteBundle:Genders')->find($id);
+        $gender = $this->em->getRepository(Genders::class)->find($id);
 
         if(null === $gender)
             throw new ApplicationException(MessageConstants::NOT_FOUND);
@@ -79,7 +82,7 @@ class GenderHandler extends ServiceContainer
             if($gender == 0)
                 continue;
 
-            $genderObj = $this->em->getRepository('SiteBundle:Genders')->find($gender);
+            $genderObj = $this->em->getRepository(Genders::class)->find($gender);
 
             $genderToAds = new Gendertoads();
             $genderToAds->setAdsid($ads);
@@ -114,8 +117,8 @@ class GenderHandler extends ServiceContainer
      */
     private function updateGender($id, $data)
     {
-        $category = $this->em->getRepository('SiteBundle:Category')->find($data['CategoryId']);
-        $genderObj = $this->em->getRepository('SiteBundle:Genders')->find($id);
+        $category = $this->em->getRepository(Category::class)->find($data['CategoryId']);
+        $genderObj = $this->em->getRepository(Genders::class)->find($id);
         $genderObj->setName($data['Name'])
             ->setAlias($this->urlService->generateSeoUrl($data['Name']))
             ->setSysmodifyid($this->token->getToken()->getUser())

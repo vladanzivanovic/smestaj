@@ -2,90 +2,66 @@
 
 namespace SiteBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Userreservation
- *
- * @ORM\Table(name="userreservation", indexes={@ORM\Index(name="IDX_78F0167835F944", columns={"CityId"})})
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\UserRepository")
- */
+#[ORM\Table(name: 'userreservation', indexes: [new ORM\Index(name: 'IDX_78F0167835F944', columns: ['CityId'])])]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\UserRepository::class)]
 class Userreservation
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'Id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="FirstName", type="string", length=200, nullable=false)
      */
+    #[ORM\Column(name: 'FirstName', type: 'string', length: 200, nullable: false)]
     private $firstname;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="LastName", type="string", length=200, nullable=false)
      */
+    #[ORM\Column(name: 'LastName', type: 'string', length: 200, nullable: false)]
     private $lastname;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Email", type="string", length=250, nullable=true)
      */
+    #[ORM\Column(name: 'Email', type: 'string', length: 250, nullable: true)]
     private $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Telephone", type="string", length=250, nullable=true)
      */
+    #[ORM\Column(name: 'Telephone', type: 'string', length: 250, nullable: true)]
     private $telephone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="MobilePhone", type="string", length=200, nullable=true)
      */
+    #[ORM\Column(name: 'MobilePhone', type: 'string', length: 200, nullable: true)]
     private $mobilephone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Address", type="string", length=250, nullable=false)
      */
+    #[ORM\Column(name: 'Address', type: 'string', length: 250, nullable: false)]
     private $address;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="client", cascade={"persist"})
-     * @ORM\JoinColumn(name="UserId", nullable=true, referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'client', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'UserId', nullable: true, referencedColumnName: 'Id')]
     private $userid;
 
-    /**
-     * @var City
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\City")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="CityId", referencedColumnName="Id")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: City::class)]
+    #[ORM\JoinColumn(name: 'CityId', referencedColumnName: 'Id')]
     private $cityid;
 
-    /**
-     * @var Reservation
-     *
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Reservation", mappedBy="clientid")
-     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'clientid')]
     private $reservation;
 
     /**
@@ -273,7 +249,7 @@ class Userreservation
      *
      * @return Userreservation
      */
-    public function setCityid(\SiteBundle\Entity\City $cityid = null)
+    public function setCityid(?City $cityid = null)
     {
         $this->cityid = $cityid;
 
@@ -297,7 +273,7 @@ class Userreservation
      *
      * @return Userreservation
      */
-    public function setReservation(\SiteBundle\Entity\Reservation $reservation = null)
+    public function setReservation(?Reservation $reservation = null)
     {
         $this->reservation = $reservation;
 
@@ -318,7 +294,7 @@ class Userreservation
      */
     public function __construct()
     {
-        $this->reservation = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->reservation = new ArrayCollection();
     }
 
     /**
@@ -328,7 +304,7 @@ class Userreservation
      *
      * @return Userreservation
      */
-    public function addReservation(\SiteBundle\Entity\Reservation $reservation)
+    public function addReservation(Reservation $reservation)
     {
         $this->reservation[] = $reservation;
 
@@ -340,7 +316,7 @@ class Userreservation
      *
      * @param \SiteBundle\Entity\Reservation $reservation
      */
-    public function removeReservation(\SiteBundle\Entity\Reservation $reservation)
+    public function removeReservation(Reservation $reservation)
     {
         $this->reservation->removeElement($reservation);
     }

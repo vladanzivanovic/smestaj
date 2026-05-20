@@ -65,7 +65,7 @@ class CategoryHandler extends ServiceContainer
     public function deleteCategory($id)
     {
         /** @var Category $category */
-        $category = $this->em->getRepository('SiteBundle:Category')->find($id);
+        $category = $this->em->getRepository(Category::class)->find($id);
 
         if(null === $category)
             throw new ApplicationException(MessageConstants::NOT_FOUND);
@@ -97,14 +97,14 @@ class CategoryHandler extends ServiceContainer
         $data['Alias'] = $this->urlService->generateSeoUrl($data['Name']);
         $data['Parent'] = $data['ParentId'];
         $data['isDeleted'] = 0;
-        $category = $this->em->getRepository('SiteBundle:Category')->getByAlias($data['Alias']);
+        $category = $this->em->getRepository(Category::class)->getByAlias($data['Alias']);
 
         if(null !== $category )
             throw new \PDOException(MessageConstants::EXIST);
 
         $this->img->setImageToFileSystem($data['Documents'], $this->categoryDir, false, 'category');
         /** @var Category $category */
-        $category = $this->arrayToEntity($data, 'SiteBundle:Category');
+        $category = $this->arrayToEntity($data, Category::class);
 
         if(!empty($data['Documents'])) {
             $category->setImage($data['Documents'][0]['FileName']);
@@ -138,12 +138,12 @@ class CategoryHandler extends ServiceContainer
 
         $data['Alias'] = $this->urlService->generateSeoUrl($data['Name']);
         $data['Parent'] = $data['ParentId'];
-        $category = $this->em->getRepository('SiteBundle:Category')->getByAlias($data['Alias'], $id);
+        $category = $this->em->getRepository(Category::class)->getByAlias($data['Alias'], $id);
 
         if(null !== $category )
             throw new \PDOException(MessageConstants::EXIST);
 
-        $categoryObj = $this->em->getRepository('SiteBundle:Category')->find($id);
+        $categoryObj = $this->em->getRepository(Category::class)->find($id);
 
         if(null === $categoryObj)
             throw new \PDOException(MessageConstants::BADGE_ID_NOT_EXIST);
@@ -152,7 +152,7 @@ class CategoryHandler extends ServiceContainer
 
         $data['id'] = $id;
         /** @var Category $category */
-        $category = $this->arrayToEntity($data, 'SiteBundle:Category');
+        $category = $this->arrayToEntity($data, Category::class);
 
         if(!empty($data['Documents'])) {
             $category->setImage(count($data['Documents']) > 1 ? $data['Documents'][1]['FileName'] : $data['Documents'][0]['FileName']);

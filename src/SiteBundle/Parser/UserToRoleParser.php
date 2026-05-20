@@ -20,7 +20,7 @@ final class UserToRoleParser implements RequestParserInterface
         $this->roleRepository = $roleRepository;
     }
 
-    public function parse(ParameterBag $bag, EntityInterface $entity = null): EntityInterface
+    public function parse(ParameterBag $bag, ?EntityInterface $entity = null): EntityInterface
     {
         if (null === $user = $bag->get('user')) {
             throw new InvalidArgumentException('There is no user on which to set role.');

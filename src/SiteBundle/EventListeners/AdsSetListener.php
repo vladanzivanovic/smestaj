@@ -2,16 +2,13 @@
 
 namespace SiteBundle\EventListeners;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use SiteBundle\Constants\EmailConstants;
 use SiteBundle\Entity\Ads;
-use SiteBundle\Entity\Media;
 use SiteBundle\Entity\User;
 use SiteBundle\Helper\Email;
 use SiteBundle\Services\ImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdsSetListener
 {
@@ -40,14 +37,14 @@ class AdsSetListener
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         $this->sendEmail($entity, true);
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         $this->sendEmail($entity, false);
     }

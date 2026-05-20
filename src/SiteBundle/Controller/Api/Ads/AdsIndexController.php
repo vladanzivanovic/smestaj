@@ -10,7 +10,7 @@ use SiteBundle\Parser\SearchDataParser;
 use SiteBundle\Services\Ads\AdsService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class AdsIndexController extends SiteController
 {
@@ -67,20 +67,12 @@ final class AdsIndexController extends SiteController
         }
     }
 
-    /**
-     * @Route("/api/product-pagination/{page}", name="site_ads_paginate", methods={"GET"})
-     *
-     * @param Request $request
-     * @return JsonResponse
-     * @throws \SiteBundle\Exceptions\ApplicationException
-     * @throws \LogicException
-     * @throws \InvalidArgumentException
-     */
+    #[Route('/api/product-pagination/{page}', name: 'site_ads_paginate', methods: ['GET'])]
     public function adsPagination($page)
     {
         $user = $this->getUser();
 
-        $adsData = $this->adsService->getDashboardAdsList($page, $user);
+        $adsData = $this->adsService->getDashboardAdsList($user, $page);
 
         return $this->json($adsData);
     }

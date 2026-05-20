@@ -5,12 +5,8 @@ namespace SiteBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * Reservation
- *
- * @ORM\Table(name="reservation", indexes={@ORM\Index(name="ReservationAdsId", columns={"AdsId"})})
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\ReservationRepository")
- */
+#[ORM\Table(name: 'reservation', indexes: [new ORM\Index(name: 'ReservationAdsId', columns: ['AdsId'])])]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\ReservationRepository::class)]
 class Reservation
 {
     const NOTIFICATION_ANY = 0;
@@ -18,78 +14,50 @@ class Reservation
     const NOTIFICATION_EMAIL = 2;
     const NOTIFICATION_PHONE = 3;
 
-    /**
-     * @ORM\Column(name="Id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'Id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @ORM\Column(name="Note", type="text", length=65535, nullable=true)
-     */
+    #[ORM\Column(name: 'Note', type: 'text', length: 65535, nullable: true)]
     private ?string $note;
 
-    /**
-     * @ORM\Column(name="SysModifiedTime", type="datetime", nullable=false)
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[ORM\Column(name: 'SysModifiedTime', type: 'datetime', nullable: false)]
+    #[Gedmo\Timestampable(on: 'create')]
     private \DateTimeInterface $sysmodifiedtime;
 
-    /**
-     * @ORM\Column(name="AdultNumber", type="integer", nullable=true)
-     */
+    #[ORM\Column(name: 'AdultNumber', type: 'integer', nullable: true)]
     private int $adultnumber = 0;
 
-    /**
-     * @ORM\Column(name="ChildrenNumber", type="integer", nullable=true)
-     */
+    #[ORM\Column(name: 'ChildrenNumber', type: 'integer', nullable: true)]
     private ?int $childrennumber = 0;
 
-    /**
-     * @ORM\Column(name="CheckIn", type="date")
-     */
+    #[ORM\Column(name: 'CheckIn', type: 'date')]
     private \DateTimeInterface $checkin;
 
-    /**
-     * @ORM\Column(name="CheckOut", type="date")
-     */
+    #[ORM\Column(name: 'CheckOut', type: 'date')]
     private \DateTimeInterface $checkout;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Ads", inversedBy="reservations")
-     * @ORM\JoinColumn(name="AdsId", referencedColumnName="Id", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Ads::class, inversedBy: 'reservations')]
+    #[ORM\JoinColumn(name: 'AdsId', referencedColumnName: 'Id', nullable: false)]
     private Ads $adsid;
 
-    /**
-     * @ORM\Column(name="FirstName", type="string", length=100)
-     */
+    #[ORM\Column(name: 'FirstName', type: 'string', length: 100)]
     private string $firstname;
 
-    /**
-     * @ORM\Column(name="LastName", type="string", length=100)
-     */
+    #[ORM\Column(name: 'LastName', type: 'string', length: 100)]
     private string $lastname;
 
-    /**
-     * @ORM\Column(name="Email", type="string", length=255, nullable=true);
-     */
+    #[ORM\Column(name: 'Email', type: 'string', length: 255, nullable: true)]
     private ?string $email;
 
-    /**
-     * @ORM\Column(name="Mobile", type="string", length=100);
-     */
+    #[ORM\Column(name: 'Mobile', type: 'string', length: 100)]
     private string $mobile;
 
-    /**
-     * @ORM\Column(name="Viber", type="string", length=100, nullable=true);
-     */
+    #[ORM\Column(name: 'Viber', type: 'string', length: 100, nullable: true)]
     private ?string $viber;
 
-    /**
-     * @ORM\Column(type="smallint", length=1, nullable=false)
-     */
+    #[ORM\Column(type: 'smallint', length: 1, nullable: false)]
     private int $notificationType;
 
     public function getId(): int
@@ -229,7 +197,7 @@ class Reservation
         return $this->viber;
     }
 
-    public function setAdsid(Ads $adsId = null): self
+    public function setAdsid(?Ads $adsId = null): self
     {
         $this->adsid = $adsId;
 

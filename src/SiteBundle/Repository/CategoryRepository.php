@@ -10,12 +10,11 @@ namespace SiteBundle\Repository;
 
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Category;
 use SiteBundle\Entity\EntityStatusInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CategoryRepository extends ExtendedEntityRepository
 {

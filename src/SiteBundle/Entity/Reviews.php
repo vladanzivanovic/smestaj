@@ -4,73 +4,56 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Reviews
- *
- * @ORM\Table(name="reviews", indexes={@ORM\Index(name="ReviewsAdsId", columns={"AdsId"})})
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\ReviewsRepository")
- */
+#[ORM\Table(name: 'reviews', indexes: [new ORM\Index(name: 'ReviewsAdsId', columns: ['AdsId'])])]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\ReviewsRepository::class)]
 class Reviews
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="Id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: 'Id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Title", type="string", length=300, nullable=true)
      */
+    #[ORM\Column(name: 'Title', type: 'string', length: 300, nullable: true)]
     private $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Description", type="text", length=65535, nullable=true)
      */
+    #[ORM\Column(name: 'Description', type: 'text', length: 65535, nullable: true)]
     private $description;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="NickName", type="string", length=150, nullable=true)
      */
+    #[ORM\Column(name: 'NickName', type: 'string', length: 150, nullable: true)]
     private $nickname;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="UserId", type="integer", nullable=true)
      */
+    #[ORM\Column(name: 'UserId', type: 'integer', nullable: true)]
     private $userid;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="IsActive", type="boolean", nullable=true)
      */
+    #[ORM\Column(name: 'IsActive', type: 'boolean', nullable: true)]
     private $isactive = '0';
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="SysCreatedTime", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: 'SysCreatedTime', type: 'datetime', nullable: true)]
     private $syscreatedtime;
 
     /**
      * @var \Ads
-     *
-     * @ORM\ManyToOne(targetEntity="Ads")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="AdsId", referencedColumnName="Id")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: Ads::class)]
+    #[ORM\JoinColumn(name: 'AdsId', referencedColumnName: 'Id')]
     private $adsid;
 
 
@@ -236,7 +219,7 @@ class Reviews
      *
      * @return Reviews
      */
-    public function setAdsid(\SiteBundle\Entity\Ads $adsid = null)
+    public function setAdsid(?Ads $adsid = null)
     {
         $this->adsid = $adsid;
 

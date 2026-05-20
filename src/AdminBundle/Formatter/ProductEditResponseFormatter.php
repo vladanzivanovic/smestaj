@@ -62,7 +62,7 @@ final class ProductEditResponseFormatter
      *
      * @return array
      */
-    public function formatResponse(Ads $product = null): array
+    public function formatResponse(?Ads $product = null): array
     {
         $responseData = [
             'tags' => $this->formatTags($this->tagRepository->getTags()),

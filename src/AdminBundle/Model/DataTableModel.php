@@ -29,7 +29,7 @@ class DataTableModel
         array $columns,
         int $orderColumn,
         string $orderDirection,
-        string $search = null
+        ?string $search = null
     ) {
         $this->draw = $draw;
         $this->limit = $limit;
@@ -51,8 +51,8 @@ class DataTableModel
             $this->columns->add(new DataTableColumnModel(
                 $column['data'],
                 $column['name'],
-                $column['searchable'] == true,
-                $column['orderable'] == true,
+                $column['searchable'] === 'true' || $column['searchable'] === true,
+                $column['orderable'] === 'true' || $column['orderable'] === true,
                 $column['search']['value'],
                 $column['search']['regex']
             ));

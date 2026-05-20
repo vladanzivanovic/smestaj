@@ -15,38 +15,28 @@ services:
             $languages: '%languages%'
             $logDir: '%kernel.logs_dir%'
 
+    Doctrine\Persistence\ObjectManager:
+        alias: 'doctrine.orm.default_entity_manager'
+
     SiteBundle\:
         resource: '../../src/SiteBundle/*'
         exclude: '../../src/SiteBundle/{DependencyInjection,Entity,Migrations,Tests,Resources}'
     AdminBundle\:
         resource: '../../src/AdminBundle/*'
         exclude: '../../src/AdminBundle/{DependencyInjection,Entity,Migrations,Tests,Resources}'
-    LogBundle\:
-        resource: '../../src/LogBundle/*'
-        exclude: '../../src/LogBundle/{DependencyInjection,Entity,Migrations,Tests,Resources}'
 
     AdminBundle\Parser\ProductEditRequestParser: ~
 
     AdminBundle\Parser\RequestParserInterface $productEditRequestParser: '@AdminBundle\Parser\ProductEditRequestParser'
 
-    SiteBundle\Repository\ExtendedEntityRepository:
-        class: SiteBundle\Repository\ExtendedEntityRepository
-        arguments:
-            $entityClass: ~
-
     Liip\ImagineBundle\Service\FilterService:
         alias: 'liip_imagine.service.filter'
 
-    twig.extension.intl:
-        class: Twig_Extensions_Extension_Intl
+    Twig\Extra\Intl\IntlExtension:
         tags:
             - { name: twig.extension }
 
-    app.sitemap_ads_listener:
-        class: SiteBundle\EventListeners\SiteMapAdsSubscriber
-        arguments:
-            - "@router"
-            - "@doctrine.orm.entity_manager"
+    SiteBundle\EventListeners\SiteMapAdsSubscriber:
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
 
@@ -62,14 +52,14 @@ services:
         arguments:
             - "@security.token_storage"
         tags:
-            - { name: kernel.event_listener, event: security.authentication.failure, method: onAuthenticationFailure }
+            - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LoginFailureEvent, method: onAuthenticationFailure }
 
     app.auth_success_listener:
         class: SiteBundle\EventListeners\LoginListener
         arguments:
             - "@security.token_storage"
         tags:
-            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
+            - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LoginSuccessEvent, method: onAuthenticationSuccess }
 
     app.array_helper:
         class: SiteBundle\Helper\ArrayHelper
@@ -95,12 +85,12 @@ services:
     gedmo.listener.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
         tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: loadClassMetadata }
     gedmo.listener.sluggable:
         class: Gedmo\Sluggable\SluggableListener
         tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: loadClassMetadata }

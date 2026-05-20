@@ -27,7 +27,7 @@ class AdsImageResizer
         ParameterBagInterface $parameterBag
     ) {
         $this->parameterBag = $parameterBag;
-        $this->rootDir = $parameterBag->get('kernel.root_dir');
+        $this->rootDir = $parameterBag->get('kernel.project_dir');
         $this->imagine = $imagine;
         $this->tmpDir = $parameterBag->get('upload_tmp_dir');
     }

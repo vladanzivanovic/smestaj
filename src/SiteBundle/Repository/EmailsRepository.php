@@ -2,7 +2,7 @@
 
 namespace SiteBundle\Repository;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use SiteBundle\Entity\Emails;
 
@@ -20,7 +20,7 @@ class EmailsRepository extends ExtendedEntityRepository
     }
     public function save($object)
     {
-        $this->_em->persist($object);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($object);
+        $this->getEntityManager()->flush();
     }
 }

@@ -59,7 +59,7 @@ class EventTypeHandler extends ServiceContainer
      */
     public function deleteEventType($id)
     {
-        $eventType = $this->em->getRepository('SiteBundle:Eventtype')->find($id);
+        $eventType = $this->em->getRepository(Eventtype::class)->find($id);
 
         if(null === $eventType)
             throw new ApplicationException(MessageConstants::NOT_FOUND);
@@ -97,7 +97,7 @@ class EventTypeHandler extends ServiceContainer
      */
     private function updateEventType($id, $data)
     {
-        $eventTypeObj = $this->em->getRepository('SiteBundle:Eventtype')->find($id);
+        $eventTypeObj = $this->em->getRepository(Eventtype::class)->find($id);
         $eventTypeObj->setName($data['Name']);
         $eventTypeObj->setAlias($this->urlService->generateSeoUrl($data['Name']));
         $eventTypeObj->setSysmodifierid($this->token->getToken()->getUser());

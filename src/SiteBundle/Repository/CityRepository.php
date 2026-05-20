@@ -10,7 +10,7 @@ namespace SiteBundle\Repository;
 
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\City;

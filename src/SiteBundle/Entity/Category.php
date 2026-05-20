@@ -7,74 +7,46 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * Category
- *
- *
- * @ORM\Table(name="category")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\CategoryRepository")
- */
+#[ORM\Table(name: 'category')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\CategoryRepository::class)]
 class Category implements EntityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\Column(name="Name", type="string", length=250, nullable=false)
-     */
+    #[ORM\Column(name: 'Name', type: 'string', length: 250, nullable: false)]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(name="Alias", type="string", length=250, nullable=false)
-     */
+    #[ORM\Column(name: 'Alias', type: 'string', length: 250, nullable: false)]
     private ?string $alias = null;
 
-    /**
-     * @ORM\Column(name="Image", type="string", length=250, nullable=true)
-     */
+    #[ORM\Column(name: 'Image', type: 'string', length: 250, nullable: true)]
     private ?string $image = null;
 
-    /**
-     * @ORM\Column(name="SysCreatedTime", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: 'SysCreatedTime', type: 'datetime', nullable: false)]
     private \DateTimeInterface $syscreatedtime;
 
-    /**
-     * @ORM\Column(name="SysModifyTime", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: 'SysModifyTime', type: 'datetime', nullable: false)]
     private \DateTimeInterface $sysmodifytime;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User")
-     * @ORM\JoinColumn(name="SysCreatedUserId", referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'SysCreatedUserId', referencedColumnName: 'Id')]
     private ?UserInterface $syscreateduserid = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User")
-     * @ORM\JoinColumn(name="SysModifyUserId", referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'SysModifyUserId', referencedColumnName: 'Id')]
     private ?UserInterface $sysmodifyuserid = null;
 
-    /**
-     * @ORM\Column(name="Status", type="smallint")
-     */
+    #[ORM\Column(name: 'Status', type: 'smallint')]
     private int $status;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Ads", mappedBy="categoryId")
-     */
+    #[ORM\OneToMany(targetEntity: Ads::class, mappedBy: 'categoryId')]
     private Collection $adsid;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\Category", inversedBy="childCategory")
-     * @ORM\JoinColumn(name="ParentId", referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'childCategory')]
+    #[ORM\JoinColumn(name: 'ParentId', referencedColumnName: 'Id')]
     private ?Category $parent = null;
 
-    /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Category", mappedBy="parent")
-     */
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'parent')]
     private Collection $childCategory;
 
     /**
