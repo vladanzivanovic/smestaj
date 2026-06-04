@@ -13,7 +13,6 @@ services:
     environment:
       PHP_IDE_CONFIG: "serverName=local"
       XDEBUG_SESSION: "PHPSTORM"
-      MAILER_DSN: "smtp://mailcatcher:1025"
 #  lamp:
 #    build: ./docker/lamp
 #    image: lamp

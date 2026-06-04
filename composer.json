@@ -30,7 +30,6 @@
         "exercise/htmlpurifier-bundle": "^5.2",
         "friendsofsymfony/jsrouting-bundle": "^3.2",
         "gedmo/doctrine-extensions": "^3.15",
-        "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^5.4",
         "liip/imagine-bundle": "^2.12",
         "mobiledetect/mobiledetectlib": "^4.8",
@@ -42,6 +41,7 @@
         "symfony/console": "^8.1",
         "symfony/dependency-injection": "^8.1",
         "symfony/doctrine-bridge": "^8.1",
+        "symfony/dotenv": "^8.1",
         "symfony/error-handler": "^8.1",
         "symfony/event-dispatcher": "^8.1",
         "symfony/filesystem": "^8.1",
@@ -81,15 +81,6 @@
         "symfony/web-profiler-bundle": "^8.1"
     },
     "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
-        ],
-        "post-install-cmd": [
-            "@symfony-scripts"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
-        ],
         "develop": [
             "composer dump-autoload --classmap-authoritative --ansi",
             "composer install",
@@ -129,10 +120,7 @@
         ]
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "incenteev/composer-parameter-handler": true
-        }
+        "sort-packages": true
     },
     "extra": {
         "symfony-app-dir": "app",
@@ -141,9 +129,6 @@
         "symfony-web-dir": "web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
         "branch-alias": null,
         "symfony": {
             "allow-contrib": false,

@@ -1,5 +1,4 @@
 imports:
-    - { resource: parameters.yml }
     - { resource: siteinfoparameters.yml }
     # hwi.yml removed — HWIOAuthBundle removed
     - { resource: services.yml }
@@ -26,6 +25,26 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'rs'
+    secret: '%env(APP_SECRET)%'
+    app_secret: '%env(APP_SECRET)%'
+    base_url: '%env(BASE_URL)%'
+    host_schema: '%env(HOST_SCHEMA)%'
+    default_locale: '%env(DEFAULT_LOCALE)%'
+    email_address: '%env(EMAIL_ADDRESS)%'
+    contact_recipient_email: '%env(CONTACT_RECIPIENT_EMAIL)%'
+    assetic_base_path: '%env(ASSETIC_BASE_PATH)%'
+    fb_id: '%env(FB_ID)%'
+    fb_secret: '%env(FB_SECRET)%'
+    fb_page_id: '%env(FB_PAGE_ID)%'
+    fb_graph_version: '%env(FB_GRAPH_VERSION)%'
+    fb_page_token: '%env(FB_PAGE_TOKEN)%'
+    adsense_key: '%env(ADSENSE_KEY)%'
+    re_captcha_key: '%env(RE_CAPTCHA_KEY)%'
+    google_api_key: '%env(GOOGLE_API_KEY)%'
+    google_analytics: '%env(GOOGLE_ANALYTICS)%'
+    google_maps_key: '%env(GOOGLE_MAPS_KEY)%'
+    sentry_javascript_dns: '%env(SENTRY_JAVASCRIPT_DNS)%'
+    youtube_api_key: '%env(YOUTUBE_API_KEY)%'
     limit:
         index_payed: 10
         adsPerPage: 12
@@ -88,11 +107,11 @@ twig:
 doctrine:
     dbal:
         driver: pdo_mysql
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
-        password: '%database_password%'
+        host: '%env(DATABASE_HOST)%'
+        port: '%env(int:DATABASE_PORT)%'
+        dbname: '%env(DATABASE_NAME)%'
+        user: '%env(DATABASE_USER)%'
+        password: '%env(resolve:DATABASE_PASSWORD)%'
         server_version: 'mariadb-10.11.0'
         charset: UTF8
         mapping_types:
