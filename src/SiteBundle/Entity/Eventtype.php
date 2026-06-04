@@ -2,7 +2,6 @@
 
 namespace SiteBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'eventtype')]
@@ -41,19 +40,16 @@ class Eventtype
     /**
      * @var User
      */
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'Id')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'SysCreatorId', referencedColumnName: 'Id')]
     private $syscreatorid;
 
     /**
      * @var User
      */
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'Id')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'SysModifierId', referencedColumnName: 'Id')]
     private $sysmodifierid;
-
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'eventtypeid')]
-    private $reservations;
 
 
     /**
@@ -208,46 +204,5 @@ class Eventtype
     public function getSysmodifierid()
     {
         return $this->sysmodifierid;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->reservations = new ArrayCollection();
-    }
-
-    /**
-     * Add reservation
-     *
-     * @param \SiteBundle\Entity\Reservation $reservation
-     *
-     * @return Eventtype
-     */
-    public function addReservation(Reservation $reservation)
-    {
-        $this->reservations[] = $reservation;
-
-        return $this;
-    }
-
-    /**
-     * Remove reservation
-     *
-     * @param \SiteBundle\Entity\Reservation $reservation
-     */
-    public function removeReservation(Reservation $reservation)
-    {
-        $this->reservations->removeElement($reservation);
-    }
-
-    /**
-     * Get reservations
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getReservations()
-    {
-        return $this->reservations;
     }
 }

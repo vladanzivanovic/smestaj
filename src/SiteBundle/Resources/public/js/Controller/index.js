@@ -3,6 +3,7 @@ import AdsController from "./AdsController";
 import SingleAdsController from "./SingleAdsController";
 import CoreController from "./CoreController";
 import UserDashboardController from "./UserDashboardController";
+import ContactController from "./ContactController";
 
 let routes = [
     {
@@ -22,6 +23,10 @@ let routes = [
     {
         name: 'site_user_profile',
         controller: () => UserDashboardController,
+    },
+    {
+        name: 'site_contact_us',
+        controller: () => ContactController,
     },
 ];
 

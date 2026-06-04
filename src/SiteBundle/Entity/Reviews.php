@@ -4,7 +4,8 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'reviews', indexes: [new ORM\Index(name: 'ReviewsAdsId', columns: ['AdsId'])])]
+#[ORM\Table(name: 'reviews')]
+#[ORM\Index(name: 'ReviewsAdsId', columns: ['AdsId'])]
 #[ORM\Entity(repositoryClass: \SiteBundle\Repository\ReviewsRepository::class)]
 class Reviews
 {

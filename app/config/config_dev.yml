@@ -8,7 +8,6 @@ framework:
         resource: '%kernel.project_dir%/app/config/routing_dev.yml'
     profiler:
         only_exceptions: false
-        collect_serializer_data: true
 
 web_profiler:
     toolbar: true

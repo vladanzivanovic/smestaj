@@ -11,6 +11,7 @@ namespace SiteBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Reviews;
 use SiteBundle\Entity\Stars;
@@ -52,7 +53,7 @@ class ReviewsRepository extends ExtendedEntityRepository
                 ROUND(( s.profesional + s.recommend + s.accomodation + s.talent )/4, 1) as Average,
                 ROUND( ((( s.profesional + s.recommend + s.accomodation + s.talent )/4)/5)*100, 1) as AveragePercent
             ')
-            ->leftJoin(Stars::class, 's', 'WITH', 's.reviewid = r.id');
+            ->leftJoin(Stars::class, 's', Join::ON, 's.reviewid = r.id');
 
         return $query;
     }

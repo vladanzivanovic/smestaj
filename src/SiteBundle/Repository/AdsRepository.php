@@ -7,6 +7,7 @@ use AdminBundle\Model\DataTableModel;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Adshastags;
 use SiteBundle\Entity\AdsPayedDate;
@@ -39,7 +40,7 @@ class AdsRepository extends ExtendedEntityRepository
     public function getPaginationQuery(?Category $category, ?City $city, array $searchData)
     {
         $query = $this->createQueryBuilder('a')
-            ->innerJoin(AdsPayedDate::class, 'apd', 'WITH', 'apd.ads = a.id AND apd.status = :activeStatus')
+            ->innerJoin(AdsPayedDate::class, 'apd', Join::ON, 'apd.ads = a.id AND apd.status = :activeStatus')
             ->where('a.status = :activeStatus')
             ->setParameter('activeStatus', EntityStatusInterface::STATUS_ACTIVE)
             ->orderBy('apd.type', 'DESC')
@@ -64,7 +65,7 @@ class AdsRepository extends ExtendedEntityRepository
                 $tagsQuery = $this->getEntityManager()->createQueryBuilder()
                     ->select('1')
                     ->from(Adshastags::class, 'aht')
-                    ->leftJoin(Tag::class, 't', 'WITH', 'aht.tag = t')
+                    ->leftJoin(Tag::class, 't', Join::ON, 'aht.tag = t')
                     ->where('t.slug IN (:tagsSlug)')
                     ->andWhere('aht.ads = a');
 
@@ -94,7 +95,7 @@ class AdsRepository extends ExtendedEntityRepository
     public function getAdsForSiteMapByCategory(Category $category)
     {
         $query = $this->createQueryBuilder('a')
-            ->innerJoin(AdsPayedDate::class, 'apd', 'WITH', 'apd.ads = a.id AND apd.status = :activeStatus')
+            ->innerJoin(AdsPayedDate::class, 'apd', Join::ON, 'apd.ads = a.id AND apd.status = :activeStatus')
             ->where('a.status = :activeStatus')
             ->andWhere('a.categoryId = :category')
             ->setParameter('activeStatus', EntityStatusInterface::STATUS_ACTIVE)
@@ -116,7 +117,7 @@ class AdsRepository extends ExtendedEntityRepository
     {
         $query = $this->createQueryBuilder('a')
             ->select('MIN(a.prepricefrom)')
-            ->innerJoin(AdsPayedDate::class, 'apd', 'WITH', 'apd.ads = a.id AND apd.status = :activeStatus')
+            ->innerJoin(AdsPayedDate::class, 'apd', Join::ON, 'apd.ads = a.id AND apd.status = :activeStatus')
             ->where('a.status = :activeStatus')
             ->andWhere('a.prepricefrom > 10')
             ->setParameter('activeStatus', EntityStatusInterface::STATUS_ACTIVE);
@@ -162,10 +163,10 @@ class AdsRepository extends ExtendedEntityRepository
                 'media.name as image',
                 'IF(apd.id IS NOT NULL, 1, 0) as isPayed'
             )
-            ->innerJoin(Media::class, 'media', 'WITH', 'media.adsid = a.id and media.ismain = :isMain')
+            ->innerJoin(Media::class, 'media', Join::ON, 'media.adsid = a.id and media.ismain = :isMain')
             ->innerJoin('a.categoryId', 'cat')
             ->innerJoin('a.cityId', 'c')
-            ->leftJoin(AdsPayedDate::class, 'apd', 'WITH', 'apd.ads = a.id')
+            ->leftJoin(AdsPayedDate::class, 'apd', Join::ON, 'apd.ads = a.id')
             ->where('a.id IN (:adsIds)')
             ->setParameter('adsIds', $adsIds)
             ->setParameter('isMain', true)
@@ -197,7 +198,7 @@ class AdsRepository extends ExtendedEntityRepository
                 'c.id as city_id',
                 'media.slug as image_slug'
             )
-            ->leftJoin(Media::class, 'media', 'WITH', 'media.adsid = a.id and media.ismain = :isMain')
+            ->leftJoin(Media::class, 'media', Join::ON, 'media.adsid = a.id and media.ismain = :isMain')
             ->join('a.categoryId', 'cat')
             ->join('a.cityId', 'c')
             ->where('a.owner = :user')
@@ -228,14 +229,14 @@ class AdsRepository extends ExtendedEntityRepository
             $categoryQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Category::class, 'cs1')
-                ->leftJoin(Category::class, 'pcs1', 'WITH', 'pcs1.id = cs1.parent')
+                ->leftJoin(Category::class, 'pcs1', Join::ON, 'pcs1.id = cs1.parent')
                 ->where('REGEXP(cs1.alias, :regex) = true OR (pcs1 IS NOT NULL AND REGEXP(pcs1.alias, :regex) = true)')
                 ->andWhere('a.categoryId = cs1');
 
             $tagsQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Adshastags::class, 'aht')
-                ->leftJoin(Tag::class, 't', 'WITH', 'aht.tag = t')
+                ->leftJoin(Tag::class, 't', Join::ON, 'aht.tag = t')
                 ->where('REGEXP(t.slug, :regex) = true')
                 ->andWhere('aht.ads = a');
 
@@ -282,7 +283,7 @@ class AdsRepository extends ExtendedEntityRepository
             )
             ->innerJoin('a.categoryId', 'cat')
             ->innerJoin('a.cityId', 'c')
-            ->leftJoin(AdsPayedDate::class, 'apd', 'WITH', 'apd.ads = a.id')
+            ->leftJoin(AdsPayedDate::class, 'apd', Join::ON, 'apd.ads = a.id')
             ->setFirstResult($tableModel->getOffset())
             ->setMaxResults($tableModel->getLimit())
             ->groupBy('a.id')
@@ -292,14 +293,14 @@ class AdsRepository extends ExtendedEntityRepository
             $categoryQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Category::class, 'cs1')
-                ->leftJoin(Category::class, 'pcs1', 'WITH', 'pcs1.id = cs1.parent')
+                ->leftJoin(Category::class, 'pcs1', Join::ON, 'pcs1.id = cs1.parent')
                 ->where('REGEXP(cs1.alias, :regex) = true OR (pcs1 IS NOT NULL AND REGEXP(pcs1.alias, :regex) = true)')
                 ->andWhere('a.categoryId = cs1');
 
             $tagsQuery = $this->getEntityManager()->createQueryBuilder()
                 ->select('1')
                 ->from(Adshastags::class, 'aht')
-                ->leftJoin(Tag::class, 't', 'WITH', 'aht.tag = t')
+                ->leftJoin(Tag::class, 't', Join::ON, 'aht.tag = t')
                 ->where('REGEXP(t.slug, :regex) = true')
                 ->andWhere('aht.ads = a');
 
@@ -342,9 +343,9 @@ class AdsRepository extends ExtendedEntityRepository
             )
             ->innerJoin('a.cityId', 'city')
             ->innerJoin('a.categoryId', 'category')
-            ->innerJoin(Media::class, 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1')
-            ->leftJoin(Category::class, 'pc', 'WITH', 'pc.id = category.parent')
-            ->leftJoin(AdsPayedDate::class, 'payed', 'WITH', 'payed.ads = a AND DATEDIFF(DATE_ADD(payed.date, 1, \'YEAR\'), NOW()) > :dateDiff')
+            ->innerJoin(Media::class, 'media', Join::ON, 'a.id = media.adsid and media.ismain = 1')
+            ->leftJoin(Category::class, 'pc', Join::ON, 'pc.id = category.parent')
+            ->leftJoin(AdsPayedDate::class, 'payed', Join::ON, 'payed.ads = a AND DATEDIFF(DATE_ADD(payed.date, 1, \'YEAR\'), NOW()) > :dateDiff')
             ->where('a.status = :status')
             ->andWhere('(a.categoryId != :category OR pc.id != :category)')
             ->setParameter('status', EntityStatusInterface::STATUS_ACTIVE)
@@ -374,7 +375,7 @@ class AdsRepository extends ExtendedEntityRepository
                 'c.name as city',
                 'c.alias as city_alias'
             )
-            ->join(Media::class, 'media', 'WITH', 'ads.id = media.adsid and media.ismain = 1')
+            ->join(Media::class, 'media', Join::ON, 'ads.id = media.adsid and media.ismain = 1')
             ->join('ads.categoryId', 'cat')
             ->join('ads.payedDate', 'payed')
             ->join('ads.cityId', 'c')
@@ -445,13 +446,13 @@ class AdsRepository extends ExtendedEntityRepository
         if(true === $mainImg) {
             $query
                 ->addSelect('media.name As mediaName')
-                ->join(Media::class, 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1');
+                ->join(Media::class, 'media', Join::ON, 'a.id = media.adsid and media.ismain = 1');
 
             return $query;
         }
 
         $query->addSelect('media.name AS mediaName')
-            ->leftJoin(Media::class, 'media', 'WITH', 'a.id = media.adsid and media.ismain = 1');
+            ->leftJoin(Media::class, 'media', Join::ON, 'a.id = media.adsid and media.ismain = 1');
 
         return $query;
     }

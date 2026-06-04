@@ -5,7 +5,8 @@ namespace SiteBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-#[ORM\Table(name: 'reservation', indexes: [new ORM\Index(name: 'ReservationAdsId', columns: ['AdsId'])])]
+#[ORM\Table(name: 'reservation')]
+#[ORM\Index(name: 'ReservationAdsId', columns: ['AdsId'])]
 #[ORM\Entity(repositoryClass: \SiteBundle\Repository\ReservationRepository::class)]
 class Reservation
 {

@@ -12,11 +12,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(
-    name: 'ads',
-    uniqueConstraints: [new ORM\UniqueConstraint(name: 'alias', columns: ['alias'])],
-    indexes: [new ORM\Index(name: 'AdsCategoryId', columns: ['CategoryId']), new ORM\Index(name: 'AdsCityId', columns: ['CityId'])]
-)]
+#[ORM\Table(name: 'ads')]
+#[ORM\UniqueConstraint(name: 'alias', columns: ['alias'])]
+#[ORM\Index(name: 'AdsCategoryId', columns: ['CategoryId'])]
+#[ORM\Index(name: 'AdsCityId', columns: ['CityId'])]
 #[ORM\Entity(repositoryClass: \SiteBundle\Repository\AdsRepository::class)]
 class Ads implements EntityInterface
 {

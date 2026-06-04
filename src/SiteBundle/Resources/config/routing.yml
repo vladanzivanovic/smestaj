@@ -56,12 +56,6 @@ site_reservation_success:
   requirements:
     reservationId: \d+
 
-site_reservation_confirmation:
-  path: /potvrda-rezervacije/{reservation}/{status}
-  defaults: { _controller: SiteBundle\Controller\Reservation\ReservationEditController::setReservationConfirmationPageAction }
-  requirements:
-    reservation: \d+
-
 #site_logo_email:
 #  path: /logo.png
 #  defaults: { _controller: SiteBundle\Controller\SiteImageController::getLogoEmailAction }

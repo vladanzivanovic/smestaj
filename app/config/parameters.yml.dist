@@ -33,6 +33,7 @@ parameters:
     google_maps_key: ""
     sentry_javascript_dns: ""
     email_address: vladapoz85@gmail.com
+    contact_recipient_email: contact@smestaj.local
     default_locale: rs
     youtube_api_key: ""
 

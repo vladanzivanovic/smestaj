@@ -53,7 +53,7 @@ class CategoryService {
      */
     renderSelectBox(el) {
         el.empty();
-        el.val('-1');
+        // el.val('-1');
 
         for (let i in CATEGORIES) {
             let category = CATEGORIES[i];

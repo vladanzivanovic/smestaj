@@ -33,7 +33,7 @@ export default (() => {
         const cityVal = Private.mapper.city.val();
         const categoryObj = CategoryService.getById(categoryId);
         const cityObj = Public.cityService.getCityByParam(cityVal);
-        const category = categoryObj instanceof Object ? categoryObj.alias : 'smestaj';
+        const category = categoryObj.alias;
         const city = cityObj instanceof Object ? cityObj.alias : null;
 
         let params = {category: category};

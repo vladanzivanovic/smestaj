@@ -7,7 +7,7 @@
                     <div class="guest-review table-wrapper">
                         <div class="col-xs-3 col-md-2 author table-cell">
                             <p class="name">{{ review['NickName'] }}</p>
-                            <p class="date">{{ review['ReviewDateTime']|localizeddate('none', 'none', 'sr_Latn_RS', null, date_format)|capitalize }}</p>
+                            <p class="date">{{ review['ReviewDateTime']|date_format('d.m.Y')|capitalize }}</p>
                         </div>
                         <div class="col-xs-9 col-md-10 table-cell comment-container">
                             <div class="comment-header clearfix">

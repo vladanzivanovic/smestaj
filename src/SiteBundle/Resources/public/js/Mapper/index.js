@@ -1,3 +1,4 @@
 import './ReservationMapper';
 import './RegistrationMapper';
 import './LoginMapper';
+import './ContactMapper';

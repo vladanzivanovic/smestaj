@@ -90,7 +90,7 @@ site_event_types:
 
 site_send_contact_us:
   path: /contact-us
-  defaults: { _controller: SiteBundle\Controller\IndexController::sendContactFormAction }
+  defaults: { _controller: SiteBundle\Controller\Api\ContactController::submit }
   methods: [POST]
 
 site_check_ads_exist:

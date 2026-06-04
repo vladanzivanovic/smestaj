@@ -6,12 +6,11 @@ namespace AdminBundle\Controller\Products\Api;
 
 use AdminBundle\Handler\ProductEditHandler;
 use SiteBundle\Entity\Ads;
-use SiteBundle\Entity\EntityInterface;
 use SiteBundle\Entity\EntityStatusInterface;
 use SiteBundle\Helper\ConstantsHelper;
 use AdminBundle\Parser\RequestParserInterface;
-use SiteBundle\Parser\AdsEditParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,17 +18,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductEditController extends AbstractController
 {
-
-    private RequestParserInterface $requestParser;
-
-    private ProductEditHandler $editHandler;
-
     public function __construct(
-        RequestParserInterface $productEditRequestParser,
-        ProductEditHandler $editHandler
+        #[Target('productEditRequestParser')] private readonly RequestParserInterface $requestParser,
+        private readonly ProductEditHandler $editHandler
     ) {
-        $this->requestParser = $productEditRequestParser;
-        $this->editHandler = $editHandler;
     }
 
     /**

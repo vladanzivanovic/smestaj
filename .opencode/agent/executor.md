@@ -1,7 +1,7 @@
 ---
 description: Phase 2 generalist executor for smestaj. Implements PHP/Symfony, Twig, JS/SCSS/Encore, and Doctrine-migration steps from IMPLEMENTATION_PLAN.md. Enforces final classes, constructor DI, typed params/returns, imported class names (no FQCN inline), Yoda conditions, SOLID, thin controllers, and the project's bundle layout. Invoked by the coordinator for any Phase 2 step. Never improvises on architecture.
 mode: subagent
-model: github-copilot/claude-sonnet-4.5
+model: github-copilot/claude-opus-4.7
 temperature: 0.1
 tools:
   write: true

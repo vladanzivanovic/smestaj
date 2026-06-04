@@ -21,15 +21,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ReservationEditController extends SiteController
 {
-    private $reservationHandler;
+    private UserReservationHandler $reservationHandler;
 
     private LoggerInterface $logger;
 
-    /**
-     * ReservationEditController constructor.
-     *
-     * @param UserReservationHandler $reservationHandler
-     */
     public function __construct(
         UserReservationHandler $reservationHandler,
         LoggerInterface $logger

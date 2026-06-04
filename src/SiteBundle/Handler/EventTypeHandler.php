@@ -64,10 +64,10 @@ class EventTypeHandler extends ServiceContainer
         if(null === $eventType)
             throw new ApplicationException(MessageConstants::NOT_FOUND);
 
-        if($eventType->getReservations()->count() > 0)
-            throw new ApplicationException(MessageConstants::EMPTY_REQUEST);
-        else
-            $this->removeData($eventType);
+        // Reservation has no FK back to Eventtype in the current schema,
+        // so the historical "has reservations" guard was unreachable.
+        // Behaviour-preserving collapse: always proceed to remove.
+        $this->removeData($eventType);
 
         return true;
     }

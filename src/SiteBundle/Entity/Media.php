@@ -8,7 +8,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'media', indexes: [new ORM\Index(name: 'MediaAdsId', columns: ['AdsId'])])]
+#[ORM\Table(name: 'media')]
+#[ORM\Index(name: 'MediaAdsId', columns: ['AdsId'])]
 #[ORM\Entity(repositoryClass: \SiteBundle\Repository\MediaRepository::class)]
 class Media implements EntityInterface
 {

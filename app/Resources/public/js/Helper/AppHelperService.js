@@ -56,7 +56,10 @@ class AppHelperService {
 
     static uiElementsEvents() {
         $(".selector select").each((index, element) => {
-            this.defaultOption(element);
+            if (!$(element).data('noPlaceholder')) {
+                this.defaultOption(element);
+            }
+
             var obj = $(element);
             if (obj.parent().children(".custom-select").length < 1) {
                 obj.after("<span class='custom-select'>" + obj.children("option:selected").html() + "</span>");

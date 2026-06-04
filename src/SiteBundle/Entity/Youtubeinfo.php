@@ -4,7 +4,8 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'youtubeinfo', indexes: [new ORM\Index(name: 'YoutubeInfoAdsId', columns: ['AdsId'])])]
+#[ORM\Table(name: 'youtubeinfo')]
+#[ORM\Index(name: 'YoutubeInfoAdsId', columns: ['AdsId'])]
 #[ORM\Entity(repositoryClass: \SiteBundle\Repository\YouTubeInfoRepository::class)]
 class Youtubeinfo
 {
@@ -52,7 +53,7 @@ class Youtubeinfo
     #[ORM\Column(name: 'SysCreatedTime', type: 'datetime', nullable: true)]
     private $syscreatedtime;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'Id')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'SysCreatorId', referencedColumnName: 'Id')]
     private $syscreatorid;
 

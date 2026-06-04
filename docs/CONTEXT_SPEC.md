@@ -1,70 +1,61 @@
-# Fix `docker compose build` failure in `lamp` service (Node.js upgrade to 16.x)
+# Resolve Symfony 8.1 Deprecations in dev.log
 
 ## Why
 
-`docker compose build` currently fails at the Node.js installation step in the `lamp` service Dockerfile. The legacy NodeSource `setup_14.x` script no longer ships a valid signing key, causing apt to reject the repository (`NO_PUBKEY 1655A0AB68576280`) and the build to abort. Node.js 14 is also EOL. Without a working build the local development stack cannot be (re)created.
+After the recent upgrade to Symfony 8.1.0 / PHP 8.4.21, `dev.log` is emitting Symfony 8.1 deprecation warnings on normal app usage. These need to be cleared now while the upgrade context is fresh, so the log stays useful for spotting real issues and so the app is ready for the eventual Symfony 9.0 jump.
 
 ## What
 
-A green `docker compose build` for the existing stack, with Node.js **16.x** installed in the `lamp` image via a currently-supported NodeSource installation method, and the existing front-end workflow (`npm run dev` / `npm run watch` against the existing `webpack.config.js`) still functional.
+A full sweep that eliminates every `Since symfony/*` 8.1 deprecation entry currently emitted by the running app. The two deprecations the user named are illustrative examples, not the full scope:
 
-Concrete deliverable:
-- The `lamp` image builds end-to-end with no apt GPG warnings and no deprecation-induced 60-second stalls.
-- Inside the built container, `node -v` reports a `v16.x` version and `npm -v` works.
-- `npm run dev` succeeds against the unchanged `webpack.config.js` and `package.json`.
+1. `Since symfony/framework-bundle 8.1: Setting the "framework.profiler.collect_serializer_data" configuration option is deprecated. It will be removed in version 9.0.`
+2. `Since symfony/dependency-injection 8.1: Relying solely on the name of parameter "$productEditRequestParser" of "__construct()" to match a named autowiring alias is deprecated; use the "#[Target]" attribute.`
+
+The planner is responsible for discovering all other Symfony 8.1 deprecations currently in `dev.log` and addressing each one with the mechanical fix recommended by Symfony's upgrade guide.
 
 ## Constraints
 
 ### Must
 
-- Target Node.js major version **16.x** (user-chosen, explicit).
-- Use a currently-supported NodeSource installation pattern that does not rely on the deprecated `setup_<ver>.x` bash pipe. The expected modern approach is the keyring + signed `sources.list` pattern (e.g. `/usr/share/keyrings/nodesource.gpg` plus `deb [signed-by=...] https://deb.nodesource.com/node_16.x focal main`). Final mechanics are at the planner's discretion as long as apt accepts the repository without GPG warnings.
-- Work on both **arm64** (Apple Silicon, the user's host) and **amd64** architectures.
-- Preserve the rest of the `lamp` image: PHP 7.4, Apache, Composer, and any other tooling already installed must continue to work unchanged.
-- Preserve all host port mappings: site `9500`, MariaDB `9501`, phpMyAdmin `9502`, Mailcatcher `9503` (SMTP) / `9504` (UI).
-- Preserve the existing `composer develop` bootstrap flow.
+- Address every Symfony-origin 8.1 deprecation currently emitted by the app (the two named ones plus any others discovered in `dev.log`).
+- For the `framework.profiler.collect_serializer_data` deprecation: remove the offending configuration key from wherever it is currently set.
+- For parameter-name-based autowiring deprecations (e.g. `$productEditRequestParser`): use the `#[Symfony\Component\DependencyInjection\Attribute\Target]` attribute on the constructor argument. This is the Symfony-recommended fix and matches the project's "imported class names, explicit DI" convention.
+- Follow the project's import convention: every class referenced (including `Target`) must have a `use` statement; never use FQCN inline.
+- All work runs inside the `smestaj-app` Docker container, per `AGENTS.md`.
 
 ### Must Not
 
-- Must not modify the `mysql`, `phpmyadmin`, or `mailcatcher` services in `docker-compose.yml`.
-- Must not modify `package.json`, `composer.json`, `webpack.config.js`, or any PHP / Symfony / Twig / JS application code.
-- Must not upgrade webpack or any npm/composer dependency as part of this fix.
-- Must not change PHP version, Symfony version, or Apache configuration.
-- Must not introduce new top-level services or change container names.
+- Do not introduce new runtime dependencies. A `composer require` of an already-present Symfony component subpackage to access `#[Target]` is acceptable if needed, but no new third-party packages.
+- Do not modify code unrelated to clearing a Symfony 8.1 deprecation.
+- Do not rename constructor parameters as the primary fix for the named-autowiring deprecation. Renaming is the fallback only when `#[Target]` is impractical at a given call site (and any such case must be justified).
+- Do not silence deprecations via log filters / channel config — fix the source.
 
 ### Out of Scope
 
-- Upgrading Node.js beyond 16.x (e.g. to Node 18 LTS) — tracked as a follow-up (see Open Questions).
-- Upgrading webpack, Babel, or any front-end dependency.
-- Any application-level change (controllers, entities, templates, assets).
-- Refactoring unrelated parts of the Dockerfile.
-- CI / deployment pipeline changes.
+- Non-Symfony deprecations already present before this task: Sass `@import` deprecation warnings, Doctrine Migrations 2→3 namespace split warnings, and any other library-origin notices not prefixed `Since symfony/*`.
+- The `DoctrineBundle::registerCommands()` deprecation noted in the prior QA report: this is assumed to be an upstream issue inside `doctrine/doctrine-bundle` itself, not application code. The planner may either bump `doctrine/doctrine-bundle` to a version that uses `#[AsCommand]`, or explicitly document it as "upstream — wait for fix". This is a recorded risk, not a required deliverable.
+- Symfony 9.0 forward-compat work beyond clearing 8.1 deprecations.
+- Refactoring DI bindings, services.yml structure, or controller wiring beyond what each individual fix requires.
 
 ## Current State
 
-- `docker compose build` fails at Dockerfile step 32/45: `RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -`.
-- apt error observed:
-  - `W: GPG error: https://deb.nodesource.com/node_14.x focal InRelease: NO_PUBKEY 1655A0AB68576280`
-  - `E: The repository 'https://deb.nodesource.com/node_14.x focal InRelease' is not signed.`
-- The `setup_14.x` script additionally prints a deprecation warning and forces a 60-second wait before failing.
-- Host architecture: Apple Silicon (arm64). The failing build was pulling arm64 packages.
-- Affected service: `lamp` (PHP/Apache) only. Other services (`mysql`, `phpmyadmin`, `mailcatcher`) are not implicated.
-- The exact Dockerfile path and surrounding instructions are for the planner to identify; this spec deliberately does not enumerate file paths beyond what the user/coordinator referenced.
+- The app was just upgraded to Symfony 8.1.0 / PHP 8.4.21 in the previous task.
+- `dev.log` now contains Symfony 8.1 deprecation entries on normal page loads. The two confirmed examples are quoted above; the full inventory is for the planner to enumerate.
+- Project conventions live in `/Users/vlada/Sites/smestaj/AGENTS.md` (Docker-only execution, explicit `use` imports, constructor injection, etc.).
+- Symfony config files conventionally live under `app/config/` (e.g. `config.yml`, `config_dev.yml`) — the planner will locate the exact file holding `framework.profiler.collect_serializer_data`.
+- The class consuming `$productEditRequestParser` exists somewhere in `AdminBundle` (parser naming aligns with `AdminBundle/Parser/Product/`); the planner will locate it.
 
 ## Validation
 
-End-to-end verification, all run via Docker (per project hard rule):
+End-to-end verification after all fixes are applied:
 
-1. `docker compose build` exits with status `0` and produces no apt GPG warnings during the Node install step.
-2. `docker compose up -d` brings the full stack up; all four services (`lamp`, `mysql`, `phpmyadmin`, `mailcatcher`) report healthy / running.
-3. `docker compose exec lamp node -v` prints a version matching `v16.<minor>.<patch>`.
-4. `docker compose exec lamp npm -v` prints a version without error.
-5. `docker compose exec lamp npm run dev` completes successfully against the unchanged `webpack.config.js`.
-6. The site responds on `http://localhost:9500` (basic smoke check — no application changes expected).
-7. Build succeeds on both arm64 (primary, user's host) and amd64 (must not be regressed).
-
-## Open Questions / Assumptions
-
-- **Node.js 16 is EOL** (end-of-life since September 2023). The user explicitly chose 16.x for this ticket. Recorded as a known risk; **not** a blocker for this work. Recommendation: open a follow-up ticket to move to Node 18 LTS (or newer supported LTS) once this fix is in.
-- Assumption: the existing `package.json` and `webpack.config.js` are compatible with Node 16. If `npm run dev` fails under Node 16 for reasons unrelated to the NodeSource install (e.g. a dependency requiring a newer Node), that surfaces a separate problem and should be raised back to the user rather than silently worked around.
-- Assumption: only the `lamp` service's Dockerfile needs changes. If the planner discovers Node is also installed elsewhere in the stack, that finding should be reported before expanding scope.
+- Inside the `smestaj-app` container, clear cache: `php bin/console cache:clear --env=dev`.
+- Truncate or rotate `dev.log` so the post-fix log is clean.
+- Exercise representative flows against `http://localhost:9505`:
+  - Public home page loads (HTTP 200).
+  - Admin login page loads and a successful login (HTTP 200 / expected redirect).
+  - At least one authenticated admin flow that touches the previously-deprecated `productEditRequestParser` path.
+- Inspect `dev.log`: zero entries matching `Since symfony/*`. Specifically, the two named deprecations must be absent.
+- The QA skill's standard checks pass: PHPUnit green, lint green, frontend build (`npm run dev`) green, no new 500s on smoke-tested routes.
+- No unrelated regressions — pre-existing non-Symfony deprecations (Sass `@import`, Doctrine Migrations 2→3) may still appear and are acceptable.
+- Manual check: confirm that the constructor argument previously named `$productEditRequestParser` now carries a `#[Target('...')]` attribute with a `use` statement for `Symfony\Component\DependencyInjection\Attribute\Target` at the top of the file.

@@ -1,7 +1,7 @@
 ---
 description: Phase 3 of the task-router protocol. Runs unit + integration tests, syntax checks, and curl validation against the running smestaj stack. All execution is inside Docker containers — never on the host. Loads the project's qa-testing skill on first use. Invoked by the coordinator after Phase 2 completes. Reports ALL GREEN or FAILURES and hands back; does not attempt fixes beyond trivial typos.
 mode: subagent
-model: github-copilot/claude-sonnet-4.5
+model: github-copilot/claude-opus-4.7
 temperature: 0
 tools:
   read: true
@@ -92,7 +92,7 @@ The `qa-testing` skill is the source of truth for: command invocations, curl pat
 
 # Ports reference
 
-- Site from host: `http://localhost:9500`
+- Site from host: `http://localhost:9505`
 - Site from inside the `lamp` container: `http://localhost`
 - phpMyAdmin: `http://localhost:9502`
 - Mailcatcher UI: `http://localhost:9504`

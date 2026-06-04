@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     #[ORM\OneToMany(targetEntity: UserToSocialNetwork::class, mappedBy: 'userid', cascade: ['persist', 'remove'])]
     private Collection $socialId;
 
+    #[ORM\OneToMany(targetEntity: Userreservation::class, mappedBy: 'userid')]
+    private Collection $client;
+
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $token = null;
 
@@ -69,6 +72,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         $this->roles = new ArrayCollection();
         $this->sysCreatedAds = new ArrayCollection();
         $this->socialId = new ArrayCollection();
+        $this->client = new ArrayCollection();
+    }
+
+    public function getClient(): Collection
+    {
+        return $this->client;
     }
 
     public function __clone()

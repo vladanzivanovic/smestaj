@@ -2,10 +2,10 @@
 
 namespace SiteBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'userreservation', indexes: [new ORM\Index(name: 'IDX_78F0167835F944', columns: ['CityId'])])]
+#[ORM\Table(name: 'userreservation')]
+#[ORM\Index(name: 'IDX_78F0167835F944', columns: ['CityId'])]
 #[ORM\Entity(repositoryClass: \SiteBundle\Repository\UserRepository::class)]
 class Userreservation
 {
@@ -60,9 +60,6 @@ class Userreservation
     #[ORM\ManyToOne(targetEntity: City::class)]
     #[ORM\JoinColumn(name: 'CityId', referencedColumnName: 'Id')]
     private $cityid;
-
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'clientid')]
-    private $reservation;
 
     /**
      * Get id
@@ -264,60 +261,5 @@ class Userreservation
     public function getCityid()
     {
         return $this->cityid;
-    }
-
-    /**
-     * Set reservation
-     *
-     * @param \SiteBundle\Entity\Reservation $reservation
-     *
-     * @return Userreservation
-     */
-    public function setReservation(?Reservation $reservation = null)
-    {
-        $this->reservation = $reservation;
-
-        return $this;
-    }
-
-    /**
-     * Get reservation
-     *
-     * @return \SiteBundle\Entity\Reservation
-     */
-    public function getReservation()
-    {
-        return $this->reservation;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->reservation = new ArrayCollection();
-    }
-
-    /**
-     * Add reservation
-     *
-     * @param \SiteBundle\Entity\Reservation $reservation
-     *
-     * @return Userreservation
-     */
-    public function addReservation(Reservation $reservation)
-    {
-        $this->reservation[] = $reservation;
-
-        return $this;
-    }
-
-    /**
-     * Remove reservation
-     *
-     * @param \SiteBundle\Entity\Reservation $reservation
-     */
-    public function removeReservation(Reservation $reservation)
-    {
-        $this->reservation->removeElement($reservation);
     }
 }

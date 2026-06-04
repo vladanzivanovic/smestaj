@@ -10,6 +10,7 @@ namespace SiteBundle\Repository;
 
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use SiteBundle\Entity\Ads;
@@ -39,7 +40,7 @@ class CityRepository extends ExtendedEntityRepository
     public function getCitiesWithHavingAds()
     {
         return $this->defaultQuery()
-            ->innerJoin(Ads::class, 'ads', 'WITH', 'ads.cityId = c.id')
+            ->innerJoin(Ads::class, 'ads', Join::ON, 'ads.cityId = c.id')
             ->groupBy('ads.cityId')
             ->setMaxResults(100)
             ->getQuery()
@@ -90,8 +91,8 @@ class CityRepository extends ExtendedEntityRepository
                 'city.alias',
                 'COUNT(ads.id) as total_ads'
             )
-            ->leftJoin(Ads::class, 'ads', 'WITH', 'city.id = ads.cityId')
-            ->leftJoin(Media::class, 'media', 'WITH', 'media.adsid = ads.id AND media.ismain = :mainImage')
+            ->leftJoin(Ads::class, 'ads', Join::ON, 'city.id = ads.cityId')
+            ->leftJoin(Media::class, 'media', Join::ON, 'media.adsid = ads.id AND media.ismain = :mainImage')
             ->where('city.showInHome = :showInHome')
             ->andWhere('ads.status = :activeAds')
             ->andWhere('media.id IS NOT NULL')

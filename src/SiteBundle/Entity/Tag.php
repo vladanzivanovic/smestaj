@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: \SiteBundle\Repository\TagRepository::class)]
-#[Table(name: 'tag', indexes: [new Index(name: 'tag_type_id', columns: ['tag_type_id'])])]
+#[Table(name: 'tag')]
+#[Index(name: 'tag_type_id', columns: ['tag_type_id'])]
 class Tag implements EntityInterface
 {
 

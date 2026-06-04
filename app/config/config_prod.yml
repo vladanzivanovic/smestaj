@@ -3,18 +3,6 @@ imports:
     - { resource: ads.yml }
     - { resource: monolog_prod.yaml }
 
-swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    port: '%mailer_port%'
-    encryption: ssl
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    auth_mode: login
-    stream_options:
-        ssl:
-            verify_peer: false
-            verify_peer_name: false
 #doctrine:
 #    orm:
 #        metadata_cache_driver: apc
