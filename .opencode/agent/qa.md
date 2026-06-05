@@ -17,10 +17,9 @@ permission:
   edit: deny
   bash:
     "*": ask
-    "docker compose exec lamp *": allow
-    "docker compose exec -T lamp *": allow
-    "docker compose exec mysql *": allow
-    "docker compose exec -T mysql *": allow
+    "docker exec smestaj-app *": allow
+    "docker exec -i smestaj-app *": allow
+    "docker exec -it smestaj-app *": allow
     "docker compose ps": allow
     "docker compose logs*": allow
     "docker run --rm *": allow
@@ -53,33 +52,34 @@ The `qa-testing` skill is the source of truth for: command invocations, curl pat
 
 1. **PHP syntax check on touched files:**
    ```
-   docker compose exec lamp php -l <file>
+   docker exec smestaj-app php -l <file>
    ```
 
-2. **PHP unit tests (PHPUnit):**
+2. **PHP unit tests (simple-phpunit / symfony/phpunit-bridge):**
    ```
-   docker compose exec lamp ./vendor/bin/phpunit
+   docker exec smestaj-app ./bin/simple-phpunit
    ```
 
 3. **Cache + autoload sanity:**
    ```
-   docker compose exec lamp php bin/console cache:clear --no-warmup
-   docker compose exec lamp php bin/console cache:warmup
+   docker exec smestaj-app php bin/console cache:clear --no-warmup
+   docker exec smestaj-app php bin/console cache:warmup
    ```
 
 4. **Frontend build (if frontend was touched):**
    ```
-   docker compose exec lamp npm run dev
+   docker exec smestaj-app npm run dev
    ```
 
 5. **JS routes / translations re-dump (if routes/translations changed):**
    ```
-   docker compose exec lamp composer route-locale-generate
+   docker exec smestaj-app php bin/console fos:js-routing:dump
+   docker exec smestaj-app php bin/console bazinga:js-translation:dump
    ```
 
-6. **API/page validation — inside the `lamp` container, using PHP's curl functions (never host curl):**
+6. **API/page validation — inside the `smestaj-app` container, using PHP's curl functions (never host curl):**
    ```
-   docker compose exec lamp php -r "\$c=curl_init('http://localhost/<route>'); curl_setopt(\$c, CURLOPT_RETURNTRANSFER, true); curl_setopt(\$c, CURLOPT_FOLLOWLOCATION, true); \$r=curl_exec(\$c); \$code=curl_getinfo(\$c, CURLINFO_HTTP_CODE); echo \$code.PHP_EOL.substr(\$r,0,500).PHP_EOL;"
+   docker exec smestaj-app php -r "\$c=curl_init('http://localhost/<route>'); curl_setopt(\$c, CURLOPT_RETURNTRANSFER, true); curl_setopt(\$c, CURLOPT_FOLLOWLOCATION, true); \$r=curl_exec(\$c); \$code=curl_getinfo(\$c, CURLINFO_HTTP_CODE); echo \$code.PHP_EOL.substr(\$r,0,500).PHP_EOL;"
    ```
    - Hit every route/endpoint the plan's "Validation" section enumerates.
    - For authenticated routes, follow the project's session/cookie flow (capture `Set-Cookie`, replay it on the protected route).
@@ -93,8 +93,7 @@ The `qa-testing` skill is the source of truth for: command invocations, curl pat
 # Ports reference
 
 - Site from host: `http://localhost:9505`
-- Site from inside the `lamp` container: `http://localhost`
-- phpMyAdmin: `http://localhost:9502`
+- Site from inside the `smestaj-app` container: `http://localhost`
 - Mailcatcher UI: `http://localhost:9504`
 - MariaDB from host: `127.0.0.1:9501`
 

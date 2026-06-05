@@ -6,7 +6,7 @@ This is **Smestaj** (.checkout) — a Symfony 4.3+ marketplace web application f
 
 ## Tech Stack
 
-- **Backend**: PHP 8.4+, Symfony 7.2+, Doctrine ORM 3.6
+- **Backend**: PHP 8.4+, Symfony 8.1+, Doctrine ORM 3.6
 - **Frontend**: jQuery 3.6, Bootstrap 3/4, SASS/SCSS, Webpack Encore
 - **Database**: MySQL 5.7+ / MariaDB 10
 - **Dev Environment**: Docker (Apache+PHP on :9505, MariaDB on :9501, Mailcatcher on :9503/:9504)
@@ -165,7 +165,7 @@ docker exec smestaj-app php bin/console bazinga:js-translation:dump        # Gen
 docker compose up -d      # Start dev environment
 
 # Tests
-docker exec smestaj-app ./vendor/bin/phpunit      # Run tests
+docker exec smestaj-app ./bin/simple-phpunit   # Run tests (symfony/phpunit-bridge)
 ```
 
 ## Conventions

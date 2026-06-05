@@ -76,17 +76,17 @@ Every specialist is model-pinned in its own frontmatter (context-specifier/plann
 
 # Hard rules (from AGENTS.md)
 
-- **Docker only.** Never run `php`, `composer`, `npm`, `npx`, `node`, `mariadb`, `mysql`, or any project tool on the host. Everything goes through `docker compose exec <service>` (or `docker-compose exec` if that's the local alias).
+- **Docker only.** Never run `php`, `composer`, `npm`, `npx`, `node`, `mariadb`, `mysql`, or any project tool on the host. Everything goes through `docker exec smestaj-app <cmd>`.
 - **Ephemeral containers** are allowed when no existing service fits: agents may `docker run --rm <image> <cmd>` and MUST clean up afterwards (`docker rm` / `docker rmi` for any image they pulled solely for the task). Never leave stray containers or images behind.
 - **Terminal specific commands** (e.g. `ls`, `cat`, `git`, `docker compose`) are allowed via `bash` and should be used for reading project files, inspecting git history, and checking logs/status. Use `read`/`grep`/`glob` for non-terminal file reading.
-- **Ports:** Site `http://localhost:9500`, MariaDB `127.0.0.1:9501`, phpMyAdmin `http://localhost:9502`, Mailcatcher SMTP `9503` / UI `http://localhost:9504`. From inside containers, hit the web service via its container hostname (`lamp`) on port 80.
+- **Ports:** Site `http://localhost:9505`, MariaDB `127.0.0.1:9501`, Mailcatcher SMTP `9503` / UI `http://localhost:9504`. From inside the container, hit the site via `http://localhost`.
 - **Phase 4 MUST delete `IMPLEMENTATION_PLAN.md`.** Non-negotiable.
 - **Coding standards** (enforced by subagents, but you reject any output that violates them):
-  - PHP 7.4 / Symfony 4.4: `final` classes where sensible, constructor DI, typed params + returns, imported class names (no inline FQCN), Yoda conditions, thin controllers, services in DI container, repositories for data access.
+  - PHP 8.4+ / Symfony 8.1+: `final` classes where sensible, constructor DI, typed params + returns, imported class names (no inline FQCN), **Yoda conditions** (hard rule), thin controllers, services in DI container, repositories for data access.
   - Bundle layout: code goes into the matching bundle (`SiteBundle`, `AdminBundle`, `LogBundle`) and the correct subfolder (Controller/Entity/Repository/Service/Twig/Formatter/Parser/Validators/Helper/View/EventListeners).
-  - JS/SCSS: wire through `webpack.config.js`; re-dump JS routes via `composer route-locale-generate` after route changes.
+  - JS/SCSS: wire through `webpack.config.js`; re-dump JS routes via `php bin/console fos:js-routing:dump` and JS translations via `php bin/console bazinga:js-translation:dump` after route or translation changes.
   - SOLID applied throughout.
-- **PHP 7.4 / Symfony 4.4 compatibility.** No PHP 8-only syntax (no constructor property promotion, no `readonly`, no enums, no named arguments in committed code, no attributes for routing — annotations or YAML are the project standard).
+- **PHP 8.4 / Symfony 8.1 idioms (permitted, not mandated).** Constructor property promotion, `readonly` properties and classes, native `enum`, PHP 8 attributes for routing / validation / DI, first-class callable syntax, and asymmetric visibility are all allowed. None are required. Existing code is not to be rewritten purely to adopt them — match the surrounding file's style.
 
 # What you do not do
 
