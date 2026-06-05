@@ -18,6 +18,7 @@ use SiteBundle\Services\ImageService;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Throwable;
 
 class SiteImageController extends SiteController
 {
@@ -68,10 +69,40 @@ class SiteImageController extends SiteController
     public function getCategoryImage(
         string $filter,
         #[MapEntity(mapping: ['alias' => 'alias'])] Category $category
-    ): BinaryFileResponse {
+    ): Response {
         $image = $category->getImage();
 
-        $response = $this->imageRenderService->renderImageWithFilter($this->uploadAdsDir.$image, $filter);
+        try {
+            $response = $this->imageRenderService->renderImageWithFilter($this->uploadAdsDir.$image, $filter);
+        } catch (ImageNotFoundException $notFoundException) {
+            $this->logger->error(
+                'Failed render category image',
+                [
+                    'filter' => $filter,
+                    'category' => $category->getAlias(),
+                    'exception' => $notFoundException->getMessage(),
+                ]
+            );
+
+            $response = new Response('', Response::HTTP_NOT_FOUND);
+            $response->setMaxAge(0);
+
+            return $response;
+        } catch (Throwable $throwable) {
+            $this->logger->error(
+                'Failed render category image',
+                [
+                    'filter' => $filter,
+                    'category' => $category->getAlias(),
+                    'exception' => $throwable->getMessage(),
+                ]
+            );
+
+            $response = new Response('', Response::HTTP_NOT_FOUND);
+            $response->setMaxAge(0);
+
+            return $response;
+        }
 
         $response->setPublic();
         $response->setMaxAge(864000);
