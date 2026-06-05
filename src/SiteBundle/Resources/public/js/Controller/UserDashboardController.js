@@ -6,6 +6,8 @@ import PaginationService from "../Services/PaginationService";
 import AdsHandler from "../Handler/AdsHandler";
 import Loader from "../../../../../../app/Resources/public/js/Dom/Loader";
 import singleAdView from "../Dom/Dashboard/SingleAdView";
+import loginService from "../Services/LoginService";
+import cityService from "../Services/CityService";
 
 const Private = Symbol('private');
 
@@ -99,6 +101,7 @@ class UserDashboardController {
 
         Private.mapper = new UserDashboardMapper();
         Private.adsEditService = AdsEditService();
+        Private.cityService = cityService();
 
         Private.registerEvents = () => {
             $('a[href="#set_ad_wrapper"]').on('shown.bs.tab', e => {
@@ -124,7 +127,7 @@ class UserDashboardController {
                 var form = $(e.currentTarget.hash).find('form');
 
                 form.validate(loginService.signUpValidationOptions);
-                cityService.citiesTypeahead();
+                Private.cityService.citiesTypeahead();
             });
             $(document).on('click touchend', '.change-ad', (e) => {
                 this.ads = e.currentTarget.dataset.alias;

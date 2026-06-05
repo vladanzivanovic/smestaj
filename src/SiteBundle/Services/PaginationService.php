@@ -4,6 +4,7 @@ namespace SiteBundle\Services;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class PaginationService
@@ -120,7 +121,8 @@ class PaginationService
      */
     private function totalRows()
     {
-        $alias = current($this->query->getDQLPart('from'))->getAlias();
+        $fromParts = $this->query->getDQLPart('from');
+        $alias = $fromParts[0]->getAlias();
 
         $totalRowsQuery = $this->query
             ->select("COUNT(DISTINCT $alias.id ) as totalRows")
@@ -142,7 +144,7 @@ class PaginationService
         $params = $query->getParameters();
         $queryDql = $query->getDQL();
 
-        $query->setParameters([]);
+        $query->setParameters(new ArrayCollection());
 
         foreach ($params->toArray() as $param) {
             /** @var Parameter $param */

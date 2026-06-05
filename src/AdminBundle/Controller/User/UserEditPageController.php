@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace AdminBundle\Controller\User;
 
 use AdminBundle\Formatter\UserEditResponseFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SiteBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class UserEditPageController extends AbstractController
 {
@@ -21,26 +21,22 @@ final class UserEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/add-user", name="admin.add_user_page", methods={"GET"})
-     * @Template("Admin/Pages/userEdit.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function insert(): array
+    #[Route('/add-user', name: 'admin.add_user_page', methods: ['GET'])]
+    public function insert(): Response
     {
-        return [];
+        return $this->render('@Admin/Pages/userEdit.html.twig', []);
     }
 
     /**
-     * @Route("/edit-user/{id}", name="admin.edit_user_page", methods={"GET"})
-     * @Template("Admin/Pages/userEdit.html.twig")
-     *
      * @param User $user
      *
-     * @return array
+     * @return Response
      */
-    public function update(User $user): array
+    #[Route('/edit-user/{id}', name: 'admin.edit_user_page', methods: ['GET'])]
+    public function update(User $user): Response
     {
-        return $this->responseFormatter->formatResponse($user);
+        return $this->render('@Admin/Pages/userEdit.html.twig', $this->responseFormatter->formatResponse($user));
     }
 }

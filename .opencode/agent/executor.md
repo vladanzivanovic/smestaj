@@ -1,7 +1,7 @@
 ---
 description: Phase 2 generalist executor for smestaj. Implements PHP/Symfony, Twig, JS/SCSS/Encore, and Doctrine-migration steps from IMPLEMENTATION_PLAN.md. Enforces final classes, constructor DI, typed params/returns, imported class names (no FQCN inline), Yoda conditions, SOLID, thin controllers, and the project's bundle layout. Invoked by the coordinator for any Phase 2 step. Never improvises on architecture.
 mode: subagent
-model: github-copilot/claude-sonnet-4.5
+model: github-copilot/claude-opus-4.7
 temperature: 0.1
 tools:
   write: true
@@ -16,12 +16,9 @@ permission:
   edit: allow
   bash:
     "*": ask
-    "docker compose exec *": allow
-    "docker compose exec -T *": allow
-    "docker compose exec lamp *": allow
-    "docker compose exec -T lamp *": allow
-    "docker compose exec mysql *": allow
-    "docker compose exec -T mysql *": allow
+    "docker exec smestaj-app *": allow
+    "docker exec -i smestaj-app *": allow
+    "docker exec -it smestaj-app *": allow
     "docker compose ps": allow
     "docker compose logs*": allow
     "docker run --rm *": allow
@@ -52,8 +49,8 @@ Announce at the top of your first response: `[PHASE 2] Execution (Sonnet)`.
 
 # Container reference
 
-- PHP / Symfony / Composer / Node / npm → `docker compose exec lamp <cmd>` (PHP+Apache+Node container, workdir is the project root mounted at `/var/www/html`).
-- DB read-only inspection → `docker compose exec mysql mariadb -u root -p'vlada123!!!' smestaj -e "<sql>"` (root credentials from `docker-compose.yml`).
+- PHP / Symfony / Composer / Node / npm → `docker exec smestaj-app <cmd>` (PHP 8.4 + Apache + Node container; project root mounted at `/var/www/html`).
+- DB read-only inspection → `docker exec smestaj-mysql mariadb -u root -p'vlada123!!!' smestaj -e "<sql>"` (DB-client commands target the DB container `smestaj-mysql` directly; credentials from `docker-compose.yml`).
 
 Common commands:
 - `composer require/update`
@@ -63,7 +60,8 @@ Common commands:
 - `php bin/console doctrine:migrations:status` (migrations themselves belong to a `[db]` step under explicit instruction — see Migrations rule below)
 - `php -l <file>` syntax check on touched files
 - `npm run dev` / `npm run watch` for Encore builds when frontend was touched
-- `composer route-locale-generate` after route or translation changes
+- `php bin/console fos:js-routing:dump` (after route changes)
+- `php bin/console bazinga:js-translation:dump` (after translation changes)
 
 ## Ephemeral containers
 
@@ -83,19 +81,19 @@ Never leave stray containers or images behind.
 
 # Coding standards (non-negotiable)
 
-## PHP 7.4 / Symfony 4.4
+## PHP 8.4 / Symfony 8.1
 
 - `final` classes unless abstract / extended.
 - Constructor injection; no service locator anti-patterns.
 - Typed params + return types on every method.
 - **Imported class names**, never inline FQCN. Add `use` statements at the top of the file.
 - **Yoda conditions**: `null === $x`, `'active' === $status`, `0 === count(...)`.
-- Symfony 4.4 idioms — annotations (`@Route`, `@ORM\Column`) or YAML config, **not** PHP 8 attributes. Match what the surrounding files already use.
+- Symfony 8.1 idioms — PHP 8 attributes (`#[Route]`, `#[ORM\Column]`, `#[Required]`, etc.), YAML, or legacy annotations are all permitted. **Match the surrounding file's style** — do not mix paradigms within a single class.
 - Thin controllers — translate HTTP ↔ service calls. Business logic lives in `Service/`.
 - Repository methods for data access — no `EntityManager::createQuery(...)` in controllers/services when a repo method fits.
 - No comments unless the *why* is non-obvious.
 - Typed constants.
-- **No PHP 8 syntax.** No constructor property promotion, no `readonly`, no enums, no match expressions, no named arguments in committed code.
+- **Modern PHP 8.4 syntax is permitted (not mandated).** Constructor property promotion, `readonly` properties and classes, native `enum`, `match` expressions, named arguments, first-class callables, and asymmetric visibility are all allowed. Use them where they improve clarity; do not retrofit existing code purely to adopt them.
 
 ## JS / SCSS
 
@@ -143,9 +141,9 @@ Place new code in the matching bundle and subfolder. If unsure, read a neighbour
 Only run migrations against the dev DB if the plan explicitly has a `[db]` step authorising it. The plan MUST contain a backup step (`mysqldump`) before any `doctrine:migrations:migrate` invocation. Skipping the backup is a blocker.
 
 ```
-docker compose exec -T mysql mysqldump -u root -p'vlada123!!!' smestaj > backup_$(date +%Y%m%d_%H%M%S).sql
-docker compose exec -T lamp php bin/console doctrine:migrations:status
-docker compose exec -T lamp php bin/console doctrine:migrations:migrate --no-interaction
+docker exec smestaj-mysql sh -c "mysqldump -u root -p'vlada123!!!' smestaj" > backup_$(date +%Y%m%d_%H%M%S).sql
+docker exec smestaj-app php bin/console doctrine:migrations:status
+docker exec smestaj-app php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 # Routes / JS translations
@@ -153,10 +151,11 @@ docker compose exec -T lamp php bin/console doctrine:migrations:migrate --no-int
 Whenever you add, change, or remove a route or a translation that is used from JS, after the PHP change you MUST run:
 
 ```
-docker compose exec lamp composer route-locale-generate
+docker exec smestaj-app php bin/console fos:js-routing:dump
+docker exec smestaj-app php bin/console bazinga:js-translation:dump
 ```
 
-This re-dumps `web/js/fos_js_routes.json` and the Bazinga translation bundles. Tick the corresponding plan step only after this dump succeeds.
+This re-dumps `web/js/fos_js_routes.json` (FOSJsRouting) and the Bazinga translation bundles. Tick the corresponding plan step only after both dumps succeed.
 
 # Escalation
 

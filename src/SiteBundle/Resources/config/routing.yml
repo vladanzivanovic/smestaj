@@ -6,10 +6,10 @@ api:
 
 core:
   resource: '@SiteBundle/Controller'
-  type: annotation
+  type: attribute
 
 site_index:
-  defaults: { _controller: SiteBundle:Index:index }
+  defaults: { _controller: SiteBundle\Controller\IndexController::indexAction }
   path: /
   options:
     sitemap:
@@ -19,7 +19,7 @@ site_index:
 
 site_single_ads:
   path: /pregled/{category}/{alias}
-  defaults: { _controller: SiteBundle:Ads\AdsGet:singleAds }
+  defaults: { _controller: SiteBundle\Controller\Ads\AdsGetController::singleAdsAction }
 
 site_login_check:
   path: /site-login-check
@@ -29,53 +29,44 @@ site_logout:
 
 #site_activate_registration:
 #  path: /aktivacija-naloga/{id}
-#  defaults: { _controller: SiteBundle:User\UserEdit:activateRegistration}
+#  defaults: { _controller: SiteBundle\Controller\User\UserEditController::activateRegistrationAction }
 #  requirements:
 #    id: \d+
 
 site_about_us:
   path: /o-nama
   defaults:
-      _controller: FrameworkBundle:Template:template
-      template: SiteBundle:Site:aboutUs.html.twig
+      _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+      template: '@Site/Site/aboutUs.html.twig'
 
 site_contact_us:
   path: /kontakt
   defaults:
-      _controller: FrameworkBundle:Template:template
-      template: SiteBundle:Site:contactus.html.twig
+      _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+      template: '@Site/Site/contactus.html.twig'
   options:
     sitemap:
       priority: 0.1
       changefreq: never
       section: default
 
-facebook_login:
-    path: /login/check-facebook
-
 site_reservation_success:
   path: /uspesna-rezervacija/{reservationId}/{alias}
-  defaults: { _controller: SiteBundle:Reservation\ReservationGet:successReservationPage}
+  defaults: { _controller: SiteBundle\Controller\Reservation\ReservationGetController::successReservationPageAction }
   requirements:
     reservationId: \d+
 
-site_reservation_confirmation:
-  path: /potvrda-rezervacije/{reservation}/{status}
-  defaults: { _controller: SiteBundle:Reservation\ReservationEdit:setReservationConfirmationPage}
-  requirements:
-    reservation: \d+
-
 #site_logo_email:
 #  path: /logo.png
-#  defaults: { _controller: SiteBundle:SiteImage:getLogoEmail}
+#  defaults: { _controller: SiteBundle\Controller\SiteImageController::getLogoEmailAction }
 
 #site_logo:
 #  path: /apartmani-sobe-crna-gora/logo.png
-#  defaults: { _controller: SiteBundle:SiteImage:getLogo}
+#  defaults: { _controller: SiteBundle\Controller\SiteImageController::getLogoAction }
 
 site_ads_view:
   path: /{category}/{extraParams}
-  controller: SiteBundle:Ads\AdsIndex:index
+  controller: SiteBundle\Controller\Ads\AdsIndexController::indexAction
   defaults:
     extraParams: null
   requirements:

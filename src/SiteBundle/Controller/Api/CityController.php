@@ -4,7 +4,7 @@ namespace SiteBundle\Controller\Api;
 
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Repository\CityRepository;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class CityController
@@ -24,10 +24,7 @@ class CityController extends SiteController
         $this->cityRepository = $cityRepository;
     }
 
-    /**
-     * @Route("/api/all-cities", name="site_all_cities", methods={"GET"}, options={"expose": true})
-     * @return mixed
-     */
+    #[Route('/api/all-cities', name: 'site_all_cities', methods: ['GET'], options: ['expose' => true])]
     public function getCitiesAction()
     {
         $cities = $this->cityRepository->getAllCities();
@@ -35,12 +32,7 @@ class CityController extends SiteController
         return $this->json($cities);
     }
 
-    /**
-     * @Route("/api/cities/{criteria}", name="site_cities_by_criteria", methods={"GET"})
-     * @param $criteria
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
+    #[Route('/api/cities/{criteria}', name: 'site_cities_by_criteria', methods: ['GET'])]
     public function getCitiesByCriteriaAction($criteria)
     {
         $cities = $this->cityRepository->getByCriteria($criteria);

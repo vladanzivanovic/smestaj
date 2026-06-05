@@ -4,71 +4,52 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Eventtype
- *
- * @ORM\Table(name="eventtype")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\EventTypeRepository")
- */
+#[ORM\Table(name: 'eventtype')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\EventTypeRepository::class)]
 class Eventtype
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="Id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: 'Id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Name", type="string", length=250, nullable=false)
      */
+    #[ORM\Column(name: 'Name', type: 'string', length: 250, nullable: false)]
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Alias", type="string", length=250, nullable=false)
      */
+    #[ORM\Column(name: 'Alias', type: 'string', length: 250, nullable: false)]
     private $alias;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="SysCreatedTime", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: 'SysCreatedTime', type: 'datetime', nullable: false)]
     private $syscreatedtime;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="SysModifiedTime", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: 'SysModifiedTime', type: 'datetime', nullable: false)]
     private $sysmodifiedtime;
 
     /**
      * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
-     * @ORM\JoinColumn(name="SysCreatorId", referencedColumnName="Id")
      */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'SysCreatorId', referencedColumnName: 'Id')]
     private $syscreatorid;
 
     /**
      * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
-     * @ORM\JoinColumn(name="SysModifierId", referencedColumnName="Id")
      */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'SysModifierId', referencedColumnName: 'Id')]
     private $sysmodifierid;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Reservation", mappedBy="eventtypeid")
-     */
-    private $reservations;
 
 
     /**
@@ -223,46 +204,5 @@ class Eventtype
     public function getSysmodifierid()
     {
         return $this->sysmodifierid;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->reservations = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add reservation
-     *
-     * @param \SiteBundle\Entity\Reservation $reservation
-     *
-     * @return Eventtype
-     */
-    public function addReservation(\SiteBundle\Entity\Reservation $reservation)
-    {
-        $this->reservations[] = $reservation;
-
-        return $this;
-    }
-
-    /**
-     * Remove reservation
-     *
-     * @param \SiteBundle\Entity\Reservation $reservation
-     */
-    public function removeReservation(\SiteBundle\Entity\Reservation $reservation)
-    {
-        $this->reservations->removeElement($reservation);
-    }
-
-    /**
-     * Get reservations
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getReservations()
-    {
-        return $this->reservations;
     }
 }

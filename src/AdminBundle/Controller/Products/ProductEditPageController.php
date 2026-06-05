@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace AdminBundle\Controller\Products;
 
 use AdminBundle\Formatter\ProductEditResponseFormatter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SiteBundle\Entity\Ads;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductEditPageController extends AbstractController
 {
@@ -21,26 +21,22 @@ final class ProductEditPageController extends AbstractController
     }
 
     /**
-     * @Route("/add-product", name="admin.add_product_page", methods={"GET"})
-     * @Template("@Admin/Pages/productEdit.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function insert(): array
+    #[Route('/add-product', name: 'admin.add_product_page', methods: ['GET'])]
+    public function insert(): Response
     {
-        return $this->responseFormatter->formatResponse();
+        return $this->render('@Admin/Pages/productEdit.html.twig', $this->responseFormatter->formatResponse());
     }
 
     /**
-     * @Route("/edit-product/{id}", name="admin.edit_product_page", methods={"GET"})
-     * @Template("@Admin/Pages/productEdit.html.twig")
-     *
      * @param Ads $product
      *
-     * @return array
+     * @return Response
      */
-    public function edit(Ads $product)
+    #[Route('/edit-product/{id}', name: 'admin.edit_product_page', methods: ['GET'])]
+    public function edit(Ads $product): Response
     {
-        return $this->responseFormatter->formatResponse($product);
+        return $this->render('@Admin/Pages/productEdit.html.twig', $this->responseFormatter->formatResponse($product));
     }
 }

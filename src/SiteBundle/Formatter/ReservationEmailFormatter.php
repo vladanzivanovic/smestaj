@@ -2,10 +2,11 @@
 
 namespace SiteBundle\Formatter;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use SiteBundle\Constants\EmailConstants;
+use SiteBundle\Entity\Media;
 use SiteBundle\Entity\Reservation;
 use SiteBundle\Helper\RandomCodeGenerator;
 use SiteBundle\Repository\MediaRepository;
@@ -36,7 +37,7 @@ class ReservationEmailFormatter extends ServiceContainer
     {
         $ads = $reservation->getAdsId();
         /** @var MediaRepository $mediaRepo */
-        $mediaRepo = $this->em->getRepository('SiteBundle:Media');
+        $mediaRepo = $this->em->getRepository(Media::class);
 
         $emailData['fromEmail'] = $reservation->getEmail();
         $emailData['toEmail'] = $ads->getContact()->getContactEmail();

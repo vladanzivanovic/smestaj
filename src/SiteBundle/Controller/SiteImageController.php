@@ -6,6 +6,7 @@ namespace SiteBundle\Controller;
 
 use Doctrine\ORM\ORMException;
 use SiteBundle\Exceptions\ImageNotFoundException;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
 use SiteBundle\Entity\Category;
@@ -16,7 +17,8 @@ use SiteBundle\Services\ImageRenderService;
 use SiteBundle\Services\ImageService;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Throwable;
 
 class SiteImageController extends SiteController
 {
@@ -44,13 +46,7 @@ class SiteImageController extends SiteController
         $this->uploadAdsDir = $uploadAdsDir;
     }
 
-    /**
-     * @Route("/logo.png", name="site_logo", methods={"GET"})
-     * @param Request $request
-     *
-     * @return BinaryFileResponse
-     * @throws ORMException
-     */
+    #[Route('/logo.png', name: 'site_logo', methods: ['GET'])]
     public function getLogo(Request $request): BinaryFileResponse
     {
         $data = $this->requestToArray($request);
@@ -69,25 +65,44 @@ class SiteImageController extends SiteController
         return $response;
     }
 
-    /**
-     * @Route(
-     *     "/{filter}/crna-gora-smestaj/{alias}.jpg",
-     *     methods={"GET"},
-     *     name="category_image_show",
-     *     defaults={"alias": "sobe-apartmani"}
-     * )
-     *
-     * @param string $filter
-     * @param Category $category
-     *
-     * @return BinaryFileResponse
-     * @throws ImageNotFoundException
-     */
-    public function getCategoryImage(string $filter, Category $category): BinaryFileResponse
-    {
+    #[Route('/{filter}/crna-gora-smestaj/{alias}.jpg', methods: ['GET'], name: 'category_image_show', defaults: ['alias' => 'sobe-apartmani'])]
+    public function getCategoryImage(
+        string $filter,
+        #[MapEntity(mapping: ['alias' => 'alias'])] Category $category
+    ): Response {
         $image = $category->getImage();
 
-        $response = $this->imageRenderService->renderImageWithFilter($this->uploadAdsDir.$image, $filter);
+        try {
+            $response = $this->imageRenderService->renderImageWithFilter($this->uploadAdsDir.$image, $filter);
+        } catch (ImageNotFoundException $notFoundException) {
+            $this->logger->error(
+                'Failed render category image',
+                [
+                    'filter' => $filter,
+                    'category' => $category->getAlias(),
+                    'exception' => $notFoundException->getMessage(),
+                ]
+            );
+
+            $response = new Response('', Response::HTTP_NOT_FOUND);
+            $response->setMaxAge(0);
+
+            return $response;
+        } catch (Throwable $throwable) {
+            $this->logger->error(
+                'Failed render category image',
+                [
+                    'filter' => $filter,
+                    'category' => $category->getAlias(),
+                    'exception' => $throwable->getMessage(),
+                ]
+            );
+
+            $response = new Response('', Response::HTTP_NOT_FOUND);
+            $response->setMaxAge(0);
+
+            return $response;
+        }
 
         $response->setPublic();
         $response->setMaxAge(864000);
@@ -95,19 +110,7 @@ class SiteImageController extends SiteController
         return $response;
     }
 
-    /**
-     * @Route("/{entity}-slika/{filter}/{name}.jpeg",
-     *     methods={"GET"},
-     *     name="app.image_show",
-     *     requirements={
-     *          "entity": "ads|oglasi"
-     *     })
-     *
-     * @param string $filter
-     * @param string $name
-     * @param Request $request
-     * @return Response
-     */
+    #[Route('/{entity}-slika/{filter}/{name}.jpeg', methods: ['GET'], name: 'app.image_show', requirements: ['entity' => 'ads|oglasi'])]
     public function getImage(string $filter, string $name, Request $request): Response
     {
         $response = $this->getImageFromFileSystem($name, $filter);

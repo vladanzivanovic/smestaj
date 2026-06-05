@@ -2,19 +2,14 @@
 
 namespace SiteBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Entity\User;
-use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\CityRepository;
 use SiteBundle\Repository\UserRepository;
-use SiteBundle\Services\ContactService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -42,10 +37,9 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Template("@Site/Site/index.html.twig")
      * @param Request $request
      *
-     * @return RedirectResponse|array
+     * @return RedirectResponse|Response
      */
     public function indexAction(Request $request)
     {
@@ -69,27 +63,9 @@ class IndexController extends AbstractController
             }
         }
 
-        return array(
+        return $this->render('@Site/Site/index.html.twig', array(
             'recommended' => $recommended,
             'cities' => $cities
-        );
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws ApplicationException
-     */
-    public function sendContactFormAction(Request $request)
-    {
-        if(!($jsonData = $this->requestToArray($request))) {
-            throw new ApplicationException(MessageConstants::APPLICATION_ERROR);
-        }
-
-        /** @var ContactService $contactService */
-        $contactService = $this->setService('site.contact_us_service');
-
-        return $this->jsonResponse->setContent($contactService->sendContactEmail($jsonData));
+        ));
     }
 }

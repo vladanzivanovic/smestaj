@@ -3,7 +3,7 @@
 namespace SiteBundle\Services\Ads;
 
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use SiteBundle\Entity\AdsAdditionalInfo;
 use SiteBundle\Entity\Media;
 use SiteBundle\Services\ImageService;

@@ -3,41 +3,20 @@
 namespace SiteBundle\Twig;
 
 use SiteBundle\Entity\Category;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigTest;
 
-class AppTestExtension extends \Twig_Extension
+class AppTestExtension extends AbstractExtension
 {
-    private $container;
-
-    /**
-     * ParamsExtension constructor.
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTests()
+    public function getTests(): array
     {
         return [
-            new \Twig_SimpleTest('category', [$this, 'isCategory']),
+            new TwigTest('category', [$this, 'isCategory']),
         ];
     }
 
-    public function isCategory($item)
+    public function isCategory($item): bool
     {
         return $item instanceof Category;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'params_extension';
     }
 }

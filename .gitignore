@@ -1,5 +1,8 @@
-/app/config/parameters.yml
 /build/
+/.env
+/.env.local
+/.env.local.php
+/.env.*.local
 /phpunit.xml
 /var/*
 !/var/cache
@@ -35,3 +38,5 @@
 /public/js/
 /docker/mysql-mount/
 /web/.htaccess
+/IMPLEMENTATION_PLAN.md
+/docs/

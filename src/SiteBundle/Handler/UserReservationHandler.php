@@ -2,7 +2,7 @@
 
 namespace SiteBundle\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use SiteBundle\Entity\Reservation;
 use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Formatter\ReservationEmailFormatter;

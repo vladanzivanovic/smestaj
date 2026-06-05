@@ -5,44 +5,36 @@ namespace SiteBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Adshastags
- *
- * @ORM\Table(name="ads_has_tags")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\AdshastagsRepository")
- */
+#[ORM\Table(name: 'ads_has_tags')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\AdshastagsRepository::class)]
 class Adshastags
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var Ads
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\Ads", inversedBy="hasTags")
-     * @ORM\JoinColumn(name="ads", referencedColumnName="Id", nullable=true)
      */
+    #[ORM\ManyToOne(targetEntity: Ads::class, inversedBy: 'hasTags')]
+    #[ORM\JoinColumn(name: 'ads', referencedColumnName: 'Id', nullable: true)]
     private $ads;
 
     /**
      * @var Tag
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\Tag", inversedBy="hasTag")
-     * @ORM\JoinColumn(name="tag", referencedColumnName="", nullable=true)
      */
+    #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'hasTag')]
+    #[ORM\JoinColumn(name: 'tag', referencedColumnName: '', nullable: true)]
     private $tag;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="value", type="string", length=100)
      */
+    #[ORM\Column(name: 'value', type: 'string', length: 100)]
     private $value;
 
 

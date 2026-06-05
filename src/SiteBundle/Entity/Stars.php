@@ -4,59 +4,45 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Stars
- *
- * @ORM\Table(name="stars", indexes={@ORM\Index(name="StarsReviewId", columns={"ReviewId"})})
- * @ORM\Entity
- */
+#[ORM\Table(name: 'stars')]
+#[ORM\Index(name: 'StarsReviewId', columns: ['ReviewId'])]
+#[ORM\Entity]
 class Stars
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="Id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column(name: 'Id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="Profesional", type="boolean", nullable=false)
      */
+    #[ORM\Column(name: 'Profesional', type: 'boolean', nullable: false)]
     private $profesional;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="Talent", type="boolean", nullable=false)
      */
+    #[ORM\Column(name: 'Talent', type: 'boolean', nullable: false)]
     private $talent;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="Accomodation", type="boolean", nullable=false)
      */
+    #[ORM\Column(name: 'Accomodation', type: 'boolean', nullable: false)]
     private $accomodation;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="Recommend", type="boolean", nullable=false)
      */
+    #[ORM\Column(name: 'Recommend', type: 'boolean', nullable: false)]
     private $recommend;
 
     /**
      * @var \Reviews
-     *
-     * @ORM\ManyToOne(targetEntity="Reviews")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ReviewId", referencedColumnName="Id")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: Reviews::class)]
+    #[ORM\JoinColumn(name: 'ReviewId', referencedColumnName: 'Id')]
     private $reviewid;
 
 
@@ -174,7 +160,7 @@ class Stars
      *
      * @return Stars
      */
-    public function setReviewid(\SiteBundle\Entity\Reviews $reviewid = null)
+    public function setReviewid(?Reviews $reviewid = null)
     {
         $this->reviewid = $reviewid;
 

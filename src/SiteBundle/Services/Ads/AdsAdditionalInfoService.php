@@ -4,7 +4,7 @@
 namespace SiteBundle\Services\Ads;
 
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use SiteBundle\Repository\AdsAdditionalInfoRepository;
 use SiteBundle\Repository\MediaRepository;
 use SiteBundle\Services\ServiceContainer;

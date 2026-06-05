@@ -11,52 +11,39 @@ use Doctrine\ORM\Mapping\Table;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\TagRepository")
- * @Table(name="tag",indexes={@Index(name="tag_type_id", columns={"tag_type_id"})})
- */
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\TagRepository::class)]
+#[Table(name: 'tag')]
+#[Index(name: 'tag_type_id', columns: ['tag_type_id'])]
 class Tag implements EntityInterface
 {
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     *
-     * @ORM\Column(name="name", type="string")
      */
+    #[Assert\NotBlank]
+    #[ORM\Column(name: 'name', type: 'string')]
     private string $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Slug(fields={"name"}, updatable=false)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Gedmo\Slug(fields: ['name'], updatable: false)]
     private ?string $slug = null;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="icon", type="string", length=50)
      */
+    #[ORM\Column(name: 'icon', type: 'string', length: 50)]
     private string $icon;
 
-    /**
-     * @var TagType
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\TagType")
-     * @JoinColumn(name="tag_type_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: TagType::class)]
+    #[JoinColumn(name: 'tag_type_id', referencedColumnName: 'id')]
     private TagType $tagType;
 
-    /**
-     * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Adshastags", mappedBy="tag")
-     */
+    #[ORM\OneToMany(targetEntity: Adshastags::class, mappedBy: 'tag')]
     private Collection $hasTag;
 
     public function __construct()

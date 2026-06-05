@@ -5,14 +5,13 @@ imports:
 
 framework:
     router:
-        resource: '%kernel.root_dir%/config/routing_dev.yml'
-        strict_requirements: true
-    profiler: { only_exceptions: false }
+        resource: '%kernel.project_dir%/app/config/routing_dev.yml'
+    profiler:
+        only_exceptions: false
 
 web_profiler:
     toolbar: true
     intercept_redirects: false
 
-swiftmailer:
-    port: '%mailer_port%'
-#    delivery_address: 'vladapoz85@gmail.com'
+# Mailer uses MAILER_DSN env var, set in docker-compose.yml for dev
+# Default dev DSN points to mailcatcher: smtp://mailcatcher:1025

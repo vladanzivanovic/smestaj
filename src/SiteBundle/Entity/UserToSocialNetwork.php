@@ -4,55 +4,41 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * UserToSocialNetwork
- *
- * @ORM\Table(name="usertosocialnetwork")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\UserToSocialNetworkRepository")
- */
+#[ORM\Table(name: 'usertosocialnetwork')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\UserToSocialNetworkRepository::class)]
 class UserToSocialNetwork
 {
     const FACEBOOK_TYPE = 'facebook';
     const GOOGLE_TYPE = 'google';
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="Id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+
+    #[ORM\Column(name: 'Id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Type", type="string", length=255)
      */
+    #[ORM\Column(name: 'Type', type: 'string', length: 255)]
     private $type;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="SocialId", type="bigint", length=255)
      */
+    #[ORM\Column(name: 'SocialId', type: 'bigint', length: 255)]
     private $socialid;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Image", type="string", length=500, nullable=true)
      */
+    #[ORM\Column(name: 'Image', type: 'string', length: 500, nullable: true)]
     private $image;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="socialId")
-     * @ORM\JoinColumn(name="UserId", nullable=true, referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'socialId')]
+    #[ORM\JoinColumn(name: 'UserId', nullable: true, referencedColumnName: 'Id')]
     private $userid;
 
-    
+
     /**
      * Get id
      *
@@ -142,7 +128,7 @@ class UserToSocialNetwork
      *
      * @return UserToSocialNetwork
      */
-    public function setUserid(\SiteBundle\Entity\User $userid = null)
+    public function setUserid(?User $userid = null)
     {
         $this->userid = $userid;
 

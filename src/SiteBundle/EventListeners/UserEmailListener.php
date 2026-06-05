@@ -2,7 +2,7 @@
 
 namespace SiteBundle\EventListeners;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use SiteBundle\Constants\EmailConstants;

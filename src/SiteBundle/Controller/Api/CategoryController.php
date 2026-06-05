@@ -5,7 +5,7 @@ namespace SiteBundle\Controller\Api;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CategoryController extends SiteController
 {
@@ -17,10 +17,7 @@ class CategoryController extends SiteController
         $this->categoryRepository = $categoryRepository;
     }
 
-    /**
-     * @Route("/api/category-all", name="site_categories", methods={"GET"})
-     * @return JsonResponse
-     */
+    #[Route('/api/category-all', name: 'site_categories', methods: ['GET'])]
     public function getCategoryLists()
     {
         return $this->json($this->categoryRepository->getAllActive());

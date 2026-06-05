@@ -14,12 +14,7 @@ export default (() => {
         Public.generalSearch();
         Private.registerEvents();
     }
-    /**
-     * Set typeahead to general search input
-     *
-     * @Url /api/general-search
-     * @Method GET
-     */
+
     Public.generalSearch = () => {
         Public.cityService.citiesTypeahead(Private.mapper.form);
         CategoryService.getCategories()
@@ -38,7 +33,7 @@ export default (() => {
         const cityVal = Private.mapper.city.val();
         const categoryObj = CategoryService.getById(categoryId);
         const cityObj = Public.cityService.getCityByParam(cityVal);
-        const category = categoryObj instanceof Object ? categoryObj.alias : 'smestaj';
+        const category = categoryObj.alias;
         const city = cityObj instanceof Object ? cityObj.alias : null;
 
         let params = {category: category};

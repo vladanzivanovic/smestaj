@@ -12,16 +12,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Ads
- *
- * @ORM\Table(
- *     name="ads",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="alias", columns={"alias"})},
- *     indexes={@ORM\Index(name="AdsCategoryId", columns={"CategoryId"}), @ORM\Index(name="AdsCityId", columns={"CityId"})}
- * )
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\AdsRepository")
- */
+#[ORM\Table(name: 'ads')]
+#[ORM\UniqueConstraint(name: 'alias', columns: ['alias'])]
+#[ORM\Index(name: 'AdsCategoryId', columns: ['CategoryId'])]
+#[ORM\Index(name: 'AdsCityId', columns: ['CityId'])]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\AdsRepository::class)]
 class Ads implements EntityInterface
 {
     use ResourceTrait;
@@ -34,255 +29,142 @@ class Ads implements EntityInterface
 
     const PRICE_TYPE_POST_SEASON = 'price_post_season';
 
-    /**
-     * @var string
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="Title", type="string", length=250, nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'Title', type: 'string', length: 250, nullable: false)]
     private string $title;
 
-    /**
-     * @var string
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="Alias", type="string", length=250, nullable=false)
-     * @Gedmo\Slug(fields={"title"}, updatable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'Alias', type: 'string', length: 250, nullable: false)]
+    #[Gedmo\Slug(fields: ['title'], updatable: false)]
     private string $alias;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="Description", type="text", nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'Description', type: 'text', nullable: false)]
     private ?string $description = null;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="ShortDescription", type="text", length=65535, nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'ShortDescription', type: 'text', length: 65535, nullable: false)]
     private ?string $shortDescription = null;
 
-    /**
-     * @var integer
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="PrePriceFrom", type="integer", nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'PrePriceFrom', type: 'integer', nullable: false)]
     private int $prepricefrom;
 
-    /**
-     * @var integer
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="PrePriceTo", type="integer", nullable=true)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'PrePriceTo', type: 'integer', nullable: true)]
     private int $prepriceto;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="PriceFrom", type="integer", nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'PriceFrom', type: 'integer', nullable: false)]
     private ?int $priceFrom = null;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="PriceTo", type="integer", nullable=true)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'PriceTo', type: 'integer', nullable: true)]
     private ?int $priceto = null;
 
-    /**
-     * @var integer
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="PostPriceFrom", type="integer", nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'PostPriceFrom', type: 'integer', nullable: false)]
     private $postpricefrom;
 
-    /**
-     * @var integer
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="PostPriceTo", type="integer", nullable=true)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'PostPriceTo', type: 'integer', nullable: true)]
     private $postpriceto;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="SysCreatedTime", type="datetime", nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'SysCreatedTime', type: 'datetime', nullable: false)]
     private ?\DateTimeInterface $sysCreatedTime = null;
 
-    /**
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\Column(name="SysModifyTime", type="datetime", nullable=false)
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'SysModifyTime', type: 'datetime', nullable: false)]
     private \DateTimeInterface $sysModifyTime;
 
-    /**
-     * @var User
-     *
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="sysCreatedAds")
-     * @ORM\JoinColumn(name="SysCreatedUserId", referencedColumnName="Id")
-     * @Serializer\Exclude(if="true")
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sysCreatedAds')]
+    #[ORM\JoinColumn(name: 'SysCreatedUserId', referencedColumnName: 'Id')]
+    #[Serializer\Exclude(if: 'true')]
     private User $sysCreatedUserId;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User")
-     * @ORM\JoinColumn(name="SysModifyUserId", referencedColumnName="Id")
-     * @Serializer\Exclude(if="true")
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'SysModifyUserId', referencedColumnName: 'Id')]
+    #[Serializer\Exclude(if: 'true')]
     private User $sysModifyUserId;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="adsid")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="CategoryId", referencedColumnName="Id")
-     * })
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'adsid')]
+    #[ORM\JoinColumn(name: 'CategoryId', referencedColumnName: 'Id')]
     private Category $categoryId;
 
-    /**
-     * @Groups({"adsGroup"})
-     *
-     * @ORM\ManyToOne(targetEntity="City")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="CityId", referencedColumnName="Id")
-     * })
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\ManyToOne(targetEntity: City::class)]
+    #[ORM\JoinColumn(name: 'CityId', referencedColumnName: 'Id')]
     private City $cityId;
 
-    /**
-     * @Groups({"adsYouTube"})
-     * @Serializer\Exclude(if="true")
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Youtubeinfo", mappedBy="adsid", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[Groups(['adsYouTube'])]
+    #[Serializer\Exclude(if: 'true')]
+    #[ORM\OneToMany(targetEntity: Youtubeinfo::class, mappedBy: 'adsid', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $youtubeIds;
 
-    /**
-     * @Groups({"adsMedia"})
-     * @Serializer\Exclude(if="true")
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Media", mappedBy="adsid", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[Groups(['adsMedia'])]
+    #[Serializer\Exclude(if: 'true')]
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'adsid', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $media;
 
-    /**
-     * @var $status
-     * @Groups({"adsGroup"})
-     * @ORM\Column(name="Status", type="smallint", nullable=true, options={"default": 0})
-     */
+    #[Groups(['adsGroup'])]
+    #[ORM\Column(name: 'Status', type: 'smallint', nullable: true, options: ['default' => 0])]
     private $status;
 
-    /**
-     * @Groups({"adsReservations"})
-     * @Serializer\Exclude(if="true")
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Reservation", mappedBy="adsid")
-     */
+    #[Groups(['adsReservations'])]
+    #[Serializer\Exclude(if: 'true')]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'adsid')]
     private $reservations;
 
-    /**
-     * @var integer
-     * @ORM\Column(name="PublicPrice", type="smallint", nullable=true, options={"default": 0})
-     */
+    #[ORM\Column(name: 'PublicPrice', type: 'smallint', nullable: true, options: ['default' => 0])]
     private $publicprice;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\AdsAdditionalInfo", mappedBy="adsid", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: AdsAdditionalInfo::class, mappedBy: 'adsid', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $adsadditionalinfo;
 
-    /**
-     * @ORM\OneToOne (targetEntity="SiteBundle\Entity\Contact", inversedBy="ad", cascade={"persist"})
-     * @ORM\JoinColumn(name="contact", referencedColumnName="Id", nullable=false)
-     * @Assert\Valid(groups={"SetAd", "SetAdAdmin"})
-     */
+    #[ORM\OneToOne(targetEntity: Contact::class, inversedBy: 'ad', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'contact', referencedColumnName: 'Id', nullable: false)]
+    #[Assert\Valid(groups: ['SetAd', 'SetAdAdmin'])]
     private ?Contact $contact = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumn(referencedColumnName="Id", nullable=true)
-     * @Assert\Valid(groups={"SetAd"})
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(referencedColumnName: 'Id', nullable: true)]
+    #[Assert\Valid(groups: ['SetAd'])]
     private ?UserInterface $owner;
 
-    /**
-     * @var Collection
-     *
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Adshastags", mappedBy="ads", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Adshastags::class, mappedBy: 'ads', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $hasTags;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\AdsPayedDate", mappedBy="ads", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: AdsPayedDate::class, mappedBy: 'ads', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $payedDate;
 
-    /**
-     * @var float|null
-     * @ORM\Column(type="float", nullable=true)
-     * @Assert\NotBlank(message="fields.required", groups={"SetAdminAd"})
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAdminAd'])]
     private ?float $lat = null;
 
-    /**
-     * @var float|null
-     * @ORM\Column(type="float", nullable=true)
-     * @Assert\NotBlank(message="fields.required", groups={"SetAdminAd"})
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAdminAd'])]
     private ?float $lng = null;
 
-    /**
-     * @var string|null
-     * @ORM\Column(nullable=true)
-     * @Assert\NotBlank(message="fields.required", groups={"SetAdminAd"})
-     */
+    #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAdminAd'])]
     private ?string $address = null;
 
-    /**
-     * @var integer
-     * @ORM\Column(type="integer", nullable=false, options={"default": 0})
-     */
+    #[ORM\Column(type: 'integer', nullable: false, options: ['default' => 0])]
     private int $phoneNumberCounter = 0;
 
-    /**
-     * @var bool
-     */
     private bool $sendEmail = true;
 
-    /**
-     * @ORM\Column(nullable=true, type="string", length=250)
-     */
+    #[ORM\Column(nullable: true, type: 'string', length: 250)]
     private ?string $website = null;
 
-    /**
-     * @ORM\Column(nullable=true, type="string", length=250)
-     */
+    #[ORM\Column(nullable: true, type: 'string', length: 250)]
     private ?string $facebook = null;
 
-
-    /**
-     * @ORM\Column(nullable=true, type="string", length=250)
-     */
+    #[ORM\Column(nullable: true, type: 'string', length: 250)]
     private ?string $instagram = null;
 
 
@@ -557,7 +439,7 @@ class Ads implements EntityInterface
         return $this->publicprice;
     }
 
-    public function setContact(User $contact = null): void
+    public function setContact(?User $contact = null): void
     {
         $this->contact = $contact;
     }
@@ -620,7 +502,7 @@ class Ads implements EntityInterface
      *
      * @return Ads
      */
-    public function addHasTag(\SiteBundle\Entity\Adshastags $hasTag)
+    public function addHasTag(Adshastags $hasTag)
     {
         $this->hasTags[] = $hasTag;
 
@@ -632,7 +514,7 @@ class Ads implements EntityInterface
      *
      * @param \SiteBundle\Entity\Adshastags $hasTag
      */
-    public function removeHasTag(\SiteBundle\Entity\Adshastags $hasTag)
+    public function removeHasTag(Adshastags $hasTag)
     {
         $this->hasTags->removeElement($hasTag);
     }

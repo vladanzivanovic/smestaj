@@ -47,32 +47,39 @@
                 <div class="travelo-box box-full" id="contact-form">
                     <div class="contact-form">
                         <h2>Pitajte nas</h2>
-                        <form action="contact-us-handler.php" method="post">
+                        <form id="contact-form-ajax" novalidate>
+                            <input type="text" name="website" id="contact-website" tabindex="-1" autocomplete="off" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Vaše ime i prezime</label>
                                         <input type="text" name="fullName" class="input-text full-width">
+                                        <span class="field-error" data-field="name"></span>
                                     </div>
                                     <div class="form-group">
                                         <label>Vaš email</label>
                                         <input type="text" name="email" class="input-text full-width">
+                                        <span class="field-error" data-field="email"></span>
                                     </div>
                                     <div class="form-group">
                                         <label>Tema</label>
                                         <input type="text" name="subject" class="input-text full-width">
+                                        <span class="field-error" data-field="subject"></span>
                                     </div>
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="form-group">
                                         <label>Vaša poruka</label>
                                         <textarea name="message" rows="10" class="input-text full-width" placeholder="write message here"></textarea>
+                                        <span class="field-error" data-field="message"></span>
                                     </div>
                                 </div>
                             </div>
 
+                            <div id="contact-form-feedback" class="contact-feedback" role="status" aria-live="polite"></div>
+
                             <div class="col-sms-offset-6 col-sm-offset-6 col-md-offset-8 col-lg-offset-9">
-                                <button class="btn-medium full-width">POŠALJI PORUKU</button>
+                                <button type="button" id="contact-submit-btn" class="btn-medium full-width">POŠALJI PORUKU</button>
                             </div>
                         </form>
                     </div>

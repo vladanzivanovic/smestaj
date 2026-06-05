@@ -4,77 +4,61 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Youtubeinfo
- *
- * @ORM\Table(name="youtubeinfo", indexes={@ORM\Index(name="YoutubeInfoAdsId", columns={"AdsId"})})
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\YouTubeInfoRepository")
- */
+#[ORM\Table(name: 'youtubeinfo')]
+#[ORM\Index(name: 'YoutubeInfoAdsId', columns: ['AdsId'])]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\YouTubeInfoRepository::class)]
 class Youtubeinfo
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="Id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Column(name: 'Id', type: 'integer', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="YoutubeId", type="string", length=100, nullable=false)
      */
+    #[ORM\Column(name: 'YoutubeId', type: 'string', length: 100, nullable: false)]
     private $youtubeid;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Title", type="string", length=250, nullable=false)
      */
+    #[ORM\Column(name: 'Title', type: 'string', length: 250, nullable: false)]
     private $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ChannelId", type="string", length=250, nullable=false)
      */
+    #[ORM\Column(name: 'ChannelId', type: 'string', length: 250, nullable: false)]
     private $channelid;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ChanelTitle", type="string", length=250, nullable=false)
      */
+    #[ORM\Column(name: 'ChanelTitle', type: 'string', length: 250, nullable: false)]
     private $chaneltitle;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="Thumbnails", type="text", length=65535, nullable=false)
      */
+    #[ORM\Column(name: 'Thumbnails', type: 'text', length: 65535, nullable: false)]
     private $thumbnails;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="SysCreatedTime", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: 'SysCreatedTime', type: 'datetime', nullable: true)]
     private $syscreatedtime;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="Id")
-     * @ORM\JoinColumn(name="SysCreatorId", referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'SysCreatorId', referencedColumnName: 'Id')]
     private $syscreatorid;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Ads", inversedBy="youtubeIds")
-     * @ORM\JoinColumn(name="AdsId", referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: Ads::class, inversedBy: 'youtubeIds')]
+    #[ORM\JoinColumn(name: 'AdsId', referencedColumnName: 'Id')]
     private Ads $adsid;
 
 
@@ -264,7 +248,7 @@ class Youtubeinfo
      *
      * @return Youtubeinfo
      */
-    public function setAdsid(\SiteBundle\Entity\Ads $adsid = null)
+    public function setAdsid(?Ads $adsid = null)
     {
         $this->adsid = $adsid;
 

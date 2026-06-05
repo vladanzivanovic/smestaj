@@ -17,7 +17,7 @@ use SiteBundle\Repository\UserRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class ProductEditRequestParser implements RequestParserInterface
@@ -37,7 +37,7 @@ final class ProductEditRequestParser implements RequestParserInterface
 
     private TokenStorageInterface $tokenStorage;
 
-    private UserPasswordEncoderInterface $passwordEncoder;
+    private UserPasswordHasherInterface $passwordEncoder;
 
     private UserToRoleParser $userToRoleParser;
 
@@ -53,7 +53,7 @@ final class ProductEditRequestParser implements RequestParserInterface
         TextHelper $textHelper,
         AdsEditParser $adsEditParser,
         TokenStorageInterface $tokenStorage,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         UserToRoleParser $userToRoleParser,
         UserRepository $userRepository,
         ProductPaymentRequestParser $paymentRequestParser,
@@ -79,11 +79,11 @@ final class ProductEditRequestParser implements RequestParserInterface
      * @throws \SiteBundle\Exceptions\ApplicationException
      * @throws \Exception
      */
-    public function parse(ParameterBag $bag, EntityInterface $entity = null): EntityInterface
+    public function parse(ParameterBag $bag, ?EntityInterface $entity = null): EntityInterface
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $contact = $bag->get('contact');
+        $contact = $bag->all('contact');
 
         $owner = $this->userRepository->find($bag->getInt('owner'));
 
@@ -115,7 +115,7 @@ final class ProductEditRequestParser implements RequestParserInterface
             $owner->setContactemail(null);
             $owner->setEmail($contact->getContactemail());
             $owner->setRoles($this->userToRoleParser->parse(new ParameterBag(['user' => $owner, 'user_role' => Role::ROLE_ADVANCED_USER])));
-            $owner->setPassword($this->passwordEncoder->encodePassword($owner, $password));
+            $owner->setPassword($this->passwordEncoder->hashPassword($owner, $password));
             $owner->setStatus(EntityStatusInterface::STATUS_ACTIVE);
         }
 

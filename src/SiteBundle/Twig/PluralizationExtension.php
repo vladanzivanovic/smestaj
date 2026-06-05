@@ -3,15 +3,15 @@
 namespace SiteBundle\Twig;
 
 
-class PluralizationExtension extends \Twig_Extension
+class PluralizationExtension extends \Twig\Extension\AbstractExtension
 {
     /**
-     * @return array|\Twig_Function[]
+     * @return array|\Twig\TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('pluralization', [$this, 'pluralizeString'])
+            new \Twig\TwigFunction('pluralization', [$this, 'pluralizeString'])
         ];
     }
 

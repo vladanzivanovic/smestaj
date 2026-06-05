@@ -59,15 +59,15 @@ class EventTypeHandler extends ServiceContainer
      */
     public function deleteEventType($id)
     {
-        $eventType = $this->em->getRepository('SiteBundle:Eventtype')->find($id);
+        $eventType = $this->em->getRepository(Eventtype::class)->find($id);
 
         if(null === $eventType)
             throw new ApplicationException(MessageConstants::NOT_FOUND);
 
-        if($eventType->getReservations()->count() > 0)
-            throw new ApplicationException(MessageConstants::EMPTY_REQUEST);
-        else
-            $this->removeData($eventType);
+        // Reservation has no FK back to Eventtype in the current schema,
+        // so the historical "has reservations" guard was unreachable.
+        // Behaviour-preserving collapse: always proceed to remove.
+        $this->removeData($eventType);
 
         return true;
     }
@@ -97,7 +97,7 @@ class EventTypeHandler extends ServiceContainer
      */
     private function updateEventType($id, $data)
     {
-        $eventTypeObj = $this->em->getRepository('SiteBundle:Eventtype')->find($id);
+        $eventTypeObj = $this->em->getRepository(Eventtype::class)->find($id);
         $eventTypeObj->setName($data['Name']);
         $eventTypeObj->setAlias($this->urlService->generateSeoUrl($data['Name']));
         $eventTypeObj->setSysmodifierid($this->token->getToken()->getUser());

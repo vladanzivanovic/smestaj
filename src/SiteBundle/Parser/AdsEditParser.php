@@ -55,14 +55,14 @@ class AdsEditParser
         $this->adsPayedDateParser = $adsPayedDateParser;
     }
 
-    public function parse(ParameterBag $bag, UserInterface $user, ?UserInterface $owner, Ads $ads= null): Ads
+    public function parse(ParameterBag $bag, UserInterface $user, ?UserInterface $owner, ?Ads $ads= null): Ads
     {
         if (null === $ads) {
             $ads = $this->create();
             $ads->setStatus(EntityStatusInterface::STATUS_PENDING);
         }
 
-        $contactArray = $bag->get('contact');
+        $contactArray = $bag->all('contact');
 
         $ads->setTitle($bag->get('title_rs'));
         $ads->setDescription($this->textHelper->clearText($bag->get('description_rs')));
@@ -101,7 +101,7 @@ class AdsEditParser
         $this->adsImageService->setImage($ads, json_decode($bag->get('documents'), true));
         $this->adsUserParser->parse($ads, $contactArray);
 
-        $this->adsTagParser->parse($ads, $bag->get('tags'));
+        $this->adsTagParser->parse($ads, $bag->all('tags'));
         $this->setCategory($ads, $bag->getInt('category'));
         $this->setCity($ads, $bag->get('city'));
 

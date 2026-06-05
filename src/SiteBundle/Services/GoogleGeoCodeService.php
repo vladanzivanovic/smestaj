@@ -20,7 +20,7 @@ class GoogleGeoCodeService extends ServiceContainer
 
     public function changeCityName(Country $country)
     {
-        $cities = $this->em->getRepository('SiteBundle:City')->get();
+        $cities = $this->em->getRepository(City::class)->get();
 
         /** @var City $city */
         foreach ($cities as $city) {
@@ -59,7 +59,7 @@ class GoogleGeoCodeService extends ServiceContainer
             } else {
                 $this->em->remove($city);
             }
-            $this->em->flush($city);
+            $this->em->flush();
         }
     }
 }

@@ -33,7 +33,7 @@ class ReservationService extends ServiceContainer
     public function alreadyConfirmedCheck($reservation)
     {
         if(!$reservation instanceof Reservation) {
-            $reservation = $this->em->getRepository('SiteBundle:Reservation')->find($reservation);
+            $reservation = $this->em->getRepository(Reservation::class)->find($reservation);
         }
 
         if($reservation->getStatus() != Reservation::STATUS_PENDING) {

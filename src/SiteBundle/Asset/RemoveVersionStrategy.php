@@ -14,19 +14,12 @@ class RemoveVersionStrategy implements VersionStrategyInterface
      *
      * @return string The version string
      */
-    public function getVersion($path)
+    public function getVersion($path): string
     {
-        // TODO: Implement getVersion() method.
+        return '';
     }
 
-    /**
-     * Applies version to the supplied path.
-     *
-     * @param string $path A path
-     *
-     * @return string The versionized path
-     */
-    public function applyVersion($path)
+    public function applyVersion($path): string
     {
         return $path;
     }

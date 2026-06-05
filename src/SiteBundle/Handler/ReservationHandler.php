@@ -49,7 +49,7 @@ class ReservationHandler extends ServiceContainer
      */
     public function deleteReservation($id)
     {
-        $reservation = $this->em->getRepository('SiteBundle:Reservation')->find($id);
+        $reservation = $this->em->getRepository(Reservation::class)->find($id);
 
         if(null === $reservation)
             throw new ApplicationException(MessageConstants::NOT_FOUND);
@@ -66,7 +66,7 @@ class ReservationHandler extends ServiceContainer
 
     private function insertReservation($data)
     {
-        $resObj = $this->em->getRepository('SiteBundle:Reservation')->findOneBy([
+        $resObj = $this->em->getRepository(Reservation::class)->findOneBy([
             'adsid' => $data['AdsId'],
             'clientid' => $data['User']['Id'],
             'eventdate' => $data['EventDate'],
@@ -78,7 +78,7 @@ class ReservationHandler extends ServiceContainer
             throw new ApplicationException(MessageConstants::EXIST);
 
         /** @var Reservation $reservation */
-        $reservation = $this->arrayToEntity($data, 'SiteBundle:Reservation');
+        $reservation = $this->arrayToEntity($data, Reservation::class);
 
         $this->userHandler->setUserReservation($data['User'], $data['User']['Id']);
 
@@ -98,7 +98,7 @@ class ReservationHandler extends ServiceContainer
         if( empty($id) )
             throw new \PDOException(MessageConstants::DATA_ID_NOT_EXIST);
 
-        $reservationObj = $this->em->getRepository('SiteBundle:Reservation')->find($id);
+        $reservationObj = $this->em->getRepository(Reservation::class)->find($id);
 
         if(null === $reservationObj)
             throw new \PDOException(MessageConstants::DATA_ID_NOT_EXIST);
@@ -106,7 +106,7 @@ class ReservationHandler extends ServiceContainer
         $data['id'] = $id;
 
         /** @var Reservation $reservation */
-        $reservation = $this->arrayToEntity($data, 'SiteBundle:Reservation');
+        $reservation = $this->arrayToEntity($data, Reservation::class);
 
         $this->userHandler->setUserReservation($data['User'], $data['User']['Id']);
 

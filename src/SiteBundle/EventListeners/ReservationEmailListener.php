@@ -2,7 +2,7 @@
 
 namespace SiteBundle\EventListeners;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use SiteBundle\Constants\EmailConstants;
 use SiteBundle\Entity\Reservation;
 use SiteBundle\Helper\ConstantsHelper;

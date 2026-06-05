@@ -1,126 +1,194 @@
-# AGENTS.md
-
-Guidance for AI coding agents working in this repository.
+# Agents Guide
 
 ## Project Overview
 
-Symfony 4.4 web application (PHP >= 7.4) for an accommodation/listings site ("smestaj"). Uses Doctrine ORM with MariaDB, Twig templates, and Webpack Encore for front-end asset bundling.
+This is **Smestaj** (.checkout) — a Symfony 4.3+ marketplace web application for accommodation/property rental listings. Serbian language ("Smestaj" = Accommodation).
+
+## Tech Stack
+
+- **Backend**: PHP 8.4+, Symfony 8.1+, Doctrine ORM 3.6
+- **Frontend**: jQuery 3.6, Bootstrap 3/4, SASS/SCSS, Webpack Encore
+- **Database**: MySQL 5.7+ / MariaDB 10
+- **Dev Environment**: Docker (Apache+PHP on :9505, MariaDB on :9501, Mailcatcher on :9503/:9504)
 
 ## Architecture
 
-Code is organized into three Symfony bundles under `src/`:
+The app uses a **multi-bundle** Symfony structure with service-oriented architecture:
 
-- **`SiteBundle/`** — Public-facing site: controllers, entities, repositories, services, Twig extensions, listeners, formatters, validators, view helpers.
-- **`AdminBundle/`** — Admin panel: controllers, handlers, model classes, parsers, formatters.
-- **`LogBundle/`** — Logging concerns.
+### Bundles
 
-PSR-4 autoload roots are declared in `composer.json`:
-- `SiteBundle\\` → `src/SiteBundle`
-- `AdminBundle\\` → `src/AdminBundle`
-- `LogBundle\\` → `src/LogBundle`
-- `Tests\\` → `tests/` (dev)
+| Bundle | Purpose | Location |
+|--------|---------|----------|
+| **SiteBundle** | Public-facing site (listings, reservations, user profiles) | `src/SiteBundle/` |
+| **AdminBundle** | Admin dashboard (product/user management) | `src/AdminBundle/` |
+| **LogBundle** | Internal log viewer | `src/LogBundle/` |
 
-Symfony layout (non-Flex):
-- `app/` — kernel (`AppKernel.php`, `AppCache.php`), config, `DoctrineMigrations/`, `Resources/`.
-- `bin/console` — Symfony console entry point.
-- `web/` — public web root (front controllers, built assets in `web/build/`, `web/js/`, `web/css/`).
-- `var/` — cache, logs, sessions (gitignored).
-- `tests/` — PHPUnit tests mirroring bundle structure.
+### Layer Structure (SiteBundle)
 
-Front-end is built with Webpack Encore (`webpack.config.js`); entries are output to `web/build/`.
-
-## Key Dependencies
-
-- Symfony 4.4 (`symfony/symfony ^4.3`, pinned via `extra.symfony.require`)
-- Doctrine ORM 2.6, doctrine-migrations 1.8, gedmo extensions, beberlei/doctrineextensions
-- Twig 1.x/2.x with `twig/extensions`
-- HWI OAuth, Nelmio Security, JMS Serializer, Liip Imagine, Presta Sitemap
-- FOSJsRoutingBundle and BazingaJsTranslationBundle (routes/translations dumped to `web/js/`)
-- Sentry (PHP + Browser)
-- Front-end: jQuery, Bootstrap 3 & 4 (aliased), DataTables, Select2, Summernote, Fotorama, SweetAlert2, etc.
-
-## Common Commands
-
-Run inside the Docker `lamp` container or a matching local PHP environment.
-
-Development:
 ```
-composer develop            # full dev bootstrap (install, migrations, assets, npm dev)
-php bin/console cache:clear
-composer cache:clear
-npm run dev                 # one-off dev build
-npm run watch               # rebuild on change
-npm run build               # production assets
+Controller/          → Route handlers (including Api/ subdirectories for JSON endpoints)
+Entity/              → Doctrine ORM entities (25 domain models)
+Repository/          → Custom Doctrine repositories
+Services/            → Business logic (organized by domain, e.g. Services/Ads/)
+Handler/             → Request/operation handlers (AdsHandler, UserHandler, etc.)
+EventListeners/      → Side-effect processing (emails, file uploads, sitemap)
+Helper/              → Utility classes
+Twig/                → Custom Twig extensions
+Validators/          → Custom validation constraints
+Resources/views/     → Twig templates
+Resources/public/    → Frontend assets (JS, SASS, components)
+Resources/config/    → Bundle config and routing
 ```
 
-Routing / translation dumps for JS (run after route or translation changes):
+### AdminBundle Layer Structure
+
 ```
-composer route-locale-generate
+Controller/          → Admin route handlers (Products/, User/)
+Parser/              → Request parsers (DataTable, Product, User)
+Formatter/           → Response formatters
+Handler/             → Auth handlers (login, entry point, access denied)
+Resources/views/     → Admin Twig templates (Pages/, Components/, Macros/)
 ```
 
-Doctrine:
+## Key Entities
+
+- `User` — User accounts (bcrypt passwords, roles, OAuth)
+- `Ads` — Property/accommodation listings
+- `Reservation` / `UserReservation` — Booking system
+- `Review` / `Stars` — Ratings
+- `Category` — Listing categories
+- `City` — Geographic locations
+- `Tag` / `Adshastags` — Tagging system
+- `AdsAdditionalInfo` — Extended property details
+- `Media` — Uploaded images
+
+## Configuration
+
+- **App config**: `app/config/` (config.yml, security.yml, routing.yml, services.yml, parameters.yml)
+- **Parameters**: `app/config/parameters.yml` (DB, mail, app-specific)
+- **Doctrine extensions**: `app/config/doctrine_extension.yml` (Gedmo timestampable)
+- **Image processing**: `app/config/liip_params.yml`
+- **Security headers**: `app/config/nelmio_security.yaml`
+
+## Frontend
+
+### Build System
+
+Webpack Encore with entry points:
+- `js/admin/app` → AdminBundle JS
+- `js/site/app` → SiteBundle JS
+- `css/site/app` → Main site styles
+- `css/site/user_profile` → User dashboard styles
+- `css/admin/app` → Admin styles
+
+Output goes to `web/build/`.
+
+### Frontend JS Architecture
+
 ```
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:cache:clear-metadata
+js/
+├── Controller/      → Page/feature controllers
+├── Handler/         → Event handlers
+├── Mapper/          → Model/response mapping
+├── Services/        → Reusable utilities
+├── Validation/      → Form validation
+├── Constants/       → Global constants
+├── Filters/         → Data filtering
+└── Components/      → Reusable UI components
 ```
 
-Tests:
+### CSS
+
+SASS source in `Resources/public/sass/` organized by `Pages/` and `Moduls/`.
+
+## CRITICAL: All Commands Must Run Inside Docker
+
+**Running any command directly on the host machine is FORBIDDEN.** Every command — PHP, Composer, npm, Symfony console, tests — must be executed inside the `smestaj-app` Docker container. The only exception is `docker compose` itself, which runs on the host to manage containers.
+
+### Ensure Docker Is Running
+
+Before executing any command inside the container, first verify that Docker containers are running:
+
+```bash
+docker ps --filter name=smestaj --format '{{.Names}} {{.Status}}'
 ```
-./vendor/bin/phpunit                       # all tests (config: phpunit.xml.dist)
-./vendor/bin/phpunit tests/SiteBundle      # subset
+
+If containers are not running or not listed, start them with:
+
+```bash
+docker compose up -d --build
 ```
 
-Deployment is scripted via `composer deploy` (uses `sudo -u www-data` for cache/migrations on the server).
+### Executing Commands
 
-## Docker
+```bash
+# Prefix ALL commands with:
+docker exec smestaj-app <command>
 
-`docker-compose.yml` provides:
-- `lamp` (PHP/Apache) — host port `9500`
-- `mysql` (MariaDB 10) — host port `9501`, DB `smestaj`
-- `phpmyadmin` — host port `9502`
-- `mailcatcher` — SMTP `9503`, UI `9504`
+# Or open an interactive shell:
+docker exec -it smestaj-app bash
+```
+
+### Local App URL
+
+The app runs locally inside Docker and is exposed on port **9505**. When accessing the application via HTTP (e.g. for testing, curl, or browser), always use the port:
+
+```
+http://localhost:9505
+```
+
+Never use `http://localhost` without the port — it will not reach the app.
+
+## Commands
+
+All commands below must be run inside the `smestaj-app` container:
+
+```bash
+# Development
+docker exec smestaj-app composer develop          # Full dev setup
+docker exec smestaj-app npm run dev               # Dev build
+docker exec smestaj-app npm run watch             # Watch mode
+docker exec smestaj-app npm run dev-server        # Dev server with HMR
+
+# Production
+docker exec smestaj-app composer deploy           # Full production deploy
+docker exec smestaj-app npm run build             # Production build
+
+# Symfony
+docker exec smestaj-app php bin/console                                    # Symfony CLI
+docker exec smestaj-app php bin/console doctrine:migrations:migrate        # Run migrations
+docker exec smestaj-app php bin/console assets:install                     # Install bundle assets
+docker exec smestaj-app php bin/console fos:js-routing:dump                # Generate JS routes
+docker exec smestaj-app php bin/console bazinga:js-translation:dump        # Generate JS translations
+
+# Docker (only command that runs on host)
+docker compose up -d      # Start dev environment
+
+# Tests
+docker exec smestaj-app ./bin/simple-phpunit   # Run tests (symfony/phpunit-bridge)
+```
 
 ## Conventions
 
-- Match the existing bundle/folder layout when adding code (e.g. an entity goes in `src/SiteBundle/Entity/`, its repository in `src/SiteBundle/Repository/`).
-- Tests live in `tests/<Bundle>/...` under the `Tests\` namespace.
-- `app/config/parameters.yml` is gitignored and generated by `incenteev/composer-parameter-handler`; do not commit it.
-- Built artifacts under `web/build/`, `web/js/`, `web/css/`, `web/media/`, `web/uploads/`, and `var/*` are gitignored — never commit them.
-- Do not edit files in `vendor/` or `node_modules/`.
-- Preserve PHP 7.4 compatibility (no PHP 8-only syntax) and Symfony 4.4 APIs.
+- **Naming**: Doctrine underscore naming strategy (camelCase properties → snake_case columns)
+- **DI**: Constructor injection, autowiring enabled in services.yml
+- **Locale**: Primary locale is Serbian (`rs`), translations in YAML
+- **Security**: Role-based (ROLE_ADMIN, ROLE_USER, ROLE_ADVANCED_USER), OAuth via Facebook/Google
+- **Passwords**: Bcrypt with cost 4
+- **Images**: Liip Imagine for dynamic filtering/resizing (thumbnails 400x400, categories 600x300, sliders 1920x1080)
+- **Serialization**: JMS Serializer with annotations for API responses
+- **Migrations**: Doctrine migrations in `app/DoctrineMigrations/`
+- **Templates**: Twig with global base in `app/Resources/views/`, bundle-specific in each bundle's `Resources/views/`
+- **Imports**: Every class used in a file MUST be declared with a `use` statement at the top. Always reference classes by their short name in code, never by FQCN. No dynamic class names or string-based service retrieval.
 
-## Notes for Agents
+## External Integrations
 
-- This is a legacy Symfony 4.4 / PHP 7.4 codebase — prefer minimal, surgical changes that match surrounding style over modernization.
-- When adding routes used from JS, remember to re-dump via `composer route-locale-generate`.
-- When adding front-end assets, wire them through `webpack.config.js` and run `npm run dev`.
-- Use `php bin/console` (not `symfony` CLI) for console commands.
+- **OAuth**: HWI OAuth Bundle (Facebook, Google)
+- **Email**: SwiftMailer (Mailcatcher in dev)
+- **Error Tracking**: Sentry.io
+- **SEO**: Presta Sitemap Bundle
+- **Image Processing**: Liip Imagine Bundle
 
-## Docker-Only Execution (HARD RULE)
+## Testing
 
-Agents are **strictly forbidden** from executing commands on the host machine. Every command — without exception — runs inside a Docker container.
-
-- Use the running services where possible:
-  - PHP / Symfony / Composer / Node / npm → `docker compose exec lamp <cmd>`
-  - MariaDB → `docker compose exec mysql <cmd>` (or `mariadb -u root -p'vlada123!!!' smestaj -e "..."`)
-- If a required tool is not available in the running services, agents MAY launch an ephemeral container:
-  ```
-  docker run --rm <image> <cmd>
-  ```
-  and MUST clean up afterwards: `--rm` removes the container; `docker rmi <image>` removes any image that was pulled solely for the task.
-- Permitted host commands are limited to filesystem inspection and VCS (`ls`, `cat`, `git`, `docker compose ...`). Anything that touches PHP, Node, Composer, npm, the database, or project tooling MUST go through Docker.
-- Ports: site `http://localhost:9500`, MariaDB `127.0.0.1:9501`, phpMyAdmin `http://localhost:9502`, Mailcatcher `9503` SMTP / `http://localhost:9504` UI. From inside containers, the web server is reachable at `http://localhost` (inside `lamp`).
-
-## Agent Protocol (5-Phase Task-Router)
-
-Non-trivial changes follow the coordinator-driven protocol defined under `.opencode/agent/`:
-
-| Phase | Agent | Output / Gate |
-|-------|-------|---------------|
-| 0 | `context-specifier` | `docs/CONTEXT_SPEC.md` (uses `docs/spec_template.md`) — **user must reply `approved`** before Phase 1. |
-| 1 | `planner` | `IMPLEMENTATION_PLAN.md` with atomic, tagged checkboxes (`[backend]`, `[frontend]`, `[twig]`, `[db]`). |
-| 2 | `executor` | Implements each checkbox; ticks `- [x]` as it goes. |
-| 3 | `qa` | Runs PHPUnit + curl + build inside Docker. Reports `ALL GREEN` or `FAILURES`. Loads the `qa-testing` skill. |
-| 4 | `reviewer` | Final review, minor polish, **mandatory deletion of `IMPLEMENTATION_PLAN.md`**. |
-
-The `coordinator` agent (primary) routes work through the phases. It never writes code itself. The QA skill lives at `.opencode/skill/qa-testing/SKILL.md`.
+PHPUnit with bootstrap via `app/autoload.php`. Tests in `tests/` directory, organized by bundle. Currently minimal test coverage.

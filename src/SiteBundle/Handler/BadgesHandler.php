@@ -70,7 +70,7 @@ class BadgesHandler extends ServiceContainer
             if($badge == 0)
                 continue;
 
-            $badgeObj = $this->em->getRepository('SiteBundle:Badges')->find($badge);
+            $badgeObj = $this->em->getRepository(Badges::class)->find($badge);
 
             $badgeToAds = new Badgetoad();
             $badgeToAds->setAdsid($ads);
@@ -94,7 +94,7 @@ class BadgesHandler extends ServiceContainer
     public function deleteBadge($id)
     {
         /** @var Badges $badge */
-        $badge = $this->em->getRepository('SiteBundle:Badges')->find($id);
+        $badge = $this->em->getRepository(Badges::class)->find($id);
 
         if(null === $badge)
             throw new ApplicationException(MessageConstants::NOT_FOUND);
@@ -117,14 +117,14 @@ class BadgesHandler extends ServiceContainer
      */
     private function insertBadge($data)
     {
-        $badge = $this->em->getRepository('SiteBundle:Badges')->checkExistanceByName($data['Name']);
+        $badge = $this->em->getRepository(Badges::class)->checkExistanceByName($data['Name']);
 
         if(null !== $badge )
             throw new \PDOException(MessageConstants::EXIST);
 
         $this->img->setImageToFileSystem($data['Documents'], $this->badgesDir);
         /** @var Badges $badge */
-        $badge = $this->arrayToEntity($data, 'SiteBundle:Badges');
+        $badge = $this->arrayToEntity($data, Badges::class);
         $badge->setImage($data['Documents'][0]['FileName']);
 
 //        $errors = $this->validator->validate($purchase);
@@ -152,12 +152,12 @@ class BadgesHandler extends ServiceContainer
         if( empty($id) )
             throw new \PDOException(MessageConstants::BADGE_ID_NOT_EXIST);
 
-        $badge = $this->em->getRepository('SiteBundle:Badges')->checkExistanceByName($data['Name'], $id);
+        $badge = $this->em->getRepository(Badges::class)->checkExistanceByName($data['Name'], $id);
 
         if(null !== $badge )
             throw new \PDOException(MessageConstants::EXIST);
 
-        $badgeObj = $this->em->getRepository('SiteBundle:Badges')->find($id);
+        $badgeObj = $this->em->getRepository(Badges::class)->find($id);
 
         if(null === $badgeObj)
             throw new \PDOException(MessageConstants::BADGE_ID_NOT_EXIST);
@@ -166,7 +166,7 @@ class BadgesHandler extends ServiceContainer
 
         $data['id'] = $id;
         /** @var Badges $badge */
-        $badge = $this->arrayToEntity($data, 'SiteBundle:Badges');
+        $badge = $this->arrayToEntity($data, Badges::class);
         $badge->setImage(count( $data['Documents']) > 1 ? $data['Documents'][1]['FileName'] : $data['Documents'][0]['FileName']);
 
 

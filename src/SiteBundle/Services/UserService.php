@@ -2,7 +2,7 @@
 
 namespace SiteBundle\Services;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use SiteBundle\Constants\EmailConstants;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Entity\EntityStatusInterface;

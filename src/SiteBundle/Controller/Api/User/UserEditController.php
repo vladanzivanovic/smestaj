@@ -4,7 +4,6 @@ namespace SiteBundle\Controller\Api\User;
 
 
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\User;
@@ -13,7 +12,7 @@ use SiteBundle\Services\UserService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class UserEditController extends SiteController
 {
@@ -29,11 +28,7 @@ class UserEditController extends SiteController
         $this->logger = $logger;
     }
 
-    /**
-     * @Route("/api/add-new-user", name="site_registration_post", methods={"POST"})
-     * @param Request $request
-     * @return JsonResponse
-     */
+    #[Route('/api/add-new-user', name: 'site_registration_post', methods: ['POST'])]
     public function addNewUser(Request $request)
     {
         try {
@@ -83,16 +78,11 @@ class UserEditController extends SiteController
         return $this->jsonResponse->setData($userResponse);
     }
 
-    /**
-     * @Route("/aktivacija-naloga/{id}", name="site_activate_registration", methods={"GET"}, requirements={"id": "\d+"})
-     * @Template("@Site/Site/accountActivation.html.twig")
-     * @param User $user
-     * @return array
-     */
-    public function activateRegistration(User $user)
+    #[Route('/aktivacija-naloga/{id}', name: 'site_activate_registration', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function activateRegistration(User $user): Response
     {
-        return [
+        return $this->render('@Site/Site/accountActivation.html.twig', [
             'userActivation' => $this->userHandler->activateRegistration($user)
-        ];
+        ]);
     }
 }

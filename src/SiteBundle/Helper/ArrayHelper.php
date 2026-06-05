@@ -10,13 +10,13 @@ namespace SiteBundle\Helper;
 
 
 
-use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
 
 class ArrayHelper
 {
-    private $serializer;
+    private SerializerInterface $serializer;
 
-    public function __construct(Serializer $serializerBundle)
+    public function __construct(SerializerInterface $serializerBundle)
     {
         $this->serializer = $serializerBundle;
     }

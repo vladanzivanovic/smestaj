@@ -2,26 +2,20 @@
 
 namespace SiteBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class ParamsExtension extends \Twig_Extension
+class ParamsExtension extends AbstractExtension
 {
-    private $container;
+    private ParameterBagInterface $params;
 
-    /**
-     * ParamsExtension constructor.
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ParameterBagInterface $params)
     {
-        $this->container = $container;
+        $this->params = $params;
     }
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('app_params', [$this, 'getParams']),
@@ -32,29 +26,18 @@ class ParamsExtension extends \Twig_Extension
 
     public function getParams($parameter)
     {
-        return $this->container->getParameter($parameter);
+        return $this->params->get($parameter);
     }
 
-    public function isSetAndExist($value)
+    public function isSetAndExist($value): bool
     {
         return !empty($value);
     }
 
-    /**
-     * @return array
-     */
     public function getCodeFromLocales(): array
     {
         return array_map(function ($locale) {
             return $locale['code'];
         }, $this->getParams('languages'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'params_extension';
     }
 }

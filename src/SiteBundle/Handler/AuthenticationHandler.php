@@ -7,12 +7,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -21,26 +21,18 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
 {
     private $tokenStorage;
     private $router;
-    private $session;
+    private $requestStack;
     private $translator;
 
-    /**
-     * AuthenticationHandler constructor.
-     *
-     * @param TokenStorageInterface $tokenStorage
-     * @param RouterInterface       $router
-     * @param SessionInterface      $session
-     * @param TranslatorInterface   $translator
-     */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
-        SessionInterface $session,
+        RequestStack $requestStack,
         TranslatorInterface $translator
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
@@ -50,7 +42,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
      *
      * @return JsonResponse|RedirectResponse|Response
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
         if ( $request->isXmlHttpRequest() ) {
             $array = array('user' => $token->getUser()->getFirstname() .' '. $token->getUser()->getLastname() );
@@ -64,8 +56,8 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
 
             return new JsonResponse($array);
         } else {
-            if ( $this->session->get('_security.main.target_path' ) ) {
-                $url = $this->session->get( '_security.main.target_path' );
+            if ( $this->requestStack->getSession()->get('_security.main.target_path' ) ) {
+                $url = $this->requestStack->getSession()->get( '_security.main.target_path' );
             } else {
                 $url = $this->router->generate( 'site_index' );
             }
@@ -80,7 +72,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
      *
      * @return JsonResponse|RedirectResponse|Response
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         if ( $request->isXmlHttpRequest() ) {
             $message = $this->translator->trans($exception->getMessage());
@@ -88,7 +80,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
 
             return new JsonResponse($array, JsonResponse::HTTP_BAD_REQUEST);
         } else {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+            $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, $exception);
             return new RedirectResponse( $this->router->generate( 'site_index' ) );
         }
     }

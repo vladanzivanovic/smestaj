@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace SiteBundle\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use SiteBundle\Entity\User;
 use SiteBundle\Entity\Usertorole;

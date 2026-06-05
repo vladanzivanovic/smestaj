@@ -8,7 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 /**
  * Class ExtendedEntityRepository
  */
-class ExtendedEntityRepository extends ServiceEntityRepository
+abstract class ExtendedEntityRepository extends ServiceEntityRepository
 {
     /**
      * @param object $object
@@ -17,12 +17,12 @@ class ExtendedEntityRepository extends ServiceEntityRepository
      */
     public function persist($object): void
     {
-        $this->_em->persist($object);
+        $this->getEntityManager()->persist($object);
     }
 
     public function flush(): void
     {
-        $this->_em->flush();
+        $this->getEntityManager()->flush();
     }
 
     public function save($object)
@@ -33,7 +33,7 @@ class ExtendedEntityRepository extends ServiceEntityRepository
 
     public function delete($object)
     {
-        $this->_em->remove($object);
+        $this->getEntityManager()->remove($object);
     }
 
     public function removeWithFlush($object)

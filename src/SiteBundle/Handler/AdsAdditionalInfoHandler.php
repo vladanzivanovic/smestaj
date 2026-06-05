@@ -3,7 +3,7 @@
 namespace SiteBundle\Handler;
 
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use SiteBundle\Services\Ads\AdsAdditionalInfoImageService;
 use Doctrine\ORM\EntityManager;
 use SiteBundle\Entity\Ads;
@@ -42,7 +42,7 @@ class AdsAdditionalInfoHandler extends ServiceContainer
             $info['Id'] = $info['InfoId'];
 
             /** @var AdsAdditionalInfo $infoObj */
-            $infoObj = $this->arrayToEntity($info, 'SiteBundle:AdsAdditionalInfo');
+            $infoObj = $this->arrayToEntity($info, AdsAdditionalInfo::class);
 
             if (isset($info['isDeleted']) && true === $info['isDeleted']) {
                 $ads->removeAdsadditionalinfo($infoObj);

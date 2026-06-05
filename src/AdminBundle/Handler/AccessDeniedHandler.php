@@ -20,7 +20,7 @@ final class AccessDeniedHandler implements AccessDeniedHandlerInterface
         $this->router = $router;
     }
 
-    public function handle(Request $request, AccessDeniedException $accessDeniedException)
+    public function handle(Request $request, AccessDeniedException $accessDeniedException): ?\Symfony\Component\HttpFoundation\Response
     {
         if (false !== strpos('admin', $request->attributes->get('_route'))) {
             return new RedirectResponse($this->router->generate('admin.login'));

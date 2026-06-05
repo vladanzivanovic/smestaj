@@ -9,10 +9,11 @@ use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Parser\AdsEditParser;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdsEditController extends SiteController
@@ -37,16 +38,7 @@ class AdsEditController extends SiteController
         $this->logger = $logger;
     }
 
-    /**
-     * @Route("/api/product", name="site_ads_save", methods={"POST"})
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws \LogicException
-     * @throws \InvalidArgumentException
-     * @throws ApplicationException
-     * @throws \Doctrine\ORM\ORMException
-     */
+    #[Route('/api/product', name: 'site_ads_save', methods: ['POST'])]
     public function insert(Request $request): JsonResponse
     {
         try {
@@ -83,13 +75,7 @@ class AdsEditController extends SiteController
         }
     }
 
-    /**
-     * @Route("/product/{id}", name="site_ads_update", methods={"PUT"})
-     * @param Ads     $ads
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
+    #[Route('/product/{id}', name: 'site_ads_update', methods: ['PUT'])]
     public function update(Ads $ads, Request $request): JsonResponse
     {
         try {
@@ -126,14 +112,8 @@ class AdsEditController extends SiteController
         }
     }
 
-    /**
-     * @Route("/api/product/{alias}", methods={"DELETE"}, name="remove_ad")
-     *
-     * @param Ads $ads
-     *
-     * @return JsonResponse
-     */
-    public function removeAd(Ads $ads)
+    #[Route('/api/product/{alias}', methods: ['DELETE'], name: 'remove_ad')]
+    public function removeAd(#[MapEntity(mapping: ['alias' => 'alias'])] Ads $ads)
     {
         try {
             $this->adsHandler->deleteAds($ads);

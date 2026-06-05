@@ -4,26 +4,18 @@ namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * UserToRole
- *
- * @ORM\Table(name="usertorole")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\UserToRoleRepository")
- */
+#[ORM\Table(name: 'usertorole')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\UserToRoleRepository::class)]
 class Usertorole implements EntityInterface
 {
     use ResourceTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\User", inversedBy="roles")
-     * @ORM\JoinColumn(name="UserId", referencedColumnName="Id")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'roles')]
+    #[ORM\JoinColumn(name: 'UserId', referencedColumnName: 'Id')]
     private User $userId;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\Role", inversedBy="users")
-     * @ORM\JoinColumn(name="RoleId", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(name: 'RoleId', referencedColumnName: 'id')]
     private Role $role;
 
     public function setUserId(User $user): self

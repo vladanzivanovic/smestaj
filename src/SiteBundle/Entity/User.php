@@ -8,87 +8,63 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="users")
- * @ORM\Entity(repositoryClass="SiteBundle\Repository\UserRepository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap ({"user" = "User", "contact" = "Contact"})
- */
-class User implements UserInterface, \Serializable, EntityInterface, EntityStatusInterface
+#[ORM\Table(name: 'users')]
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\UserRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['user' => User::class, 'contact' => Contact::class])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface, EntityStatusInterface
 {
     use ResourceTrait;
     use StatusTrait;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $username = null;
 
-    /**
-     * @ORM\Column(name="first_name", type="string", length=100, nullable=false)
-     * @Assert\NotBlank(message="fields.required", groups={"Registration", "SetAd", "SetAdAdmin"})
-     */
+    #[ORM\Column(name: 'first_name', type: 'string', length: 100, nullable: false)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['Registration', 'SetAd', 'SetAdAdmin'])]
     private ?string $firstname = null;
 
-    /**
-     * @ORM\Column(name="last_name", type="string", length=100, nullable=false)
-     * @Assert\NotBlank(message="fields.required", groups={"Registration", "SetAd", "SetAdAdmin"})
-     */
+    #[ORM\Column(name: 'last_name', type: 'string', length: 100, nullable: false)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['Registration', 'SetAd', 'SetAdAdmin'])]
     private ?string $lastname = null;
 
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     * @Assert\NotBlank(message="fields.required", groups={"Registration", "ResetPassword"})
-     * @Assert\EqualTo(message="fields.password_not_equal", propertyPath="repassword", groups={"Registration",
-     *                                                      "ResetPassword"})
-     */
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['Registration', 'ResetPassword'])]
+    #[Assert\EqualTo(message: 'fields.password_not_equal', propertyPath: 'repassword', groups: ['Registration', 'ResetPassword'])]
     private ?string $password = null;
 
     private ?string $repassword = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Usertorole", mappedBy="userId", cascade={"persist", "remove"},
-     *                                                             orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Usertorole::class, mappedBy: 'userId', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $roles;
 
-    /**
-     * @Serializer\Exclude()
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\Ads", mappedBy="sysCreatedUserId", cascade={"persist"})
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToMany(targetEntity: Ads::class, mappedBy: 'sysCreatedUserId', cascade: ['persist'])]
     private Collection $sysCreatedAds;
 
-    /**
-     * @ORM\Column(type="string", length=60, unique=true, nullable=true)
-     * @Assert\NotBlank(message="fields.required", groups={"Registration"})
-     * @Assert\Email(message="fields.email", groups={"Registration"}, mode="loose")
-     */
+    #[ORM\Column(type: 'string', length: 60, unique: true, nullable: true)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['Registration'])]
+    #[Assert\Email(message: 'fields.email', groups: ['Registration'])]
     private ?string $email = null;
 
-    /**
-     * @Serializer\Exclude()
-     * @ORM\OneToMany(targetEntity="SiteBundle\Entity\UserToSocialNetwork", mappedBy="userid",
-     *                                                                      cascade={"persist","remove"})
-     */
+    #[Serializer\Exclude]
+    #[ORM\OneToMany(targetEntity: UserToSocialNetwork::class, mappedBy: 'userid', cascade: ['persist', 'remove'])]
     private Collection $socialId;
 
-    /**
-     * @ORM\Column(length=100, nullable=true)
-     */
+    #[ORM\OneToMany(targetEntity: Userreservation::class, mappedBy: 'userid')]
+    private Collection $client;
+
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $token = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $tokenValid = null;
 
-    /**
-     * @var bool
-     */
     private bool $isResetPasswordRequest = false;
 
     public function __construct()
@@ -96,6 +72,12 @@ class User implements UserInterface, \Serializable, EntityInterface, EntityStatu
         $this->roles = new ArrayCollection();
         $this->sysCreatedAds = new ArrayCollection();
         $this->socialId = new ArrayCollection();
+        $this->client = new ArrayCollection();
+    }
+
+    public function getClient(): Collection
+    {
+        return $this->client;
     }
 
     public function __clone()
@@ -159,32 +141,26 @@ class User implements UserInterface, \Serializable, EntityInterface, EntityStatu
         }
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
-    /** @see \Serializable::serialize() */
-    public function serialize(): ?string
+    public function __serialize(): array
     {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt,
-        ));
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'email' => $this->email,
+            'password' => $this->password,
+        ];
     }
 
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt
-            ) = unserialize($serialized);
+        $this->id = $data['id'];
+        $this->username = $data['username'];
+        $this->email = $data['email'] ?? null;
+        $this->password = $data['password'];
     }
 
     public function setPassword(string $password): void
@@ -240,6 +216,11 @@ class User implements UserInterface, \Serializable, EntityInterface, EntityStatu
     public function setUsername(string $username): void
     {
         $this->username = $username;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email ?? $this->username ?? '';
     }
 
     public function getUsername(): ?string

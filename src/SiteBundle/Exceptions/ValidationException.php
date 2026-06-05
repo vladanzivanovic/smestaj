@@ -21,7 +21,7 @@ class ValidationException extends ApplicationException
      * @param int $code
      * @param Exception|null $previous
      */
-    public function __construct( ConstraintViolationListInterface $validator, $code = 0, Exception $previous = null)
+    public function __construct( ConstraintViolationListInterface $validator, $code = 0, ?Exception $previous = null)
     {
         parent::__construct(json_encode($this->toArray($validator)), $code, $previous);
     }

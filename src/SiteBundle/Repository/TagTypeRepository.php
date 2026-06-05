@@ -2,15 +2,13 @@
 
 namespace SiteBundle\Repository;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityRepository;
-use Gedmo\Mapping\ExtensionMetadataFactory;
+use Doctrine\Persistence\ManagerRegistry;
 use SiteBundle\Entity\TagType;
 
 /**
  * Class TagTypeRepository
  */
-class TagTypeRepository extends ExtensionMetadataFactory
+class TagTypeRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

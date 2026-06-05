@@ -3,7 +3,7 @@
 namespace SiteBundle\Repository;
 
 use AdminBundle\Model\DataTableModel;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use SiteBundle\Entity\EntityInterface;
@@ -28,17 +28,29 @@ class UserRepository extends ExtendedEntityRepository implements UserLoaderInter
      * @return mixed|UserInterface|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username = :username OR u.email = :email')
+            ->setParameter('username', $identifier)
+            ->setParameter('email', $identifier)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function loadUserByUsername($username, $id = null)
     {
+        if ($id === null) {
+            return $this->loadUserByIdentifier($username);
+        }
 
         $query = $this->createQueryBuilder('u')
             ->where('u.username = :username OR u.email = :email')
-            ->setParameters(['username' => $username, 'email' => $username]);
+            ->setParameter('username', $username)
+            ->setParameter('email', $username);
 
-        if((int)$id > 0) {
-            $query->andWhere('u.id <> :id')
-                ->setParameter('id', $id);
-        }
+        $query->andWhere('u.id <> :id')
+            ->setParameter('id', $id);
 
         return $query->getQuery()
             ->getOneOrNullResult();

@@ -9,7 +9,7 @@
 namespace SiteBundle\Repository;
 
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use SiteBundle\Constants\MainConstants;

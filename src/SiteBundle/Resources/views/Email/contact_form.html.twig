@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova poruka sa kontakt forme</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
+    <h2 style="margin-bottom: 0.5em;">Nova poruka sa kontakt forme</h2>
+
+    <table cellpadding="6" cellspacing="0" style="border-collapse: collapse;">
+        <tr>
+            <td style="font-weight: bold;">Ime i prezime:</td>
+            <td>{{ data.name }}</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">Email:</td>
+            <td><a href="mailto:{{ data.email }}">{{ data.email }}</a></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold;">Tema:</td>
+            <td>{{ data.subject }}</td>
+        </tr>
+    </table>
+
+    <h3 style="margin-top: 1.5em;">Poruka</h3>
+    <p>{{ data.message|e|nl2br }}</p>
+
+    <hr>
+    <p style="font-size: 12px; color: #888;">
+        Poruka poslata kroz kontakt formu sajta smestaj.
+    </p>
+</body>
+</html>

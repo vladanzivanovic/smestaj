@@ -2,9 +2,11 @@
 
 namespace SiteBundle\Dom;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\Ads;
+use SiteBundle\Entity\Media;
+use SiteBundle\Entity\User;
+use SiteBundle\Entity\Youtubeinfo;
 use SiteBundle\Helper\AdsPayedHelper;
 use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\MediaRepository;
@@ -16,7 +18,7 @@ use SiteBundle\View\SingleAdViewFormatter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use \HTMLPurifier;
 use Twig\Environment;
 
@@ -89,21 +91,21 @@ final class SingleAdsDom
     public function getAdsByIdAction(Ads $ads)
     {
         $imageUrl = $this->get('app.app_helper')->getHttpHostBaseUrl() . $this->getParameter('upload_image_dir');
-        $youtubes = $this->setEntity('SiteBundle:Youtubeinfo')->getByadsId($ads->getId(), false);
+        $youtubes = $this->setEntity(Youtubeinfo::class)->getByadsId($ads->getId(), false);
 
         /** @var AdsFormatter $formatter */
         $formatter = $this->setService('site.ads_formatter');
         /** @var AdsTagService $tagsService */
         $tagsService = $this->setService('site.ads_tag_service');
         /** @var MediaRepository $mediaRepo */
-        $mediaRepo = $this->setEntity('SiteBundle:Media');
+        $mediaRepo = $this->setEntity(Media::class);
 
         foreach ($youtubes as &$youtube){
             $youtube['Thumbnails'] = json_decode($youtube['Thumbnails'], true);
         }
         unset($youtube);
 
-        $user = $this->setEntity('SiteBundle:User')->getById($ads->getContact()->getId());
+        $user = $this->setEntity(User::class)->getById($ads->getContact()->getId());
         $adsInfo = $this->setService('site.additional_info_service')->getByadsId($ads->getId());
 
         return $this->outputJson([
@@ -166,7 +168,7 @@ final class SingleAdsDom
 
 
         /** @var Ads $ads */
-        $ads = $this->setEntity('SiteBundle:Ads')->findOneBy(['title' => $title]);
+        $ads = $this->setEntity(Ads::class)->findOneBy(['title' => $title]);
 
         if ( (int) $id > 0 && $ads && $ads->getId() == $id) {
             $ads = null;

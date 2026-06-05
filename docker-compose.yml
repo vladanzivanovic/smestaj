@@ -1,10 +1,11 @@
+version: '3.6'
 services:
-  lamp:
-    build: ./docker/lamp
-    image: lamp
-    container_name: smestaj-lamp
+  app:
+    build: ./docker/app
+    image: app
+    container_name: smestaj-app
     ports:
-      - "9500:80"
+      - "9505:80"
     volumes:
       - "./:/var/www/html:rw,cached"
     depends_on:
@@ -12,8 +13,20 @@ services:
     environment:
       PHP_IDE_CONFIG: "serverName=local"
       XDEBUG_SESSION: "PHPSTORM"
-    networks:
-      - smestaj
+#  lamp:
+#    build: ./docker/lamp
+#    image: lamp
+#    container_name: smestaj-lamp
+#    ports:
+#      - "9500:80"
+#    volumes:
+#      - "./:/var/www/html:rw,cached"
+#    depends_on:
+#      - mysql
+#    environment:
+#      PHP_IDE_CONFIG: "serverName=local"
+#      XDEBUG_SESSION: "PHPSTORM"
+#      MAILER_DSN: "smtp://mailcatcher:1025"
 
   mysql:
     image: mariadb:10
@@ -25,22 +38,18 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=vlada123!!!
       - MYSQL_DATABASE=smestaj
-    networks:
-      - smestaj
 
-  phpmyadmin:
-    depends_on:
-      - mysql
-    image: phpmyadmin/phpmyadmin
-    container_name: smestaj-phpmyadmin
-    restart: always
-    ports:
-      - '9502:80'
-    environment:
-      PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: vlada123!!!
-    networks:
-      - smestaj
+#  phpmyadmin:
+#    depends_on:
+#      - mysql
+#    image: phpmyadmin/phpmyadmin
+#    container_name: smestaj-phpmyadmin
+#    restart: always
+#    ports:
+#      - '9502:80'
+#    environment:
+#      PMA_HOST: mysql
+#      MYSQL_ROOT_PASSWORD: vlada123!!!
 
   mailcatcher:
     image: schickling/mailcatcher
@@ -48,7 +57,3 @@ services:
     ports:
       - "9503:1025" # changed to 1026 to avoid local instance of mailcatcher
       - "9504:1080"
-    networks:
-      - smestaj
-networks:
-    smestaj:

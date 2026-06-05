@@ -4,7 +4,6 @@ namespace SiteBundle\Controller;
 
 use SiteBundle\Helper\ArrayHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,9 +73,16 @@ class SiteController extends AbstractController
     protected function objToArray($data)
     {
         /** @var ArrayHelper $array_helper */
-        $array_helper = $this->get('app.array_helper');
+        $array_helper = $this->container->get('app.array_helper');
 
         return $array_helper->objToArray($data);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            'app.array_helper' => ArrayHelper::class,
+        ]);
     }
 
     /**

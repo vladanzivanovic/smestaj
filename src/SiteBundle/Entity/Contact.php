@@ -3,53 +3,35 @@
 namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Entity(repositoryClass="SiteBundle\Repository\ContactRepository")
- */
+#[ORM\Entity(repositoryClass: \SiteBundle\Repository\ContactRepository::class)]
 class Contact extends User implements EntityInterface
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="SiteBundle\Entity\City")
-     * @ORM\JoinColumn(name="city", referencedColumnName="Id")
-     * @Assert\NotBlank(message="fields.required", groups={"SetAd", "SetAdAdmin"})
-     */
+    #[ORM\ManyToOne(targetEntity: City::class)]
+    #[ORM\JoinColumn(name: 'city', referencedColumnName: 'Id')]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAd', 'SetAdAdmin'])]
     private ?City $city = null;
 
-    /**
-     * @ORM\Column(type="string", length=300, nullable=true)
-     * @Assert\NotBlank(message="fields.required", groups={"SetAd", "SetAdAdmin"})
-     */
+    #[ORM\Column(type: 'string', length: 300, nullable: true)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAd', 'SetAdAdmin'])]
     private ?string $address = null;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $telephone = null;
 
-    /**
-     * @ORM\Column(type="string", length=150, nullable=true)
-     * @Assert\NotBlank(message="fields.required", groups={"SetAd", "SetAdAdmin"})
-     */
+    #[ORM\Column(type: 'string', length: 150, nullable: true)]
+    #[Assert\NotBlank(message: 'fields.required', groups: ['SetAd', 'SetAdAdmin'])]
     private ?string $mobilePhone = null;
 
-
-    /**
-     * @ORM\Column(nullable=true, type="string", length=100)
-     */
+    #[ORM\Column(nullable: true, type: 'string', length: 100)]
     private ?string $viber = null;
 
-    /**
-     * @ORM\Column(nullable=true, type="string", length=250)
-     * @Assert\Email(message="fields.email", groups={"SetAd", "SetAdAdmin"}, mode="loose")
-     */
+    #[ORM\Column(nullable: true, type: 'string', length: 250)]
+    #[Assert\Email(message: 'fields.email', groups: ['SetAd', 'SetAdAdmin'])]
     private ?string $contactEmail = null;
 
-    /**
-     * @ORM\OneToOne (targetEntity="SiteBundle\Entity\Ads", mappedBy="contact")
-     */
+    #[ORM\OneToOne(targetEntity: Ads::class, mappedBy: 'contact')]
     private ?Ads $ad;
 
     public function __construct()

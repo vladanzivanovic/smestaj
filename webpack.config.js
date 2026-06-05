@@ -56,7 +56,8 @@ Encore
 let config = Encore.getWebpackConfig();
 config.resolve.alias = {
     'waypoints': __dirname + '/node_modules/jquery-waypoints/waypoints.js',
-    'router'   : __dirname + '/assets/js/router.js'
+    'router'   : __dirname + '/assets/js/router.js',
+    'jQuery'   : __dirname + '/node_modules/jquery'
 };
 
 module.exports = config;

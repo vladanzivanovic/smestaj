@@ -2,18 +2,17 @@
 
 namespace SiteBundle\Controller\Api\User;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\User;
 use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Services\UserService;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class UserGetController extends SiteController
 {
@@ -34,7 +33,7 @@ class UserGetController extends SiteController
      * @param User $user
      * @return JsonResponse
      */
-    public function getUserByEmailAction(User $user)
+    public function getUserByEmailAction(#[MapEntity(mapping: ['email' => 'email'])] User $user)
     {
         return $this->jsonResponse->setData([ 'success' => true, 'data' => $this->objToArray($user)]);
     }
