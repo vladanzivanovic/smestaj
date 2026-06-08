@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-This is **Smestaj** (.checkout) — a Symfony 4.3+ marketplace web application for accommodation/property rental listings. Serbian language ("Smestaj" = Accommodation).
+This is **Smestaj** (.checkout) — a Symfony 8.1+ marketplace web application for accommodation/property rental listings. Serbian language ("Smestaj" = Accommodation).
 
 ## Tech Stack
 
 - **Backend**: PHP 8.4+, Symfony 8.1+, Doctrine ORM 3.6
-- **Frontend**: jQuery 3.6, Bootstrap 3/4, SASS/SCSS, Webpack Encore
+- **Frontend**: jQuery 3.7, Bootstrap 3/4, SASS/SCSS, Webpack Encore
 - **Database**: MySQL 5.7+ / MariaDB 10
 - **Dev Environment**: Docker (Apache+PHP on :9505, MariaDB on :9501, Mailcatcher on :9503/:9504)
 
@@ -173,19 +173,18 @@ docker exec smestaj-app ./bin/simple-phpunit   # Run tests (symfony/phpunit-brid
 - **Naming**: Doctrine underscore naming strategy (camelCase properties → snake_case columns)
 - **DI**: Constructor injection, autowiring enabled in services.yml
 - **Locale**: Primary locale is Serbian (`rs`), translations in YAML
-- **Security**: Role-based (ROLE_ADMIN, ROLE_USER, ROLE_ADVANCED_USER), OAuth via Facebook/Google
+- **Security**: Role-based (ROLE_ADMIN, ROLE_USER, ROLE_ADVANCED_USER) — bcrypt password hashing via `symfony/password-hasher`; third-party OAuth integration is not currently wired (UNVERIFIED — package absent from `composer.lock`)
 - **Passwords**: Bcrypt with cost 4
 - **Images**: Liip Imagine for dynamic filtering/resizing (thumbnails 400x400, categories 600x300, sliders 1920x1080)
-- **Serialization**: JMS Serializer with annotations for API responses
+- **Serialization**: JMS Serializer (annotations or PHP 8 attributes; match the surrounding class) for API responses
 - **Migrations**: Doctrine migrations in `app/DoctrineMigrations/`
 - **Templates**: Twig with global base in `app/Resources/views/`, bundle-specific in each bundle's `Resources/views/`
 - **Imports**: Every class used in a file MUST be declared with a `use` statement at the top. Always reference classes by their short name in code, never by FQCN. No dynamic class names or string-based service retrieval.
 
 ## External Integrations
 
-- **OAuth**: HWI OAuth Bundle (Facebook, Google)
-- **Email**: SwiftMailer (Mailcatcher in dev)
-- **Error Tracking**: Sentry.io
+- **Email**: Symfony Mailer (Mailcatcher in dev)
+- **Error Tracking**: Frontend error tracking via Sentry (`@sentry/browser`, `@sentry/tracing`); no server-side SDK currently wired (UNVERIFIED — backend Sentry package absent from `composer.lock`)
 - **SEO**: Presta Sitemap Bundle
 - **Image Processing**: Liip Imagine Bundle
 
