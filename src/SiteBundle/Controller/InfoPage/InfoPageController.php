@@ -22,14 +22,14 @@ final class InfoPageController extends AbstractController
     }
 
     #[Route(
-        path: '/info/{slug}',
+        path: '/apartman-info/{slug}',
         name: 'site.info_page.view',
         requirements: ['slug' => '[a-z0-9-]+'],
         defaults: ['_locale' => 'rs'],
         methods: ['GET']
     )]
     #[Route(
-        path: '/en/info/{slug}',
+        path: '/en/apartment-info/{slug}',
         name: 'site.info_page.view_en',
         requirements: ['slug' => '[a-z0-9-]+'],
         defaults: ['_locale' => 'en'],
