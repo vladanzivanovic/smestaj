@@ -1,0 +1,312 @@
+{% extends "@Site/base.html.twig" %}
+
+{% set locale = app.request.locale|default('rs') %}
+{% set _firstImage = entity.images.first|default(null) %}
+{% set _description = info_page_locale_value(entity, 'shortDescription', locale) %}
+{% set _activePublicUrl = locale == 'en' ? publicUrls.en : publicUrls.rs %}
+
+{% block title %}{{ entity.propertyName }}{% endblock %}
+
+{% block metaDescription %}{{ _description is empty ? entity.propertyName : (_description|striptags|slice(0, 160)) }}{% endblock %}
+
+{% block social_open_graph %}
+    <meta property="og:title" content="{{ entity.propertyName }}">
+    <meta property="og:description" content="{{ _description is empty ? entity.propertyName : (_description|striptags|slice(0, 160)) }}">
+    {% if _firstImage is not null and _firstImage.filename is not empty %}
+        <meta property="og:image" content="{{ absolute_url(asset(upload_image_dir ~ 'info-pages/' ~ _firstImage.filename)) }}">
+    {% endif %}
+    <meta property="og:url" content="{{ _activePublicUrl }}">
+    <meta property="og:type" content="website">
+    <link rel="alternate" hreflang="sr" href="{{ publicUrls.rs }}">
+    <link rel="alternate" hreflang="en" href="{{ publicUrls.en }}">
+{% endblock %}
+
+{% block customStylesheets %}<link rel="stylesheet" href="{{ asset('build/css/site/pages/info_page.css') }}">{% endblock %}
+
+{% block body %}
+    {% set _country = 'info_page.country'|trans %}
+    {% set _amenityTags = [] %}
+    {% set _rangeTags = [] %}
+    {% for _row in entity.hasTags %}
+        {% if _row.tag.tagType.label == 'range' %}
+            {% set _rangeTags = _rangeTags|merge([_row]) %}
+        {% else %}
+            {% set _amenityTags = _amenityTags|merge([_row]) %}
+        {% endif %}
+    {% endfor %}
+    {% set _firstThreeAmenityTags = _amenityTags|slice(0, 3) %}
+
+    <main class="info-page">
+        <section class="info-page__hero"{% if _firstImage is not null and _firstImage.filename is not empty %} style="background-image: url('{{ asset(upload_image_dir ~ 'info-pages/' ~ _firstImage.filename) }}')"{% endif %}>
+            <div class="text-center description">
+                <span class="info-page__hero-location">{% if entity.addressCity is not empty %}{{ entity.addressCity }}, {% endif %}{{ _country }}</span>
+                <h1 class="page-title">{{ entity.propertyName }}</h1>
+                {% set _tagline = info_page_locale_value(entity, 'tagline', locale) %}
+                {% if _tagline is not empty %}
+                    <h3 class="sub-title">{{ _tagline }}</h3>
+                {% endif %}
+                {% if _firstThreeAmenityTags|length > 0 %}
+                    <ul class="info-page__hero-pills">
+                        {% for _row in _firstThreeAmenityTags %}
+                            <li class="info-page__hero-pill"><i class="{{ _row.tag.icon }}"></i> {{ _row.tag.name }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </section>
+
+        {% set _visibleRangeTags = _rangeTags|filter(r => r.value is not null and r.value != '' and r.value != '0') %}
+        {% if entity.addressStreet is not empty or entity.addressCity is not empty or (entity.googleMapsLat is not null and entity.googleMapsLng is not null) or _visibleRangeTags|length > 0 %}
+            <section class="info-page__section info-page__location">
+                <h2 class="info-page__section-title">{{ 'info_page.section_location'|trans }}</h2>
+                {% if entity.addressStreet is not empty or entity.addressCity is not empty or (entity.googleMapsLat is not null and entity.googleMapsLng is not null) %}
+                    <div class="info-page__address-row">
+                        <span class="info-page__address-text">
+                            {{ [entity.addressStreet, entity.addressCity]|filter(v => v is not empty)|join(', ') }}
+                        </span>
+                        {% if entity.googleMapsLat is not null and entity.googleMapsLng is not null %}
+                            <a class="info-page__map-link"
+                               href="https://www.google.com/maps/dir/?api=1&destination={{ entity.googleMapsLat }},{{ entity.googleMapsLng }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if _visibleRangeTags|length > 0 %}
+                    <ul class="icon-box-wrapper">
+                        {% for _row in _visibleRangeTags %}
+                            {% set _meters = _row.value|number_format(0, '.', '') %}
+                            {% if _meters < 1000 %}
+                                {% set _display = _meters ~ 'm' %}
+                            {% else %}
+                                {# Trim trailing zeros: 1000 -> '1km', 1500 -> '1.5km', 2700 -> '2.7km'. Use '.' decimal separator: existing public page does not currently emit Serbian-style decimals (e.g. address/coords use raw floats). #}
+                                {% set _km = (_meters / 1000)|round(1) %}
+                                {% set _display = (_km == _km|round) ? (_km|round)~'km' : _km~'km' %}
+                            {% endif %}
+                            <li class="info-page__distances">
+                                <div class="icon-box style5">
+                                    <i class="icon {{ info_page_range_icon(_row.tag) }}"></i>
+                                    <div class="info-page__distance-text">
+                                    <div class="description">
+                                        <small>{{ _display }}</small>
+                                        <h5>{{ _row.tag.name|upper }}</h5>
+                                    </div>
+                                    <a class="info-page__map-link"
+                                       href="https://www.google.com/maps/place/{{ _row.tag.name|url_encode|replace({'%20': '+'}) }}+{{ entity.addressCity|url_encode|replace({'%20': '+'}) }}"
+                                       target="_blank"
+                                       rel="noopener noreferrer">
+                                        <i class="fas fa-external-link-alt" style="font-size: 1.5em"></i>
+                                    </a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </section>
+        {% endif %}
+
+        {% if entity.images is not empty and entity.images|length > 0 %}
+            <section class="info-page__section info-page__images">
+                <h2 class="info-page__section-title">{{ 'info_page.section_images'|trans }}</h2>
+                <div class="photo-gallery fotorama info-page__gallery" data-allowfullscreen="true"></div>
+            </section>
+        {% endif %}
+
+        {% if _amenityTags|length > 0 %}
+            <section class="info-page__section info-page__services">
+                <h2 class="info-page__section-title">{{ 'info_page.amenities'|trans }}</h2>
+                <ul class="amenities icon-box-wrapper">
+                    {% for _row in _amenityTags %}
+                        <li class="">
+                            <div class="icon-box style1">
+                                <i class="{{ _row.tag.icon }}"></i> {{ _row.tag.name }} <i class="soap-icon-check detail-check-mark"></i>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if entity.hostFirstName is not empty or entity.hostLastName is not empty or entity.hostMobile is not empty or entity.viberPhone is not empty or entity.whatsappPhone is not empty %}
+            <section class="info-page__section info-page__quick-contact">
+                <div class="info-page__contact-header">
+                    <h2 class="info-page__section-title">{{ 'info_page.section_contact_person'|trans }}</h2>
+                    {% if entity.hostFirstName is not empty or entity.hostLastName is not empty %}
+                        <span class="info-page__contact-host">{{ ((entity.hostFirstName ?? '') ~ ' ' ~ (entity.hostLastName ?? ''))|trim }}</span>
+                    {% endif %}
+                </div>
+
+                {% if entity.hostMobile is not empty or entity.viberPhone is not empty or entity.whatsappPhone is not empty %}
+                    <ul class="info-page__service-tiles">
+                        {% if entity.hostMobile is not empty %}
+                            {% set _mobileDigits = entity.hostMobile|info_page_phone_digits %}
+                            <li class="info-page__service-tile info-page__service-tile--telefon">
+                                <a class="info-page__service-tile-link" href="tel:{{ _mobileDigits }}">
+                                    <span class="info-page__service-tile-icon"><i class="fas fa-phone"></i></span>
+                                    <span class="info-page__service-tile-title">{{ 'info_page.contact_tile_telefon_title'|trans }}</span>
+                                    <span class="info-page__service-tile-subtitle">{{ 'info_page.contact_tile_telefon_subtitle'|trans }}</span>
+                                </a>
+                            </li>
+                            <li class="info-page__service-tile info-page__service-tile--sms">
+                                <a class="info-page__service-tile-link" href="sms:{{ _mobileDigits }}">
+                                    <span class="info-page__service-tile-icon"><i class="fas fa-sms"></i></span>
+                                    <span class="info-page__service-tile-title">{{ 'info_page.contact_tile_sms_title'|trans }}</span>
+                                    <span class="info-page__service-tile-subtitle">{{ 'info_page.contact_tile_sms_subtitle'|trans }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if entity.viberPhone is not empty %}
+                            {% set _viberDigits = entity.viberPhone|info_page_phone_digits %}
+                            <li class="info-page__service-tile info-page__service-tile--viber">
+                                <a class="info-page__service-tile-link" href="viber://chat?number={{ _viberDigits|url_encode }}">
+                                    <span class="info-page__service-tile-icon"><i class="fab fa-viber"></i></span>
+                                    <span class="info-page__service-tile-title">{{ 'info_page.contact_tile_viber_title'|trans }}</span>
+                                    <span class="info-page__service-tile-subtitle">{{ 'info_page.contact_tile_viber_subtitle'|trans }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if entity.whatsappPhone is not empty %}
+                            {% set _waDigits = entity.whatsappPhone|info_page_phone_digits %}
+                            <li class="info-page__service-tile info-page__service-tile--whatsapp">
+                                <a class="info-page__service-tile-link" href="https://wa.me/{{ _waDigits }}" target="_blank" rel="noopener">
+                                    <span class="info-page__service-tile-icon"><i class="fab fa-whatsapp"></i></span>
+                                    <span class="info-page__service-tile-title">{{ 'info_page.contact_tile_whatsapp_title'|trans }}</span>
+                                    <span class="info-page__service-tile-subtitle">{{ 'info_page.contact_tile_whatsapp_subtitle'|trans }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </section>
+        {% endif %}
+
+        {% if entity.bookingUrl is not empty or entity.airbnbUrl is not empty %}
+            <section class="info-page__section info-page__reservations">
+                <h2 class="info-page__section-title">{{ 'info_page.section_reservations'|trans }}</h2>
+                <ul class="info-page__service-tiles">
+                    {% if entity.bookingUrl is not empty %}
+                        <li class="info-page__service-tile info-page__service-tile--booking">
+                            <a class="info-page__service-tile-link"
+                               href="{{ entity.bookingUrl }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <span class="info-page__service-tile-icon">
+                                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                        <text x="16" y="22" text-anchor="middle" font-family="'Arial Black', Helvetica, sans-serif" font-weight="900" font-size="22" fill="#ffffff">B.</text>
+                                    </svg>
+                                </span>
+                                <span class="info-page__service-tile-title">Booking</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if entity.airbnbUrl is not empty %}
+                        <li class="info-page__service-tile info-page__service-tile--airbnb">
+                            <a class="info-page__service-tile-link"
+                               href="{{ entity.airbnbUrl }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <span class="info-page__service-tile-icon"><i class="fab fa-airbnb" aria-hidden="true"></i></span>
+                                <span class="info-page__service-tile-title">Airbnb</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if entity.facebookUrl is not empty or entity.instagramUrl is not empty %}
+            <section class="info-page__section info-page__social">
+                <h2 class="info-page__section-title">{{ 'info_page.section_social'|trans }}</h2>
+                <ul class="info-page__service-tiles">
+                    {% if entity.facebookUrl is not empty %}
+                        <li class="info-page__service-tile info-page__service-tile--facebook">
+                            <a class="info-page__service-tile-link"
+                               href="{{ entity.facebookUrl }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <span class="info-page__service-tile-icon"><i class="fab fa-facebook-f" aria-hidden="true"></i></span>
+                                <span class="info-page__service-tile-title">Facebook</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if entity.instagramUrl is not empty %}
+                        <li class="info-page__service-tile info-page__service-tile--instagram">
+                            <a class="info-page__service-tile-link"
+                               href="{{ entity.instagramUrl }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <span class="info-page__service-tile-icon"><i class="fab fa-instagram" aria-hidden="true"></i></span>
+                                <span class="info-page__service-tile-title">Instagram</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if entity.checkInTime is not null or entity.checkOutTime is not null %}
+            <section class="info-page__section info-page__house-rules">
+                <h2 class="info-page__section-title">{{ 'info_page.house_rules'|trans }}</h2>
+                <div class="info-page__checkinout">
+                    {% if entity.checkInTime is not null %}
+                        <div class="info-page__checkinout-item">
+                            <strong>{{ 'info_page.check_in'|trans }}</strong>
+                            <span>{{ entity.checkInTime|date('H:i') }}</span>
+                        </div>
+                    {% endif %}
+                    {% if entity.checkOutTime is not null %}
+                        <div class="info-page__checkinout-item">
+                            <strong>{{ 'info_page.check_out'|trans }}</strong>
+                            <span>{{ entity.checkOutTime|date('H:i') }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if entity.wifiUsername is not empty or entity.wifiPassword is not empty %}
+            <section class="info-page__section info-page__house-rules">
+                <h2 class="info-page__section-title">{{ 'info_page.wifi_section_title'|trans }}</h2>
+                <div class="info-page__checkinout">
+                    {% if entity.wifiUsername is not empty %}
+                        <div class="info-page__checkinout-item">
+                            <strong>{{ 'info_page.wifi_username'|trans }}</strong>
+                            <span>{{ entity.wifiUsername }}</span>
+                        </div>
+                    {% endif %}
+                    {% if entity.wifiPassword is not empty %}
+                        <div class="info-page__checkinout-item">
+                            <strong>{{ 'info_page.wifi_password'|trans }}</strong>
+                            <span>{{ entity.wifiPassword }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if entity.houseRules is not empty %}
+            <section class="info-page__section info-page__house-rules-content">
+                <h2 class="info-page__section-title">{{ 'info_page.house_rules_content'|trans }}</h2>
+                <div class="info-page__house-rules-body">
+                    {{ entity.houseRules|raw }}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if googleReviewUrl is not null %}
+            <section class="info-page__section info-page__review-cta">
+                <a class="button btn-large info-page__review-button" target="_blank" rel="noopener" href="{{ googleReviewUrl }}">{{ 'info_page.leave_review'|trans }}</a>
+            </section>
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block customJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        window.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        window.slideImages = [{% for image in entity.images %}{% if image.filename is not empty %}{ img: '{{ asset(upload_image_dir ~ 'info-pages/' ~ image.filename) }}', thumb: '{{ asset(upload_image_dir ~ 'info-pages/' ~ image.filename) }}', full: '{{ asset(upload_image_dir ~ 'info-pages/' ~ image.filename) }}' }{% if not loop.last %},{% endif %}{% endif %}{% endfor %}];
+    </script>
+{% endblock %}

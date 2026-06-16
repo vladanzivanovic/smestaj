@@ -1,0 +1,106 @@
+{% extends('@Admin/base.html.twig') %}
+
+{% block content %}
+    {% include '@Admin/Components/breadcrumbs.html.twig' with {activePage: 'Property Info' } %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Property Info stranice</h4>
+        </div>
+        <div class="d-flex align-items-center flex-wrap text-nowrap">
+            <a href="{{ path('admin.info_pages.new') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0 me-2">
+                <i class="btn-icon-prepend" data-feather="plus"></i>
+                Nova info stranica
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Filteri</h6>
+                    <form id="info-pages-filters" class="row g-2">
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-property-name" class="form-label">Naziv objekta</label>
+                            <input type="text" id="filter-property-name" name="propertyName" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-host-first-name" class="form-label">Ime domaćina</label>
+                            <input type="text" id="filter-host-first-name" name="hostFirstName" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-host-last-name" class="form-label">Prezime domaćina</label>
+                            <input type="text" id="filter-host-last-name" name="hostLastName" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-address-city" class="form-label">Grad</label>
+                            <input type="text" id="filter-address-city" name="addressCity" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-instagram" class="form-label">Instagram URL</label>
+                            <input type="text" id="filter-instagram" name="instagramUrl" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-facebook" class="form-label">Facebook URL</label>
+                            <input type="text" id="filter-facebook" name="facebookUrl" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-linked-ads-id" class="form-label">Ads ID</label>
+                            <input type="number" id="filter-linked-ads-id" name="linkedAdsId" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-linked-ads-title" class="form-label">Ads naziv</label>
+                            <input type="text" id="filter-linked-ads-title" name="linkedAdsTitle" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-publish-status" class="form-label">Status</label>
+                            <select id="filter-publish-status" name="publishStatus" class="form-control form-control-sm">
+                                <option value="">— svi —</option>
+                                <option value="published">Objavljeno</option>
+                                <option value="unpublished">Nije objavljeno</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-created-from" class="form-label">Kreirano od</label>
+                            <input type="date" id="filter-created-from" name="createdFrom" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-created-to" class="form-label">Kreirano do</label>
+                            <input type="date" id="filter-created-to" name="createdTo" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-updated-from" class="form-label">Ažurirano od</label>
+                            <input type="date" id="filter-updated-from" name="updatedFrom" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="filter-updated-to" class="form-label">Ažurirano do</label>
+                            <input type="date" id="filter-updated-to" name="updatedTo" class="form-control form-control-sm">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="info-pages-data-table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('@Admin/Components/confirmationModal.html.twig') }}
+{% endblock %}
+
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const CAN_VIEW = true;
+        const CAN_EDIT = true;
+        const CAN_REMOVE = true;
+    </script>
+{% endblock %}

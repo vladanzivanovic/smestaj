@@ -19,6 +19,7 @@ Encore
     .addStyleEntry('css/site/app', './src/SiteBundle/Resources/public/sass/_index.scss')
     .addStyleEntry('css/site/user_profile', './src/SiteBundle/Resources/public/sass/_user-dashboard-index.scss')
     .addStyleEntry('css/site/pages/ad_view', './src/SiteBundle/Resources/public/sass/Pages/_ad_view.scss')
+    .addStyleEntry('css/site/pages/info_page', './src/SiteBundle/Resources/public/sass/Pages/_info_page.scss')
     .addStyleEntry('css/site/pages/single_ads_view', './src/SiteBundle/Resources/public/sass/Pages/_single_ads_view.scss')
     .addStyleEntry('css/admin/app', [
         './src/AdminBundle/Resources/public/scss/style.scss',

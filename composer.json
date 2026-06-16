@@ -27,6 +27,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/migrations": "^3.7",
         "doctrine/orm": "^3.0",
+        "endroid/qr-code": "^6",
         "exercise/htmlpurifier-bundle": "^5.2",
         "friendsofsymfony/jsrouting-bundle": "^3.2",
         "gedmo/doctrine-extensions": "^3.15",

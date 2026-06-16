@@ -102,7 +102,7 @@
                                 {% for city in chunk %}
                                     <div class="box">
                                         <div class="action">
-                                            <a href="{{ path('site_ads_view', {'category': 'smestaj', 'extraParams': city.alias  }) }}" class="button">POGLEDAJ</a>
+                                            <a href="{{ path('site_ads_view', {'category': defaultCategory.alias, 'extraParams': city.alias  }) }}" class="button">POGLEDAJ</a>
                                         </div>
                                         <div class="details no-margin">
                                             <h5 class="box-title">Smeštaj {{ city.name }}</h5>

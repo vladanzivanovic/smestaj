@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Class TagRepository
  */
-final class TagRepository extends ExtendedEntityRepository
+class TagRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -1,5 +1,5 @@
 ---
-description: Phase 2 generalist executor for smestaj. Implements PHP/Symfony, Twig, JS/SCSS/Encore, and Doctrine-migration steps from IMPLEMENTATION_PLAN.md. Enforces final classes, constructor DI, typed params/returns, imported class names (no FQCN inline), Yoda conditions, SOLID, thin controllers, and the project's bundle layout. Invoked by the coordinator for any Phase 2 step. Never improvises on architecture.
+description: Phase 2 generalist executor for smestaj. Implements PHP/Symfony, Twig, JS/SCSS/Encore, and Doctrine-migration steps from IMPLEMENTATION_PLAN.md. Enforces final classes, constructor DI, typed params/returns, imported class names (no FQCN inline), Yoda conditions, SOLID, thin controllers, and the project's bundle layout. Loads the controller-pattern skill on first use whenever a step touches a controller, DTO, parser, validator, or view. Invoked by the coordinator for any Phase 2 step. Never improvises on architecture.
 mode: subagent
 model: github-copilot/claude-opus-4.7
 temperature: 0.1
@@ -12,6 +12,7 @@ tools:
   glob: true
   bash: true
   task: false
+  skill: true
 permission:
   edit: allow
   bash:
@@ -46,6 +47,17 @@ Announce at the top of your first response: `[PHASE 2] Execution (Sonnet)`.
 3. Tick the box to `- [x]` using the `edit` tool.
 4. Report: `[PHASE 2] Step N/total done`.
 5. Repeat until every box is ticked, then return control to the coordinator.
+
+# Mandatory skill loads
+
+Before writing or editing any file in the paths below, you MUST first call the matching skill via the `skill` tool. Skills are the source of truth for the canonical layered pattern; the bullet-point reminders in this file are summaries, not specifications.
+
+| If the step touches… | Load this skill before writing code |
+|---|---|
+| `src/AdminBundle/Controller/`, `src/SiteBundle/Controller/`, `src/LogBundle/Controller/` (any controller — new or existing) | `skill({ name: "controller-pattern" })` |
+| `src/<Bundle>/Dto/`, `src/<Bundle>/Parser/`, `src/<Bundle>/Validator/`, `src/<Bundle>/View/` (any of the controller-backing layers) | `skill({ name: "controller-pattern" })` |
+
+Load the skill once per executor session — it remains in context for the rest of the session. If you start a controller step without loading the skill, stop, load it, and bring the already-written code into compliance before ticking the box.
 
 # Container reference
 

@@ -1,5 +1,4 @@
-require ('../../../js/Validators/ValidationRuleHelper');
-
+require ('../../../../../../app/Resources/public/js/Validators/ValidationRuleHelper');
 class JobEditValidator {
     constructor() {
         if (!JobEditValidator.instance) {

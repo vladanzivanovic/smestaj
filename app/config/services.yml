@@ -94,3 +94,17 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: loadClassMetadata }
+    # NOTE: Gedmo\SoftDeleteable\SoftDeleteableListener::getSubscribedEvents()
+    # returns ['loadClassMetadata', 'onFlush', 'postFlush'] — it does NOT
+    # subscribe to prePersist. Do NOT copy the 3-tag template from
+    # gedmo.listener.timestampable / gedmo.listener.sluggable above onto this
+    # service: tagging prePersist here triggers MissingEventSubscriber on boot
+    # because the listener has no prePersist handler. postFlush is also left
+    # unwired on purpose — no postSoftDelete subscribers exist in this app and
+    # SoftDeleteableListener::__construct(bool $handlePostFlushEvent = false)
+    # short-circuits the postFlush path by default.
+    gedmo.listener.softdeleteable:
+        class: Gedmo\SoftDeleteable\SoftDeleteableListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: loadClassMetadata }

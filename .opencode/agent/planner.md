@@ -55,10 +55,10 @@ A single file at `/Users/vlada/Sites/smestaj/IMPLEMENTATION_PLAN.md` using this 
 - Routes / JS routes: <yes/no — does `php bin/console fos:js-routing:dump` (+ `bazinga:js-translation:dump` for translations) need to run?>
 
 ## Steps
-- [ ] 1. [backend] <atomic, verifiable step>
-- [ ] 2. [frontend] <...>
-- [ ] 3. [twig] <...>
-- [ ] 4. [db] <...>
+- [ ] 1. [executor] <atomic, verifiable PHP / Symfony work>
+- [ ] 2. [frontend] <atomic, verifiable JS or SCSS work>
+- [ ] 3. [executor] <atomic, verifiable Twig work>
+- [ ] 4. [executor] <atomic, verifiable DB / migration work>
 - [ ] N. ...
 
 ## Validation
@@ -76,7 +76,7 @@ A single file at `/Users/vlada/Sites/smestaj/IMPLEMENTATION_PLAN.md` using this 
 # Rules
 
 - **Explore before writing.** Read relevant controllers, services, entities, repositories, formatters, parsers, validators, Twig templates, JS modules. Use `grep`/`glob` heavily. Cite files as `path:line` in the plan where it helps the executor.
-- **Tag every step** with its domain: `[backend]`, `[frontend]`, `[twig]`, `[db]`. The executor uses these tags to keep changes scoped per step.
+- **Tag every step** with the routing tag `[frontend]` or `[executor]`. `[frontend]` ⇒ the step touches JS under `app/Resources/public/js/` or `src/*/Resources/public/js/`, OR SCSS / CSS under `app/Resources/public/scss/` or `src/*/Resources/public/`. `[executor]` ⇒ everything else (PHP / Symfony, Twig, Doctrine, configuration, migrations). The coordinator dispatches each checkbox mechanically based on this tag — no inference, no heuristics.
 - **Every step must be atomic and testable.** If a step can't be verified by a command or a diff inspection, split it.
 - **Respect AGENTS.md** conventions:
   - PHP 8.4+ / Symfony 8.1+: `final` classes where sensible, constructor DI, typed params + return types, imported class names (no inline FQCN), **Yoda conditions** (hard rule), thin controllers, service layer, Doctrine repositories for data access.

@@ -1,0 +1,613 @@
+/* Property Info Page — public landing page styles. Loaded via the css/site/pages/info_page Encore entry, included by @Site/InfoPage/view.html.twig. */
+
+@use '../variables' as v;
+
+.info-page {
+  background: #f7f8fa;
+  color: #1a1a1a;
+  padding-bottom: 60px;
+
+  .icon-box-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+
+    .icon-box {
+      background: v.$border-line;
+      border-radius: 0;
+      text-align: center;
+    }
+
+    .icon-box i {
+      font-size: 2em;
+    }
+
+    .icon-box .icon {
+      background: v.$yellow-theme-color;
+    }
+
+    .icon-box .range {
+      background: none;
+      font-size: 1.2em;
+      color: #1a1a1a;
+      float: right;
+      margin-right: 5px;
+    }
+
+    .icon-box .detail-check-mark {
+      float: right;
+      margin-right: 0;
+      color: v.$yellow-theme-color;
+      background: none;
+    }
+  }
+}
+
+.info-page__hero {
+  position: relative;
+  padding: 80px 20px 60px;
+  text-align: center;
+  color: v.$white;
+  background-color: #2c3e50;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 420px;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.40) 80%,
+        #f7f8fa 100%
+    );
+    pointer-events: none;
+  }
+
+  .description {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-title {
+    color: v.$white;
+    font-size: 2.6rem;
+    margin-bottom: 10px;
+  }
+
+  .sub-title {
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+  }
+
+  .info-page__hero-location {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    color: v.$white;
+    margin-bottom: 12px;
+  }
+
+  .info-page__hero-pills {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .info-page__hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      color: v.$white;
+      font-weight: 600;
+    }
+
+    .info-page__hero-pill i {
+      font-size: 1rem;
+    }
+  }
+}
+
+.info-page__section {
+  background: v.$white;
+  border-radius: 0;
+  padding: 28px;
+  margin: 0 auto 24px;
+  max-width: 960px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+
+  .info-page__section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #1a1a1a;
+    border-bottom: 2px solid #f55d3e;
+    display: inline-block;
+    padding-bottom: 6px;
+  }
+
+  p {
+    line-height: 1.65;
+    margin-bottom: 0;
+  }
+}
+
+.info-page__quick-contact {
+  margin-top: 30px;
+
+  &-list {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Lokacija section.
+   Originally two separate top-level blocks; merged into one for clarity.
+   Twig markup lives in @Site/InfoPage/view.html.twig inside
+   <section class="info-page__section info-page__location">. */
+.info-page__location {
+  .info-page__location-card {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .info-page__location-icon.icon-box.style1 {
+    flex: 0 0 80px;
+    height: auto;
+    line-height: 0;
+    padding: 0;
+    background: transparent;
+
+    > i {
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      font-size: 2.4em;
+      margin-right: 0;
+      float: none;
+      display: block;
+    }
+  }
+
+  .info-page__location-body {
+    flex: 1;
+    padding: 14px 22px;
+    min-width: 0;
+  }
+
+  .info-page__location-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-bottom: 6px;
+  }
+
+  .info-page__location-address {
+    font-style: normal;
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+
+  .info-page__location-directions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #f55d3e;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  /* Address row + per-row Google Maps map-pin links —
+     from the "merge Udaljenost into Lokacija" change. */
+  .info-page__address-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .info-page__address-text {
+    flex: 1;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    color: #1a1a1a;
+    min-width: 0;
+    word-wrap: break-word;
+  }
+
+  .info-page__map-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #f55d3e;
+    text-decoration: none;
+    flex-shrink: 0;
+
+    i {
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    &:hover,
+    &:focus {
+      color: #d44a2e;
+      text-decoration: none;
+    }
+  }
+
+  /* Amenity-row variant: float the map-pin to the right of the existing
+     right-floated `.range` distance value inside `.icon-box.style1`. */
+  .icon-box-wrapper .icon-box.style1 .info-page__map-link {
+    float: right;
+    margin-left: 8px;
+    padding: 0 4px;
+
+    i {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.info-page__services {
+  .info-page__services-grid {
+    margin: 0;
+  }
+}
+
+.info-page__distances {
+  .info-page__distances-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .info-page__distance-text {
+    display: flex;
+    justify-content: center;
+
+    .description {
+      width: 80%;
+    }
+  }
+
+  .info-page__distances-row {
+    display: flex;
+    align-items: stretch;
+    background: v.$border-line;
+    min-height: 64px;
+  }
+
+  .info-page__distances-icon {
+    flex: 0 0 64px;
+    background: v.$yellow-theme-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      color: v.$white;
+      font-size: 1.6rem;
+    }
+  }
+
+  .info-page__distances-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #666;
+  }
+
+  .info-page__distances-value {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 22px;
+    font-style: italic;
+    color: #666;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 992px) {
+    .info-page__distances-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .info-page__distances-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .info-page__distances-list {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.info-page__details {
+  .info-page__gallery.fotorama {
+    margin-bottom: 24px;
+  }
+
+  .info-page__description {
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+
+  .info-page__amenities-full {
+    margin-top: 18px;
+  }
+}
+
+/* Page-scoped mirror of style.scss #hotel-description .amenities.style1 li { ... } so the
+   /info/{slug} amenity rows match the kamenari ad-detail rendering without cross-importing
+   the ad-detail SCSS entry. */
+.info-page__services-grid,
+.info-page__amenities-full {
+  &.amenities.style1 li {
+    margin-bottom: 1px;
+
+    .icon-box {
+      position: relative;
+      background: v.$border-line;
+    }
+
+    .detail-check-mark {
+      position: absolute;
+      float: none;
+      right: -15px;
+      top: 0;
+      background: transparent;
+      color: v.$yellow-theme-color;
+    }
+  }
+}
+
+.info-page__checkinout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+
+  .info-page__checkinout-item {
+    flex: 1;
+    min-width: 180px;
+    background: #f7f8fa;
+    padding: 18px;
+    border-radius: 0;
+    text-align: center;
+
+    strong {
+      display: block;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    span {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+  }
+}
+
+.info-page__house-rules-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+
+  .info-page__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+
+    &--pets-ok,
+    &--smoking-ok {
+      background: #e6f4ea;
+      color: #2e7d32;
+    }
+
+    &--no-smoking {
+      background: #fdecea;
+      color: #c62828;
+    }
+
+    i {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.info-page__review-cta {
+  text-align: center;
+}
+
+.info-page-qr-thumbnail {
+  border: 1px solid #d8d8d8;
+  border-radius: 0;
+  padding: 6px;
+  background: v.$white;
+}
+
+@media (max-width: 575px) {
+  .info-page__hero {
+    padding: 50px 16px 36px;
+
+    .page-title {
+      font-size: 1.9rem;
+    }
+  }
+
+  .info-page__section {
+    padding: 18px;
+    margin: 0 12px 18px;
+  }
+
+  .info-page__hero-pills {
+    gap: 6px;
+
+    .info-page__hero-pill {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+/* "Kontakt osoba" tap-to-contact section.
+   Heading row uses flexbox so the host name sits inline-right at >=768px
+   and drops below the heading on <768px. Tile row is a CSS grid:
+   4 columns on >=992px desktop, 2 columns on 768-991px tablet,
+   2 columns on <768px mobile (matches the spec's 4 / 2x2 / 2x2 layout). */
+.info-page__contact-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 18px;
+
+  .info-page__section-title {
+    margin-bottom: 0;
+  }
+
+  .info-page__contact-host {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #555;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.info-page__service-tiles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.info-page__service-tile {
+  margin: 0;
+  padding: 0;
+  background: v.$white;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  text-align: center;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .info-page__service-tile-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 20px 12px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .info-page__service-tile-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: v.$white;
+    font-size: 28px;
+    line-height: 1;
+
+    i {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    svg {
+      display: block;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .info-page__service-tile-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1a1a1a;
+    line-height: 1.2;
+  }
+
+  .info-page__service-tile-subtitle {
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.2;
+  }
+
+  &--telefon  .info-page__service-tile-icon { background: #f55d3e; }
+  &--sms      .info-page__service-tile-icon { background: #3b82f6; }
+  &--viber    .info-page__service-tile-icon { background: #7360f2; }
+  &--whatsapp .info-page__service-tile-icon { background: #25d366; }
+  &--booking   .info-page__service-tile-icon { background: #003580; }
+  &--airbnb    .info-page__service-tile-icon { background: #ff5a5f; }
+  &--facebook  .info-page__service-tile-icon { background: #1877f2; }
+  &--instagram .info-page__service-tile-icon { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+}

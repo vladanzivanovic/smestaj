@@ -29,3 +29,15 @@ services:
     class: SiteBundle\EventListeners\ReservationEmailListener
     tags:
       - { name: doctrine.event_listener, event: postPersist }
+
+  SiteBundle\EventListener\AdsInfoPageFileUploadListener:
+    class: SiteBundle\EventListeners\AdsInfoPageFileUploadListener
+    tags:
+      - { name: doctrine.event_listener, event: postPersist }
+      - { name: doctrine.event_listener, event: postUpdate }
+      - { name: doctrine.event_listener, event: postRemove }
+
+  SiteBundle\EventListener\AdsRemovalListener:
+    class: SiteBundle\EventListeners\AdsRemovalListener
+    tags:
+      - { name: doctrine.event_listener, event: preRemove }

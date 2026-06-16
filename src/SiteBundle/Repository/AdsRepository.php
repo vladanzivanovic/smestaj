@@ -18,6 +18,7 @@ use SiteBundle\Entity\EntityStatusInterface;
 use SiteBundle\Entity\Media;
 use SiteBundle\Entity\Tag;
 use SiteBundle\Entity\User;
+use SiteBundle\Entity\AdsInfoPage;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class AdsRepository extends ExtendedEntityRepository
@@ -455,5 +456,44 @@ class AdsRepository extends ExtendedEntityRepository
             ->leftJoin(Media::class, 'media', Join::ON, 'a.id = media.adsid and media.ismain = 1');
 
         return $query;
+    }
+
+    /**
+     * Lightweight LIKE-based autocomplete used by the InfoPage admin form.
+     * Returns at most $limit rows: [id, title, alias, infoPageId].
+     *
+     * @return array<int, array{id: int, title: string, alias: string, infoPageId: ?int}>
+     */
+    public function searchForAutocomplete(string $q, int $limit = 30): array
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select('a.id AS id, a.title AS title, a.alias AS alias, info.id AS infoPageId')
+            ->leftJoin(AdsInfoPage::class, 'info', Join::WITH, 'info.linkedAds = a')
+            ->where('a.status = :activeStatus')
+            ->setParameter('activeStatus', EntityStatusInterface::STATUS_ACTIVE)
+            ->orderBy('a.title', 'ASC')
+            ->setMaxResults($limit);
+
+        $trimmed = trim($q);
+
+        if ('' !== $trimmed) {
+            $query->andWhere('a.title LIKE :search OR a.alias LIKE :search')
+                ->setParameter('search', '%' . $trimmed . '%');
+        }
+
+        $rows = $query->getQuery()->getArrayResult();
+
+        $result = [];
+
+        foreach ($rows as $row) {
+            $result[] = [
+                'id' => (int) $row['id'],
+                'title' => (string) $row['title'],
+                'alias' => (string) $row['alias'],
+                'infoPageId' => null === $row['infoPageId'] ? null : (int) $row['infoPageId'],
+            ];
+        }
+
+        return $result;
     }
 }

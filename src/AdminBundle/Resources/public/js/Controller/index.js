@@ -7,6 +7,8 @@ import AboutUsPageController from "./AboutUsPageController";
 import LoginPageController from "./LoginPageController";
 import UsersController from "./UsersController";
 import UserEditController from "./UserEditController";
+import InfoPagesController from "./InfoPagesController";
+import InfoPageEditController from "./InfoPageEditController";
 import CoreController from "../../../../../../app/Resources/public/js/Controller/CoreController";
 
 let routes = [
@@ -57,6 +59,18 @@ let routes = [
     {
         name: 'admin.edit_user_page',
         controller: UserEditController,
+    },
+    {
+        name: 'admin.info_pages',
+        controller: InfoPagesController,
+    },
+    {
+        name: 'admin.info_pages.new',
+        controller: InfoPageEditController,
+    },
+    {
+        name: 'admin.info_pages.edit',
+        controller: InfoPageEditController,
     },
 ];
 

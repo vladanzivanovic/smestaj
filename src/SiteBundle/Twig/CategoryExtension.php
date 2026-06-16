@@ -30,6 +30,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         return [
             new \Twig\TwigFunction('categories', [$this, 'getCategories']),
             new \Twig\TwigFunction('search_categories', [$this, 'getCategoriesForSearch']),
+            new \Twig\TwigFunction('default_category', [$this, 'getDefaultCategory']),
         ];
     }
 
@@ -76,6 +77,11 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         }
 
         return ['categories' => $categoryArray, 'counted' => $formattedCount];
+    }
+
+    public function getDefaultCategory(): Category
+    {
+        return $this->categoryRepository->findOneBy(['parent' => null, 'status' => EntityStatusInterface::STATUS_ACTIVE, 'alias' => 'sobe-apartmani']);
     }
 
     public function getCategoriesForSearch(): array

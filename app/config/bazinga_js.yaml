@@ -3,6 +3,7 @@ bazinga_js_translation:
   default_domain: messages
   active_locales:
     - rs
+    - en
   active_domains:
     - messages
     - validators
