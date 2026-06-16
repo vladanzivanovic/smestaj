@@ -40,3 +40,7 @@
 /web/.htaccess
 /IMPLEMENTATION_PLAN.md
 /docs/
+/backups/
+/.phpunit.result.cache
+/backup_phase3_20260613_123614.sql
+/backup_phase3_rerun_20260613_163934.sql
