@@ -2,6 +2,7 @@
 
 {% set locale = app.request.locale|default('rs') %}
 {% set _firstImage = entity.images.first|default(null) %}
+{% set _mainImage = entity.images|filter(image => image.isMain)|first|default(null) %}
 {% set _description = info_page_locale_value(entity, 'shortDescription', locale) %}
 {% set _activePublicUrl = locale == 'en' ? publicUrls.en : publicUrls.rs %}
 
@@ -40,7 +41,7 @@
     {% set _firstThreeAmenityTags = _amenityTags|slice(0, 3) %}
 
     <main class="info-page">
-        <section class="info-page__hero"{% if _firstImage is not null and _firstImage.filename is not empty %} style="background-image: url('{{ asset(upload_image_dir ~ 'info-pages/' ~ _firstImage.filename) }}')"{% endif %}>
+        <section class="info-page__hero"{% if _mainImage is not null and _mainImage.filename is not empty %} style="background-image: url('{{ asset(upload_image_dir ~ 'info-pages/' ~ _mainImage.filename) }}')"{% endif %}>
             <div class="text-center description">
                 <span class="info-page__hero-location">{% if entity.addressCity is not empty %}{{ entity.addressCity }}, {% endif %}{{ _country }}</span>
                 <h1 class="page-title">{{ entity.propertyName }}</h1>
