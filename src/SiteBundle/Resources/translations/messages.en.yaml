@@ -21,6 +21,7 @@ data:
   success_save: Data are successfully save.
 
 generic_error: 'An error has occurred.'
+saved: Saved
 
 error:
   in_use: '%item% is in use.'
@@ -517,6 +518,7 @@ info_page:
   section_contact_person: 'Contact person'
   section_reservations: 'Reservations & availability'
   section_social: 'Social networks'
+  section_types: 'Accommodation types'
   contact_tile_telefon_title: 'Phone'
   contact_tile_telefon_subtitle: 'Call directly'
   contact_tile_sms_title: 'SMS'

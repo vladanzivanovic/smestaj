@@ -8,6 +8,7 @@ user.email_exists: 'Korisnik sa tom email adresom je već registrovan.'
 data_success_send: 'Podaci su uspešno poslati.'
 data_success_deleted: 'Podaci su uspešno obrisani.'
 set_new_password_success: 'Nova lozinka je uspešno postavljena. Možete se sada ulogovati.'
+saved: Sačuvano
 reset_password_token_not_valid: 'Molimo vas da ponovo zatražite reset lozinke.'
 
 reservation:
@@ -527,6 +528,7 @@ info_page:
   section_contact_person: 'Kontakt osoba'
   section_reservations: 'Rezervacije i raspoloživost'
   section_social: 'Socijalne mreže'
+  section_types: 'Tipovi smeštaja'
   contact_tile_telefon_title: 'Telefon'
   contact_tile_telefon_subtitle: 'Pozovi direktno'
   contact_tile_sms_title: 'SMS'

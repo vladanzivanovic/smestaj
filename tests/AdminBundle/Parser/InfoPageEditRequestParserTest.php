@@ -17,8 +17,20 @@ final class InfoPageEditRequestParserTest extends TestCase
         $parser = new InfoPageEditRequestParser(new HouseRulesHtmlSanitizer(new \HTMLPurifier()));
         $bag = new ParameterBag([
             'uploadedImages' => json_encode([
-                ['id' => 7, 'isMain' => true, 'fileName' => 'a.jpg'],
-                ['id' => null, 'isMain' => false, 'fileName' => 'b.jpg'],
+                [
+                    'id' => 7,
+                    'isMain' => true,
+                    'fileName' => 'a.jpg',
+                    'originalFilePath' => 'uploads/tmp/seed-a.jpg',
+                    'deleted' => false,
+                ],
+                [
+                    'id' => null,
+                    'isMain' => false,
+                    'fileName' => 'b.jpg',
+                    'originalFilePath' => 'uploads/tmp/seed-b.jpg',
+                    'deleted' => false,
+                ],
             ]),
         ]);
         $entity = new AdsInfoPage();
@@ -27,8 +39,20 @@ final class InfoPageEditRequestParserTest extends TestCase
 
         self::assertSame(
             [
-                ['id' => 7, 'isMain' => true, 'fileName' => 'a.jpg'],
-                ['id' => null, 'isMain' => false, 'fileName' => 'b.jpg'],
+                [
+                    'id' => 7,
+                    'isMain' => true,
+                    'fileName' => 'a.jpg',
+                    'originalFilePath' => 'uploads/tmp/seed-a.jpg',
+                    'deleted' => false,
+                ],
+                [
+                    'id' => null,
+                    'isMain' => false,
+                    'fileName' => 'b.jpg',
+                    'originalFilePath' => 'uploads/tmp/seed-b.jpg',
+                    'deleted' => false,
+                ],
             ],
             $model->imageStates,
         );
@@ -44,5 +68,49 @@ final class InfoPageEditRequestParserTest extends TestCase
 
         self::assertSame([], $model->imageStates);
         self::assertArrayNotHasKey('images', $model->parserViolations);
+    }
+
+    public function testDeletedAndOriginalFilePathAreCarried(): void
+    {
+        $parser = new InfoPageEditRequestParser(new HouseRulesHtmlSanitizer(new \HTMLPurifier()));
+        $bag = new ParameterBag([
+            'uploadedImages' => json_encode([
+                [
+                    'id' => 7,
+                    'isMain' => false,
+                    'fileName' => 'a.jpg',
+                    'deleted' => true,
+                ],
+                [
+                    'id' => null,
+                    'isMain' => true,
+                    'fileName' => 'b.jpg',
+                    'originalFilePath' => 'uploads/tmp/xyz.jpg',
+                ],
+            ]),
+        ]);
+        $entity = new AdsInfoPage();
+
+        $model = $parser->parse($bag, $entity);
+
+        self::assertSame(
+            [
+                [
+                    'id' => 7,
+                    'isMain' => false,
+                    'fileName' => 'a.jpg',
+                    'originalFilePath' => null,
+                    'deleted' => true,
+                ],
+                [
+                    'id' => null,
+                    'isMain' => true,
+                    'fileName' => 'b.jpg',
+                    'originalFilePath' => 'uploads/tmp/xyz.jpg',
+                    'deleted' => false,
+                ],
+            ],
+            $model->imageStates,
+        );
     }
 }

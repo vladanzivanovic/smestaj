@@ -43,6 +43,53 @@
       color: v.$yellow-theme-color;
       background: none;
     }
+
+    /* Defensive layout (Option B — absolute) — applies at every viewport.
+       Pulls the right-side checkmark out of inline flow so it stays right-anchored
+       and vertically centered even if the label wraps; padding-right: 42px reserves
+       the same horizontal real estate that the original `float: right; width: 42px`
+       (inherited from style.scss .icon-box.style1 > i) used to occupy, preserving
+       desktop pixel-parity on label centering. */
+    .icon-box.style1 {
+      position: relative;
+      padding-right: 42px;
+    }
+
+    .icon-box.style1 .detail-check-mark {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      float: none;
+    }
+  }
+
+  /* Mobile-only changes for the boxed-row component:
+     1) Collapse the 3-column grid to 1 column so each row is full-width — a
+        prerequisite for the font-size reduction below to actually fit the
+        longest label on a single line at 320px (a 3-col grid at 320px leaves
+        only ~86px per cell, which is unrecoverable at any font-size).
+     2) Reduce the label font-size so the longest current label
+        ("SOBE SA ZAJEDNIČKIM KUPATILOM") fits on a single line at 320px.
+        Icon-glyph sizes (left tile + right checkmark) are decoupled to an
+        absolute 22px so visual tile-size parity is preserved per spec
+        ("All boxed-row components on the page must keep the same … tile
+        size, checkmark style"). Body base is 12px (see _base.scss html=16px
+        + body 75%), so 0.8em ≈ 9.6px label vs the previous 0.9167em ≈ 11px.
+     Scoped to ≤767px per spec ("Above the mobile breakpoint, every section
+     on the ad-detail page is visually identical to today"). */
+  @media (max-width: 767px) {
+    .icon-box-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    .icon-box-wrapper .icon-box.style1 {
+      font-size: 0.8em;
+    }
+
+    .icon-box-wrapper .icon-box.style1 > i {
+      font-size: 22px;
+    }
   }
 }
 

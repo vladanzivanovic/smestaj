@@ -8,7 +8,6 @@ use AdminBundle\Model\InfoPageEditModel;
 use DateTimeImmutable;
 use SiteBundle\Entity\AdsInfoPage;
 use SiteBundle\Services\InfoPage\HouseRulesHtmlSanitizer;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -30,7 +29,7 @@ final class InfoPageEditRequestParser
     ) {
     }
 
-    public function parse(ParameterBag $bag, AdsInfoPage $entity, array $imageUploads = []): InfoPageEditModel
+    public function parse(ParameterBag $bag, AdsInfoPage $entity): InfoPageEditModel
     {
         $this->writeScalars($bag, $entity);
         $this->writeLocaleFields($bag, $entity);
@@ -68,8 +67,6 @@ final class InfoPageEditRequestParser
             entity: $entity,
             requestedPublish: $this->parseBool($bag->get('published')),
             tags: $tags,
-            imageUploads: $this->filterUploads($imageUploads),
-            imageDeleteIds: $this->parseDeleteIds($bag->all('image_delete_ids')),
             imageStates: $imageStates,
             parserViolations: $violations,
         );
@@ -186,51 +183,13 @@ final class InfoPageEditRequestParser
     }
 
     /**
-     * @param array<int|string, UploadedFile> $files
-     *
-     * @return array<int, UploadedFile>
-     */
-    private function filterUploads(array $files): array
-    {
-        $out = [];
-
-        foreach ($files as $file) {
-            if (true === $file instanceof UploadedFile) {
-                $out[] = $file;
-            }
-        }
-
-        return $out;
-    }
-
-    /**
-     * @param array<int|string, mixed> $raw
-     *
-     * @return array<int, int>
-     */
-    private function parseDeleteIds(array $raw): array
-    {
-        $out = [];
-
-        foreach ($raw as $id) {
-            $intId = (int) $id;
-
-            if (0 < $intId) {
-                $out[] = $intId;
-            }
-        }
-
-        return $out;
-    }
-
-    /**
      * Normalises the JSON `uploadedImages` payload sent by InfoPageEditHandler.js.
-     * Each element carries the dropzone row state (`id`, `isMain`, `fileName`);
-     * missing/invalid input degrades silently to an empty list — the frontend
-     * always emits a valid JSON array, and Case A / Case B detection in the
+     * Each element carries the dropzone row state (`id`, `isMain`, `fileName`,
+     * `originalFilePath`, `deleted`); missing/invalid input degrades silently
+     * to an empty list — the frontend always emits a valid JSON array, and the
      * handler treats `[]` as "no image rows submitted".
      *
-     * @return array<int, array{id: ?int, isMain: bool, fileName: ?string}>
+     * @return array<int, array{id: ?int, isMain: bool, fileName: ?string, originalFilePath: ?string, deleted: bool}>
      */
     private function parseImageStates(mixed $raw): array
     {
@@ -270,10 +229,24 @@ final class InfoPageEditRequestParser
                 }
             }
 
+            $originalFilePath = null;
+
+            if (true === is_string($item['originalFilePath'] ?? null)) {
+                $trimmed = trim($item['originalFilePath']);
+
+                if ('' !== $trimmed) {
+                    $originalFilePath = $trimmed;
+                }
+            }
+
+            $deleted = true === ($item['deleted'] ?? false);
+
             $out[] = [
                 'id' => $id,
                 'isMain' => $isMain,
                 'fileName' => $fileName,
+                'originalFilePath' => $originalFilePath,
+                'deleted' => $deleted,
             ];
         }
 

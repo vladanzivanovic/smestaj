@@ -27,9 +27,12 @@
     {% set _country = 'info_page.country'|trans %}
     {% set _amenityTags = [] %}
     {% set _rangeTags = [] %}
+    {% set _typeTags = [] %}
     {% for _row in entity.hasTags %}
         {% if _row.tag.tagType.label == 'range' %}
             {% set _rangeTags = _rangeTags|merge([_row]) %}
+        {% elseif _row.tag.tagType.label == 'accomodation-type' %}
+            {% set _typeTags = _typeTags|merge([_row]) %}
         {% else %}
             {% set _amenityTags = _amenityTags|merge([_row]) %}
         {% endif %}
@@ -122,7 +125,22 @@
                     {% for _row in _amenityTags %}
                         <li class="">
                             <div class="icon-box style1">
-                                <i class="{{ _row.tag.icon }}"></i> {{ _row.tag.name }} <i class="soap-icon-check detail-check-mark"></i>
+                                <i class="{{ info_page_amenity_row_icon(_row.tag) }}"></i> {{ _row.tag.name }} <i class="soap-icon-check detail-check-mark"></i>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if _typeTags|length > 0 %}
+            <section class="info-page__section info-page__types">
+                <h2 class="info-page__section-title">{{ 'info_page.section_types'|trans }}</h2>
+                <ul class="amenities icon-box-wrapper">
+                    {% for _row in _typeTags %}
+                        <li class="">
+                            <div class="icon-box style1">
+                                <i class="{{ info_page_type_icon(_row.tag) }}"></i> {{ _row.tag.name }} <i class="soap-icon-check detail-check-mark"></i>
                             </div>
                         </li>
                     {% endfor %}

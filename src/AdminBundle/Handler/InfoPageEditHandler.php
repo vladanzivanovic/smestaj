@@ -7,7 +7,6 @@ namespace AdminBundle\Handler;
 use AdminBundle\Model\InfoPageEditModel;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -69,7 +68,7 @@ final class InfoPageEditHandler
     {
         $this->ensureSlug($entity);
         $this->tagParser->parse($entity, $model->tags);
-        $this->reconcileImages($entity, $model->imageDeleteIds, $model->imageUploads, $model->imageStates);
+        $this->reconcileImages($entity, $model->imageStates);
 
         $mainImageViolations = $this->mainImageValidator->validate($entity);
 
@@ -220,111 +219,143 @@ final class InfoPageEditHandler
     }
 
     /**
-     * @param array<int, int>                                              $deleteIds
-     * @param array<int, UploadedFile>                                     $uploads
-     * @param array<int, array{id: ?int, isMain: bool, fileName: ?string}> $imageStates
+     * Reconciles the dropzone state submitted from InfoPageEditHandler.js with
+     * the persisted AdsInfoPageImage collection. Mirrors the proven Ads flow at
+     * SiteBundle\Services\Ads\AdsImageService::setImage. Each `$imageStates`
+     * row dispatches into one of three branches:
+     *
+     *   - existing + `deleted: true`  → attach final-path UploadedFile, flag
+     *                                   deleted, remove from collection. The
+     *                                   orphan-removal cascade flushes the
+     *                                   DELETE; AdsInfoPageFileUploadListener
+     *                                   ::postRemove unlinks the file on disk.
+     *   - existing + not deleted      → flip isMain only. No file work.
+     *   - new (id === null) + valid   → instantiate AdsInfoPageImage, set
+     *                                   originalName/filename/position/isMain,
+     *                                   attach UploadedFile pointing at the
+     *                                   resize-staged file under web/uploads/tmp/.
+     *                                   The post-persist listener moves it to
+     *                                   web/uploads/images/info-pages/<filename>.
+     *
+     * Rows that don't fit any branch (new with missing or unsafe
+     * originalFilePath) are logged and skipped — matches the Ads flow's
+     * FileNotFoundException tolerance.
+     *
+     * @param array<int, array{id: ?int, isMain: bool, fileName: ?string, originalFilePath: ?string, deleted: bool}> $imageStates
      */
-    private function reconcileImages(AdsInfoPage $entity, array $deleteIds, array $uploads, array $imageStates): void
+    private function reconcileImages(AdsInfoPage $entity, array $imageStates): void
     {
-        $persistedIds = [];
-
-        foreach ($entity->getImages() as $image) {
-            $persistedIds[(int) $image->getId()] = true;
-        }
-
-        $submittedExistingIds = [];
-        $hasNewItems = false;
-
-        foreach ($imageStates as $state) {
-            if (null === $state['id']) {
-                $hasNewItems = true;
-
-                continue;
-            }
-
-            $submittedExistingIds[$state['id']] = true;
-        }
-
-        $isCaseB = (false === $hasNewItems)
-            && (0 === count($deleteIds))
-            && (0 === count($uploads))
-            && (0 === count(array_diff_key($persistedIds, $submittedExistingIds)))
-            && (0 === count(array_diff_key($submittedExistingIds, $persistedIds)));
-
-        if (true === $isCaseB) {
-            $persistedById = [];
-
-            foreach ($entity->getImages() as $image) {
-                $persistedById[(int) $image->getId()] = $image;
-            }
-
-            foreach ($imageStates as $state) {
-                $stateId = $state['id'];
-
-                if (null === $stateId) {
-                    continue;
-                }
-
-                if (false === array_key_exists($stateId, $persistedById)) {
-                    continue;
-                }
-
-                $persistedById[$stateId]->setIsMain($state['isMain']);
-            }
-
-            return;
-        }
-
-        $toRemove = new ArrayCollection();
-
-        foreach ($entity->getImages() as $image) {
-            if (true === in_array((int) $image->getId(), $deleteIds, true)) {
-                $image->setDeleted(true);
-                $toRemove->add($image);
-            }
-        }
-
-        foreach ($toRemove as $image) {
-            $entity->removeImage($image);
-        }
-
-        $position = $entity->getImages()->count();
-
-        /** @var array<string, AdsInfoPageImage> $newByOriginalName */
-        $newByOriginalName = [];
-
-        foreach ($uploads as $upload) {
-            $image = new AdsInfoPageImage();
-            $image->setFile($upload);
-            $image->setOriginalName($upload->getClientOriginalName());
-            $image->setFilename($this->buildUploadFilename($upload->getClientOriginalName()));
-            $image->setPosition($position);
-            $entity->addImage($image);
-            $newByOriginalName[$upload->getClientOriginalName()] = $image;
-            $position++;
-        }
-
-        $survivingById = [];
+        $existingById = [];
 
         foreach ($entity->getImages() as $image) {
             $id = $image->getId();
 
             if (null !== $id) {
-                $survivingById[(int) $id] = $image;
+                $existingById[(int) $id] = $image;
             }
         }
 
+        $newRowStates = [];
+
         foreach ($imageStates as $state) {
-            if (null !== $state['id'] && true === array_key_exists($state['id'], $survivingById)) {
-                $survivingById[$state['id']]->setIsMain($state['isMain']);
+            $stateId = $state['id'];
+
+            if (null !== $stateId && true === $state['deleted']) {
+                $existing = $existingById[$stateId] ?? null;
+
+                if (false === $existing instanceof AdsInfoPageImage) {
+                    continue;
+                }
+
+                $filename = $existing->getFilename() ?? '';
+
+                $absolutePath = rtrim($this->projectDir, '/')
+                    . '/web/'
+                    . trim($this->uploadImageDir, '/')
+                    . '/info-pages/'
+                    . $filename;
+
+                $existing->setFile(new UploadedFile($absolutePath, $filename, null, null, true));
+                $existing->setDeleted(true);
+                $entity->removeImage($existing);
 
                 continue;
             }
 
-            if (null !== $state['fileName'] && true === array_key_exists($state['fileName'], $newByOriginalName)) {
-                $newByOriginalName[$state['fileName']]->setIsMain($state['isMain']);
+            if (null !== $stateId) {
+                $existing = $existingById[$stateId] ?? null;
+
+                if (false === $existing instanceof AdsInfoPageImage) {
+                    continue;
+                }
+
+                $existing->setIsMain($state['isMain']);
+
+                continue;
             }
+
+            $newRowStates[] = $state;
         }
+
+        $nextPosition = $entity->getImages()->count();
+
+        foreach ($newRowStates as $state) {
+            $originalFilePath = $state['originalFilePath'];
+
+            if (null === $originalFilePath || false === $this->validateTmpPath($originalFilePath)) {
+                $this->logger->warning('AdsInfoPage reconcileImages: skipped new image row with missing or unsafe originalFilePath', [
+                    'fileName' => $state['fileName'],
+                    'originalFilePath' => $originalFilePath,
+                    'infoPageId' => $entity->getId(),
+                ]);
+
+                continue;
+            }
+
+            $fileName = $state['fileName'] ?? 'image';
+
+            $image = new AdsInfoPageImage();
+            $image->setOriginalName($fileName);
+            $image->setFilename($this->buildUploadFilename($fileName));
+            $image->setPosition($nextPosition);
+            $image->setIsMain($state['isMain']);
+            $image->setFile(new UploadedFile($originalFilePath, $fileName, null, null, true));
+
+            $entity->addImage($image);
+
+            $nextPosition++;
+        }
+    }
+
+    /**
+     * Defensive boundary check on the client-supplied originalFilePath value.
+     * The resize endpoint emits paths like 'uploads/tmp/<md5+rnd>.<ext>' —
+     * anything else is rejected to prevent traversal / absolute / scheme tricks
+     * from reaching the UploadedFile constructor.
+     */
+    private function validateTmpPath(string $path): bool
+    {
+        if ('' === $path) {
+            return false;
+        }
+
+        if (true === str_contains($path, '..')) {
+            return false;
+        }
+
+        if (true === str_starts_with($path, '/')) {
+            return false;
+        }
+
+        if (true === str_contains($path, '://')) {
+            return false;
+        }
+
+        if (false === str_starts_with($path, 'uploads/tmp/')) {
+            return false;
+        }
+
+        return true;
     }
 
     private function buildUploadFilename(string $originalName): string

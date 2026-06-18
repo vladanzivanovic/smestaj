@@ -394,14 +394,9 @@
                     <div class="card">
                         <div class="card-body">
                             <h6 class="card-title">Status</h6>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       id="published"
-                                       name="published"
-                                       value="1"
-                                       {% if entity.isPublished() %}checked="checked"{% endif %}>
-                                <label class="form-check-label" for="published">Objavljeno</label>
+                            {% set publishedAttributes = entity.isPublished() ? 'checked="checked"' : '' %}
+                            <div class="form-check form-check-flat form-check-primary">
+                                {{ form.checkbox('Objavljeno', 'published', 1, 'published', 'form-check-label', 'form-check-input', publishedAttributes) }}
                             </div>
                             {% if publishViolations|length > 0 %}
                                 <div class="alert alert-danger mt-3" role="alert">

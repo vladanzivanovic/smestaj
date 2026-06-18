@@ -19,6 +19,18 @@ final class InfoPageExtension extends AbstractExtension
         'bankomata' => 'fa fa-credit-card',
     ];
 
+    private const AMENITY_ROW_ICON_OVERRIDES = [
+        'terasa' => 'fa fa-tree',
+        'sef' => 'fa fa-lock',
+        'spa-centar' => 'fa fa-leaf',
+    ];
+
+    private const ACCOMMODATION_TYPE_ICONS = [
+        'apartmani' => 'fa fa-building',
+        'sobe-sa-kupatilom' => 'fa fa-bath',
+        'sobe-sa-zajednickim-kupatilom' => 'fa fa-users',
+    ];
+
     private const AMENITY_ICONS = [
         'wifi' => 'soap-icon-wifi',
         'air_conditioning' => 'soap-icon-aircon',
@@ -75,6 +87,8 @@ final class InfoPageExtension extends AbstractExtension
             new TwigFunction('info_page_amenity_label', [$this, 'infoPageAmenityLabel']),
             new TwigFunction('info_page_amenity_icon', [$this, 'infoPageAmenityIcon']),
             new TwigFunction('info_page_range_icon', [$this, 'infoPageRangeIcon']),
+            new TwigFunction('info_page_amenity_row_icon', [$this, 'infoPageAmenityRowIcon']),
+            new TwigFunction('info_page_type_icon', [$this, 'infoPageTypeIcon']),
         ];
     }
 
@@ -125,6 +139,35 @@ final class InfoPageExtension extends AbstractExtension
         }
 
         return $rawIcon;
+    }
+
+    public function infoPageAmenityRowIcon(Tag $tag): string
+    {
+        $slug = $tag->getSlug();
+        if (null !== $slug && isset(self::AMENITY_ROW_ICON_OVERRIDES[$slug])) {
+            return self::AMENITY_ROW_ICON_OVERRIDES[$slug];
+        }
+
+        $rawIcon = $tag->getIcon();
+        if ('' === $rawIcon) {
+            return 'soap-icon-check';
+        }
+
+        if (str_starts_with($rawIcon, 'fa-')) {
+            return 'fa ' . $rawIcon;
+        }
+
+        return $rawIcon;
+    }
+
+    public function infoPageTypeIcon(Tag $tag): string
+    {
+        $slug = $tag->getSlug();
+        if (null !== $slug && isset(self::ACCOMMODATION_TYPE_ICONS[$slug])) {
+            return self::ACCOMMODATION_TYPE_ICONS[$slug];
+        }
+
+        return 'soap-icon-check';
     }
 
     public function infoPagePhoneDigits(?string $value): string

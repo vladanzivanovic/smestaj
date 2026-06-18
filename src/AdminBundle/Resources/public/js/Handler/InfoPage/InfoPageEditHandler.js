@@ -78,7 +78,6 @@ class InfoPageEditHandler {
         formData.append('google_maps_lng', $(this.mapper.googleMapsLng).val() ?? '');
 
         formData.append('uploadedImages', JSON.stringify(this.#collectDropzoneFiles()));
-        formData.append('removedImageIds', JSON.stringify(this.#collectRemovedImageIds()));
 
         this.#toastr.showLoadingMessage();
 
@@ -98,7 +97,7 @@ class InfoPageEditHandler {
                 return;
             }
 
-            this.#toastr.success(Translator.trans('saved', null, 'messages', LOCALE));
+            AppHelperService.redirect(Routing.generate('admin.info_pages'));
         }).fail((error) => {
             this.#toastr.remove();
             this.#handleAjaxError(error);
@@ -158,20 +157,6 @@ class InfoPageEditHandler {
         const dropzoneFiles = DropZoneService().getFilesArray('info_page_images');
 
         return Array.isArray(dropzoneFiles) ? dropzoneFiles : [];
-    }
-
-    #collectRemovedImageIds() {
-        const removed = [];
-
-        $('input[name="removed_image_id[]"]').each((index, input) => {
-            const value = parseInt(input.value, 10);
-
-            if (false === isNaN(value)) {
-                removed.push(value);
-            }
-        });
-
-        return removed;
     }
 
     #applyServerViolations(violations) {

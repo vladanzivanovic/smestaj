@@ -14,13 +14,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class InfoPageEditController extends AbstractController
 {
     public function __construct(
         private readonly InfoPageEditRequestParser $requestParser,
         private readonly InfoPageEditHandler $editHandler,
-        private readonly AdsInfoPageRepository $adsInfoPageRepository
+        private readonly AdsInfoPageRepository $adsInfoPageRepository,
+        private readonly TranslatorInterface $translator
     ) {
     }
 
@@ -33,9 +35,7 @@ final class InfoPageEditController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $imageUploads = $request->files->all('image_uploads');
-
-        $model = $this->requestParser->parse($request->request, $entity, $imageUploads);
+        $model = $this->requestParser->parse($request->request, $entity);
 
         if (0 < count($model->parserViolations)) {
             return new JsonResponse([
@@ -52,6 +52,8 @@ final class InfoPageEditController extends AbstractController
                 'violations' => $result['violations'],
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        $this->addFlash('message', $this->translator->trans('saved'));
 
         return new JsonResponse([
             'ok' => true,
