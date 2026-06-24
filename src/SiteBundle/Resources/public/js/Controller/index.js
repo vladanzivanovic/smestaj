@@ -26,6 +26,10 @@ let routes = [
         controller: () => UserDashboardController,
     },
     {
+        name: 'site_ads_view_by_all_categories',
+        controller: () => AdsController,
+    },
+    {
         name: 'site_contact_us',
         controller: () => ContactController,
     },

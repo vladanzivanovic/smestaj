@@ -5,9 +5,11 @@ namespace SiteBundle\Controller\Api\Ads;
 use Psr\Log\LoggerInterface;
 use SiteBundle\Collector\AdsPageCollector;
 use SiteBundle\Controller\SiteController;
+use SiteBundle\Entity\Category;
 use SiteBundle\Formatter\AdsPageFormatter;
 use SiteBundle\Parser\SearchDataParser;
 use SiteBundle\Services\Ads\AdsService;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -38,19 +40,15 @@ final class AdsIndexController extends SiteController
         $this->logger = $logger;
     }
 
-    /**
-     * @param string      $category
-     * @param Request     $request
-     * @param string|null $extraParams
-     *
-     * @return JsonResponse
-     */
-    public function indexAction(string $category, Request $request, ?string $extraParams): JsonResponse
-    {
+    public function indexAction(
+        #[MapEntity(mapping: ['category' => 'alias'])] Category $category,
+        Request $request,
+        ?string $extraParams
+    ): JsonResponse {
         try {
             $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
 
-            $data = $this->adsPageCollector->collect($category, $searchCriteria);
+            $data = $this->adsPageCollector->collect($searchCriteria, $category);
 
             return new JsonResponse($this->adsPageFormatter->format($data));
         } catch (\Throwable $throwable) {
@@ -58,6 +56,29 @@ final class AdsIndexController extends SiteController
                 'Failed getting ads from API',
                 [
                     'category' => $category,
+                    'request' => $request,
+                    'extraParams' => $extraParams,
+                ]
+            );
+
+            throw $throwable;
+        }
+    }
+
+    public function listOrDetailByParamsExceptCategoryAction(
+        Request $request,
+        ?string $extraParams
+    ): JsonResponse {
+        try {
+            $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
+
+            $data = $this->adsPageCollector->collect($searchCriteria);
+
+            return new JsonResponse($this->adsPageFormatter->format($data));
+        } catch (\Throwable $throwable) {
+            $this->logger->error(
+                'Failed getting ads from API',
+                [
                     'request' => $request,
                     'extraParams' => $extraParams,
                 ]

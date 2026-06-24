@@ -124,12 +124,22 @@ site_goo_map:
   requirements:
     id: \d+
 
+site_api_ads_view_by_all_categories:
+  path: /ads-list/smestaj/{extraParams}
+  controller: SiteBundle\Controller\Api\Ads\AdsIndexController::listOrDetailByParamsExceptCategoryAction
+  defaults:
+    extraParams: null
+    requirements:
+      extraParams: .*
+    methods: [ GET ]
+
 site_api_ads_view:
   path: /ads-list/{category}/{extraParams}
   controller: SiteBundle\Controller\Api\Ads\AdsIndexController::indexAction
   defaults:
     extraParams: null
     requirements:
+      category: "^(?!build)[a-zA-Z-]+"
       extraParams: .*
     methods: [ GET ]
 

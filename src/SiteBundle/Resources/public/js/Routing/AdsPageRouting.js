@@ -61,6 +61,10 @@ class AdsPageRouting {
         if (paramValue == -1) {
             delete this.params[paramName];
 
+            if (paramName === 'city') {
+                window.EXTRA_PARAMS = null;
+            }
+
             return;
         }
 
@@ -96,7 +100,10 @@ class AdsPageRouting {
 
         }
 
-        params['category'] = urlParams.category;
+        if (urlParams.category) {
+            params['category'] = urlParams.category;
+        }
+
         params['extraParams'] = urlParams.extraParams;
 
 
