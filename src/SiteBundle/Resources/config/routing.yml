@@ -64,6 +64,15 @@ site_reservation_success:
 #  path: /apartmani-sobe-crna-gora/logo.png
 #  defaults: { _controller: SiteBundle\Controller\SiteImageController::getLogoAction }
 
+site_ads_view_by_all_categories:
+  path: /smestaj/{extraParams}
+  controller: SiteBundle\Controller\Ads\AdsIndexController::listOrDetailByParamsExceptCategoryAction
+  defaults:
+    extraParams: null
+  requirements:
+    extraParams: .*
+  methods: [GET]
+
 site_ads_view:
   path: /{category}/{extraParams}
   controller: SiteBundle\Controller\Ads\AdsIndexController::indexAction

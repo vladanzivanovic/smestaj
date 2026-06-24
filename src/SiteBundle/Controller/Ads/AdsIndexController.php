@@ -57,11 +57,10 @@ final class AdsIndexController extends SiteController
                 return $this->singleAdsDom->singleAdsAction($searchCriteria['ad']);
             }
 
-            $data = $this->adsPageCollector->collect($category->getAlias(), $searchCriteria);
+            $data = $this->adsPageCollector->collect($searchCriteria, $category);
             $data['extra_params'] = $extraParams;
             $data['selected_city_name'] = $searchCriteria['city'] !== null ? $searchCriteria['city']->getName() : null;
 
-//            dd($this->adsPageFormatter->format($data));
             return $this->render('@Site/Site/adsView.html.twig',
                 $this->adsPageFormatter->format($data)
             );
@@ -70,6 +69,37 @@ final class AdsIndexController extends SiteController
                 'Failed render ads list page',
                 [
                     'category' => $category->getAlias(),
+                    'request' => $request,
+                    'extraParams' => $extraParams,
+                ]
+            );
+
+            throw $throwable;
+        }
+    }
+
+    public function listOrDetailByParamsExceptCategoryAction(
+        Request $request,
+        null|string $extraParams = null
+    ): Response {
+        try {
+            $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
+
+            if (null !== $searchCriteria['ad']) {
+                return $this->singleAdsDom->singleAdsAction($searchCriteria['ad']);
+            }
+
+            $data = $this->adsPageCollector->collect($searchCriteria);
+            $data['extra_params'] = $extraParams;
+            $data['selected_city_name'] = $searchCriteria['city'] !== null ? $searchCriteria['city']->getName() : null;
+
+            return $this->render('@Site/Site/adsView.html.twig',
+                $this->adsPageFormatter->format($data)
+            );
+        } catch (\Throwable $throwable) {
+            $this->logger->error(
+                'Failed render ads list page',
+                [
                     'request' => $request,
                     'extraParams' => $extraParams,
                 ]

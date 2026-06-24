@@ -1,0 +1,17 @@
+{# Variables: publicUrls (object with rs + en absolute URLs) #}
+{% set _activeLocale = app.request.locale|default('rs') %}
+
+<div class="info-page__locale-switcher" role="navigation" aria-label="Language selector">
+    <a class="info-page__locale-pill{% if 'rs' == _activeLocale %} info-page__locale-pill--active{% endif %}"
+       href="{{ publicUrls.rs }}"
+       hreflang="sr"
+       rel="alternate">
+        SR
+    </a>
+    <a class="info-page__locale-pill{% if 'en' == _activeLocale %} info-page__locale-pill--active{% endif %}"
+       href="{{ publicUrls.en }}"
+       hreflang="en"
+       rel="alternate">
+        EN
+    </a>
+</div>

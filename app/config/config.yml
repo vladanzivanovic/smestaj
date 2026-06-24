@@ -133,6 +133,10 @@ doctrine:
             SiteBundle:
                 type: attribute
                 is_bundle: true
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
 
 fos_js_routing:
     cache_control:

@@ -4,6 +4,7 @@ import SingleAdsController from "./SingleAdsController";
 import CoreController from "./CoreController";
 import UserDashboardController from "./UserDashboardController";
 import ContactController from "./ContactController";
+import InfoPageController from "./InfoPageController";
 
 let routes = [
     {
@@ -25,8 +26,20 @@ let routes = [
         controller: () => UserDashboardController,
     },
     {
+        name: 'site_ads_view_by_all_categories',
+        controller: () => AdsController,
+    },
+    {
         name: 'site_contact_us',
         controller: () => ContactController,
+    },
+    {
+        name: 'site.info_page.view',
+        controller: () => InfoPageController,
+    },
+    {
+        name: 'site.info_page.view_en',
+        controller: () => InfoPageController,
     },
 ];
 

@@ -30,6 +30,7 @@ permission:
     "context-specifier": allow
     "planner": allow
     "executor": allow
+    "frontend": allow
     "qa": allow
     "reviewer": allow
 ---
@@ -46,7 +47,8 @@ Every specialist is model-pinned in its own frontmatter (context-specifier/plann
 |-------|-------|---------|
 | 0 | `context-specifier` | Disambiguate the user prompt and produce `docs/CONTEXT_SPEC.md`. User approval gate. |
 | 1 | `planner` | Analyse codebase against the approved spec, produce `IMPLEMENTATION_PLAN.md` with testable checkboxes. |
-| 2 | `executor` | Implement each checkbox step (PHP/Symfony, Twig, JS/SCSS/Encore, Doctrine migrations). |
+| 2 | `frontend` | Implement `[frontend]`-tagged steps — JS / SCSS / Encore. Loads `frontend-js-pattern` or `frontend-css-pattern`. |
+| 2 | `executor` | Implement `[executor]`-tagged steps — PHP / Symfony, Twig, Doctrine, configuration, migrations. |
 | 3 | `qa` | Run tests, syntax checks, and curl validation against the running stack inside Docker. |
 | 4 | `reviewer` | Final review, minor polish, and mandatory deletion of `IMPLEMENTATION_PLAN.md`. |
 
@@ -64,7 +66,7 @@ Every specialist is model-pinned in its own frontmatter (context-specifier/plann
 
    **Exception — blocker recovery.** If you are re-entering the protocol because a downstream subagent (executor or qa) reported `BLOCKER:` / `FAILURES:` on an already-approved spec, you SKIP Phase 0 and re-enter at Phase 1 (`planner`) with the blocker context. The existing `docs/CONTEXT_SPEC.md` remains the source of truth; do not re-trigger context-specifier unless the blocker explicitly proves the spec itself is wrong AND the user asks for re-specification.
 5. **Phase 1.** Once the spec is approved, delegate to `planner` with `docs/CONTEXT_SPEC.md` as the authoritative brief. The planner reads the spec and the codebase; you do not.
-6. **Phase 2.** Read `IMPLEMENTATION_PLAN.md` and dispatch unchecked steps to `executor`. The executor owns all domains in smestaj (PHP/Symfony, Twig, JS/SCSS/Encore, Doctrine migrations). Re-dispatch as needed until every checkbox is ticked.
+6. **Phase 2.** Read `IMPLEMENTATION_PLAN.md` and dispatch each unchecked step mechanically by its routing tag: `[frontend]`-tagged checkboxes go to the `frontend` subagent; `[executor]`-tagged checkboxes go to `executor`. You do NOT infer routing from step content — you read only the tag. Re-dispatch as needed until every checkbox is ticked.
 7. **Verify exit criteria** before advancing:
    - Phase 0: `docs/CONTEXT_SPEC.md` exists AND the user has explicitly approved it in chat.
    - Phase 1: `IMPLEMENTATION_PLAN.md` exists with testable checkboxes, traceable to the approved spec.

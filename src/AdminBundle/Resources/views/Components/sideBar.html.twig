@@ -115,6 +115,12 @@
                     <span class="link-title">Korisnici</span>
                 </a>
             </li>
+            <li class="nav-item {{ routeName in ['admin.info_pages', 'admin.info_pages.new', 'admin.info_pages.edit'] ? 'active' : '' }}">
+                <a href="{{ path('admin.info_pages') }}" class="nav-link">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Property Info</span>
+                </a>
+            </li>
 {#            <li class="nav-item {{ routeName == 'admin.descriptions' ? 'active' : '' }}">#}
 {#                <a href="{{ path('admin.descriptions') }}" class="nav-link">#}
 {#                    <i class="link-icon mdi mdi-format-color-fill"></i>#}

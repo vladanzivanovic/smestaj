@@ -3,6 +3,8 @@
 {% set user = app.user %}
 {% set routeName = app.request.attributes.get('_route') %}
 {% set categoryParam = app.request.attributes.get('category') ?? null %}
+{% set categories = categories() %}
+{% set defaultCategory = default_category() %}
 
 <!DOCTYPE html>
 <!--[if IE 8]><html class="ie ie8" lang="{{ locale|split('_')[0] }}"> <![endif]-->
@@ -63,8 +65,6 @@
 <body class="{% block bodyClass %}{% endblock %}">
 {% block body %}
     <div id="page-loader" class="hide"></div>
-
-    {% set categories = categories() %}
     <div id="page-wrapper">
         {% block header %}
             <header id="header" class="navbar-static-top">

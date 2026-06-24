@@ -1,0 +1,16 @@
+{% extends "@Site/base.html.twig" %}
+
+{% block title %}{{ 'info_page.not_available_title'|trans }}{% endblock %}
+
+{% block robotFollow %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block body %}
+    <main class="info-page info-page--not-available">
+        <div class="info-page__not-available-card">
+            <h1 class="info-page__not-available-title">{{ 'info_page.not_available_title'|trans }}</h1>
+            <p class="info-page__not-available-message">{{ 'info_page.not_available_message'|trans }}</p>
+        </div>
+    </main>
+{% endblock %}

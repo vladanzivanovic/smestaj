@@ -44,17 +44,12 @@ final class AdsPageCollector
         $this->adshastagsRepository = $adshastagsRepository;
     }
 
-    public function collect(string $selectedCategory, array $searchData): array
+    public function collect(array $searchData, Category $category = null): array
     {
         $searchCriteria = $searchData['searchData'];
         $data = [];
         $city = $searchData['city'];
         $currentPage = $searchData['page'];
-        $category = null;
-
-        if ($selectedCategory !== 'smestaj') {
-            $category = $this->categoryRepository->findOneBy(['alias' => $selectedCategory]);
-        }
 
         $selectedOptions = $this->collectSelectedOptions($searchCriteria);
 

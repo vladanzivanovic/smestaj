@@ -40,3 +40,6 @@
 /web/.htaccess
 /IMPLEMENTATION_PLAN.md
 /docs/
+/backups/
+/.phpunit.result.cache
+/*.sql

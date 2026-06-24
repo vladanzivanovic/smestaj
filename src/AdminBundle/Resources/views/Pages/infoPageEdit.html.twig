@@ -1,0 +1,437 @@
+{% extends '@Admin/base.html.twig' %}
+
+{% block title %}Property Info - {{ entity is null ? 'nova' : 'izmena' }}{% endblock %}
+{% block bodyClass %}info-page-edit{% endblock %}
+
+{% set IS_EDIT = entity is not null %}
+
+{% block content %}
+    {% include '@Admin/Components/breadcrumbs.html.twig' with {
+        pages: [{name: 'Property Info', routeName: 'admin.info_pages'}],
+        activePage: IS_EDIT ? 'Izmena info stranice' : 'Nova info stranica'
+    } %}
+
+    {% import '@Admin/Macros/Inputs/formWithLabels.html.twig' as form %}
+    {% import '@Admin/Macros/Inputs/input.html.twig' as inputs %}
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div>
+            <h4 class="mb-3 mb-md-0">Property Info {{ IS_EDIT ? '- izmena' : '- nova' }}</h4>
+        </div>
+        {% if IS_EDIT and publicUrls is not null %}
+            <div class="d-flex align-items-center flex-wrap text-nowrap">
+                <a href="{{ publicUrls.rs }}" target="_blank" rel="noopener" class="btn btn-outline-info btn-sm me-2">Pregled (SR)</a>
+                <a href="{{ publicUrls.en }}" target="_blank" rel="noopener" class="btn btn-outline-info btn-sm">Pregled (EN)</a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if false == IS_EDIT %}
+        <div id="info-page-select-ads" class="row">
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Izaberi oglas (Ads)</h6>
+                        <p class="text-muted">Info stranica je 1:1 vezana za postojeći oglas. Izaberite oglas iz liste, zatim potvrdite želite li kopirati osnovne podatke.</p>
+                        <div class="form-group">
+                            <label for="info-page-ads-autocomplete">Ads</label>
+                            <select id="info-page-ads-autocomplete" class="form-control w-100"></select>
+                        </div>
+                        <div id="info-page-existing-warning" class="alert alert-warning d-none" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ include('@Admin/Components/confirmationModal.html.twig') }}
+    {% endif %}
+
+    {% if IS_EDIT %}
+        <form id="info-page-edit-form" enctype="multipart/form-data">
+            {{ inputs.input('_csrf_token', csrf_token('info_page_edit'), '_csrf_token', '', 'hidden') }}
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Identitet</h6>
+                            {% if linkedAds is not null %}
+                                <p class="text-muted">Vezan oglas: <strong>{{ linkedAds.title }}</strong> (ID {{ linkedAds.id }})</p>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Slug', 'slug', entity.slug, 'slug') }}
+                                        <small class="form-text text-warning d-none" id="slug-change-warning">⚠ Izmena slug-a će promeniti javnu URL adresu — postojeći QR kod neće više raditi.</small>
+                                        {% if publishViolations.slug is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.slug }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Naziv objekta', 'propertyName', entity.propertyName, 'propertyName') }}
+                                        {% if publishViolations.propertyName is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.propertyName }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for language in languages %}
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ language.label|upper }}</h6>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            {{ form.input('Tagline', 'tagline_'~language.code, info_page_locale_value(entity, 'tagline', language.code), 'tagline_'~language.code) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            {{ form.textarea('Kratak opis', 'short_description_'~language.code, info_page_locale_value(entity, 'shortDescription', language.code), 'short_description_'~language.code, 6, '', 'form-control') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            {{ form.textarea('Poruka dobrodošlice', 'welcome_message_'~language.code, info_page_locale_value(entity, 'welcomeMessage', language.code), 'welcome_message_'~language.code, 6, '', 'form-control') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Domaćin</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Ime', 'host_first_name', entity.hostFirstName ?? '', 'host_first_name') }}
+                                        {% if publishViolations.hostFirstName is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.hostFirstName }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Prezime', 'host_last_name', entity.hostLastName ?? '', 'host_last_name') }}
+                                        {% if publishViolations.hostLastName is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.hostLastName }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Mobilni telefon', 'host_mobile', entity.hostMobile ?? '', 'host_mobile') }}
+                                        {% if publishViolations.hostMobile is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.hostMobile }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Socijalne mreže</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Facebook URL', 'facebook_url', entity.facebookUrl ?? '', 'facebook_url') }}
+                                        {% if publishViolations.facebookUrl is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.facebookUrl }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Instagram URL', 'instagram_url', entity.instagramUrl ?? '', 'instagram_url') }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('WhatsApp telefon', 'whatsapp_phone', entity.whatsappPhone ?? '', 'whatsapp_phone') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Viber telefon', 'viber_phone', entity.viberPhone ?? '', 'viber_phone') }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Booking URL', 'booking_url', entity.bookingUrl ?? '', 'booking_url') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Airbnb URL', 'airbnb_url', entity.airbnbUrl ?? '', 'airbnb_url') }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Google Review (URL ili Place ID)', 'google_review_input', entity.googleReviewInput ?? '', 'google_review_input') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Adresa + mapa</h6>
+                            <p class="text-muted small">Mapa se automatski centrira kada unesete grad i ulicu. Marker možete prevući za fino podešavanje.</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Ulica i broj', 'address_street', entity.addressStreet ?? '', 'address_street') }}
+                                        {% if publishViolations.addressStreet is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.addressStreet }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        {{ form.input('Poštanski broj', 'address_postal_code', entity.addressPostalCode ?? '', 'address_postal_code') }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        {{ form.input('Grad', 'address_city', entity.addressCity ?? '', 'address_city') }}
+                                        {% if publishViolations.addressCity is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.addressCity }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% include ('@Site/Moduls/googleMaps.html.twig') %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Check-in / Check-out</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="check_in_time">Check-in (HH:MM)</label>
+                                        <input id="check_in_time" name="check_in_time" type="time" class="form-control" value="{{ entity.checkInTime is not null ? entity.checkInTime|date('H:i') : '' }}">
+                                        {% if publishViolations.checkInTime is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.checkInTime }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="check_out_time">Check-out (HH:MM)</label>
+                                        <input id="check_out_time" name="check_out_time" type="time" class="form-control" value="{{ entity.checkOutTime is not null ? entity.checkOutTime|date('H:i') : '' }}">
+                                        {% if publishViolations.checkOutTime is defined %}
+                                            <small class="form-text text-danger">{{ publishViolations.checkOutTime }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Wi-Fi</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Wi-Fi korisničko ime', 'wifi_username', entity.wifiUsername ?? '', 'wifi_username') }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        {{ form.input('Wi-Fi lozinka', 'wifi_password', entity.wifiPassword ?? '', 'wifi_password') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Kućna pravila</h6>
+                            {{ form.textarea('Kućna pravila', 'house_rules', entity.houseRules ?? '', 'house_rules', 10, '', 'form-control') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Pogodnosti</h4>
+                            {% for tagType, typeTags in tags %}
+                                {% if tagType != 'range' %}
+                                    <h6>{{ typeTags.name }}</h6>
+                                    <div class="row">
+                                        {% for tag in typeTags.tags %}
+                                            {% set additionalAttributes = '' %}
+                                            {% if IS_EDIT and selectedTags is defined and selectedTags[tagType] is defined and selectedTags[tagType][tag.id] is defined %}
+                                                {% set additionalAttributes = 'checked="checked"' %}
+                                            {% endif %}
+                                            <div class="col-md-4 col-sm-6">
+                                                <div class="form-check form-check-flat form-check-primary">
+                                                    {{ form.checkbox(tag.name, 'tags_'~tag.id, 1, 'tags['~tagType~']['~tag.id~']', 'form-check-label', 'form-check-input', additionalAttributes) }}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Udaljenost od — u metrima</h4>
+                            <div class="row">
+                                {% if tags.range is defined %}
+                                    {% for rangeTag in tags.range.tags %}
+                                        {% set _val = (IS_EDIT and selectedTags is defined and selectedTags.range is defined and selectedTags.range[rangeTag.id] is defined) ? selectedTags.range[rangeTag.id].value : '' %}
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                {{ form.input(rangeTag.name, 'tags_'~rangeTag.id, _val, 'tags[range]['~rangeTag.id~']', null, 'number') }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Galerija</h6>
+                            {% include '@Site/Moduls/dropzone.html.twig' with {'dropzoneName': 'info_page_images', 'class': 'dropzone-dark w-100', 'maxFiles': 30} %}
+                            {% if publishViolations.images is defined %}
+                                <small class="form-text text-danger">{{ publishViolations.images }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if qrPngUrl is not null %}
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">QR kod</h6>
+                                <p class="text-muted small">QR kod sadrži srpsku javnu URL adresu. Skenirajte ili preuzmite PNG.</p>
+                                <img src="{{ qrPngUrl }}" alt="QR kod" class="info-page-qr-thumbnail" style="max-width: 240px;">
+                                <div class="mt-2">
+                                    <a class="btn btn-primary btn-sm" href="{{ qrPngUrl }}" download="{{ entity.slug }}-qr.png">Preuzmi PNG</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-md-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Status</h6>
+                            {% set publishedAttributes = entity.isPublished() ? 'checked="checked"' : '' %}
+                            <div class="form-check form-check-flat form-check-primary">
+                                {{ form.checkbox('Objavljeno', 'published', 1, 'published', 'form-check-label', 'form-check-input', publishedAttributes) }}
+                            </div>
+                            {% if publishViolations|length > 0 %}
+                                <div class="alert alert-danger mt-3" role="alert">
+                                    <strong>Objavljivanje nije moguće:</strong>
+                                    <ul class="mb-0">
+                                        {% for field, message in publishViolations %}
+                                            <li>{{ field }}: {{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="text-end mb-4">
+            {{ form.button('info_page_submit', 'btn btn-outline-primary submit', 'Sačuvaj', 'button') }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block pageJavascript %}
+    <script nonce="{{ csp_nonce('script') }}">
+        const IS_EDIT = {{ IS_EDIT ? 1 : 0 }};
+        const ID = '{{ entity is not null ? entity.id : '' }}';
+        {% if IS_EDIT %}
+            const EXISTING_IMAGES = JSON.parse('{{ entity.images|map(i => {id: i.id, filename: i.filename, originalName: i.originalName, position: i.position, file: asset(upload_image_dir ~ 'info-pages/' ~ i.filename), fileName: i.originalName, isMain: i.isMain})|json_encode|raw }}');
+            const PUBLIC_URLS = JSON.parse('{{ publicUrls|json_encode|raw }}');
+        {% endif %}
+        {% if IS_EDIT and entity.googleMapsLat is not null and entity.googleMapsLng is not null %}
+            const COORDINATES = { lat: {{ entity.googleMapsLat }}, lng: {{ entity.googleMapsLng }} };
+        {% else %}
+            const COORDINATES = null;
+        {% endif %}
+    </script>
+{% endblock %}
