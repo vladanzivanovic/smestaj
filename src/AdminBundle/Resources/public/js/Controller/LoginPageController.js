@@ -6,7 +6,7 @@ class LoginPageController {
         this.mapper = loginPageMapper;
         this.handler = new LoginHandler();
 
-        alert('test');
+        alert('test123');
 
         this.registerEvents();
     }
