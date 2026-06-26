@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SiteBundle\Controller;
 
 use Doctrine\ORM\ORMException;
+use SiteBundle\Dto\Image\LogoTrackingRequest;
 use SiteBundle\Exceptions\ImageNotFoundException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ use SiteBundle\Repository\MediaRepository;
 use SiteBundle\Services\ImageRenderService;
 use SiteBundle\Services\ImageService;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Throwable;
 
@@ -47,11 +48,11 @@ class SiteImageController extends SiteController
     }
 
     #[Route('/logo.png', name: 'site_logo', methods: ['GET'])]
-    public function getLogo(Request $request): BinaryFileResponse
+    public function getLogo(#[MapQueryString] ?LogoTrackingRequest $query = null): BinaryFileResponse
     {
-        $data = $this->requestToArray($request);
-        if (count($data) > 0) {
-            $email = $this->emailsRepository->findOneBy(['code' => $data['code']]);
+        $code = $query?->code;
+        if (null !== $code && '' !== $code) {
+            $email = $this->emailsRepository->findOneBy(['code' => $code]);
 
             if ($email instanceof Emails) {
                 $email->setStatus(Emails::EMAIL_SEEN);
@@ -111,7 +112,7 @@ class SiteImageController extends SiteController
     }
 
     #[Route('/{entity}-slika/{filter}/{name}.jpeg', methods: ['GET'], name: 'app.image_show', requirements: ['entity' => 'ads|oglasi'])]
-    public function getImage(string $filter, string $name, Request $request): Response
+    public function getImage(string $filter, string $name): Response
     {
         $response = $this->getImageFromFileSystem($name, $filter);
 
@@ -124,7 +125,7 @@ class SiteImageController extends SiteController
                     [
                         'filter' => $filter,
                         'image' => $name,
-                        'request' => $request
+                        'route' => 'app.image_show'
                     ]
                 );
 

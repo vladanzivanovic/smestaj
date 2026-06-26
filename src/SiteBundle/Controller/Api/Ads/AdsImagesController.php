@@ -3,12 +3,12 @@
 namespace SiteBundle\Controller\Api\Ads;
 
 use SiteBundle\Controller\SiteController;
+use SiteBundle\Dto\Ads\ResizeImageRequest;
 use SiteBundle\Helper\RandomCodeGenerator;
 use SiteBundle\Services\Ads\AdsImageResizer;
 use SiteBundle\Services\ImageService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -32,11 +32,14 @@ class AdsImagesController extends SiteController
     }
 
     #[Route('/api/ads-image/resize', name: 'site_ads_image_resize_on_fly', methods: ['POST'])]
-    public function resizeImageOnFlyAction(Request $request)
+    public function resizeImageOnFlyAction(?ResizeImageRequest $imageRequest = null)
     {
+        if (null === $imageRequest) {
+            return $this->json([], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         try {
-            /** @var UploadedFile $file */
-            $file = $request->files->get('tmp_image');
+            $file = $imageRequest->tmpImage;
 
             $name = md5($file->getFilename()).
                 $this->randomCodeGenerator->random(15);

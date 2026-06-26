@@ -4,6 +4,8 @@
 namespace SiteBundle\Controller\Api\Ads;
 
 use Psr\Log\LoggerInterface;
+use SiteBundle\Dto\Ads\AdsInsertRequest;
+use SiteBundle\Dto\Ads\AdsUpdateRequest;
 use SiteBundle\Handler\AdsHandler;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\Ads;
@@ -11,7 +13,6 @@ use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Parser\AdsEditParser;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -39,23 +40,21 @@ class AdsEditController extends SiteController
     }
 
     #[Route('/api/product', name: 'site_ads_save', methods: ['POST'])]
-    public function insert(Request $request): JsonResponse
+    public function insert(AdsInsertRequest $insertRequest): JsonResponse
     {
         try {
-            $csrf = $request->request->get('_csrf_token');
-
             if (
-                (false === $this->isCsrfTokenValid('set_ad', $csrf)) ||
+                (false === $this->isCsrfTokenValid('set_ad', $insertRequest->csrfToken)) ||
                 null === $this->getUser()
             ) {
-                $this->createAccessDeniedException();
+                throw $this->createAccessDeniedException();
             }
 
-            $ads = $this->adsEditParser->parse($request->request, $this->getUser(), $this->getUser());
+            $ads = $this->adsEditParser->parse($insertRequest->body, $this->getUser(), $this->getUser());
 
             $this->adsHandler->save($ads);
 
-            $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
+            $this->addFlash('message', $this->translator->trans('data.success_send'));
 
             return $this->json([], Response::HTTP_CREATED);
         } catch (\Throwable $throwable) {
@@ -63,7 +62,8 @@ class AdsEditController extends SiteController
                 'Failed to save ad',
                 [
                     'message' => $throwable->getMessage(),
-                    'request' => (string) $request,
+                    'csrfPrefix' => substr($insertRequest->csrfToken, 0, 8) . '…',
+                    'bodyKeys' => array_keys($insertRequest->body->all()),
                     'stackTrace' => $throwable->getTraceAsString(),
                     'errorFile' => $throwable->getFile(),
                     'errorLine' => $throwable->getLine(),
@@ -76,23 +76,21 @@ class AdsEditController extends SiteController
     }
 
     #[Route('/product/{id}', name: 'site_ads_update', methods: ['PUT'])]
-    public function update(Ads $ads, Request $request): JsonResponse
+    public function update(#[MapEntity] Ads $ads, AdsUpdateRequest $updateRequest): JsonResponse
     {
         try {
-            $csrf = $request->request->get('_csrf_token');
-
             if (
-                (false === $this->isCsrfTokenValid('set_ad', $csrf)) ||
+                (false === $this->isCsrfTokenValid('set_ad', $updateRequest->csrfToken)) ||
                 null === $this->getUser()
             ) {
-                $this->createAccessDeniedException();
+                throw $this->createAccessDeniedException();
             }
 
-            $ads = $this->adsEditParser->parse($request->request, $this->getUser(), $this->getUser(), $ads);
+            $ads = $this->adsEditParser->parse($updateRequest->body, $this->getUser(), $this->getUser(), $ads);
 
             $this->adsHandler->save($ads);
 
-            $request->getSession()->getFlashBag()->add('message', $this->translator->trans('data.success_send'));
+            $this->addFlash('message', $this->translator->trans('data.success_send'));
 
             return $this->json(null, Response::HTTP_CREATED);
         } catch (\Throwable $throwable) {
@@ -100,7 +98,8 @@ class AdsEditController extends SiteController
                 'Failed to save ad',
                 [
                     'message' => $throwable->getMessage(),
-                    'request' => (string) $request,
+                    'csrfPrefix' => substr($updateRequest->csrfToken, 0, 8) . '…',
+                    'bodyKeys' => array_keys($updateRequest->body->all()),
                     'stackTrace' => $throwable->getTraceAsString(),
                     'errorFile' => $throwable->getFile(),
                     'errorLine' => $throwable->getLine(),

@@ -7,7 +7,6 @@ namespace SiteBundle\Controller;
 use SiteBundle\Collector\DashboardCollector;
 use SiteBundle\Formatter\DashboardFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -26,7 +25,7 @@ final class DashboardPageController extends AbstractController
     }
 
     #[Route('/korisnicki-profil', name: 'site_user_profile', methods: ['GET'])]
-    public function index(Request $request): Response
+    public function index(): Response
     {
         $data = $this->dashboardCollector->collect();
 

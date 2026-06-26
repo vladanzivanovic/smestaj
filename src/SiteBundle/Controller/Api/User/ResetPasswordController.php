@@ -4,14 +4,16 @@ namespace SiteBundle\Controller\Api\User;
 
 
 use SiteBundle\Controller\SiteController;
+use SiteBundle\Dto\User\SetNewPasswordRequest;
 use SiteBundle\Entity\User;
 use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Handler\UserHandler;
+use SiteBundle\Parser\SetNewPasswordRequestParser;
 use SiteBundle\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -20,6 +22,7 @@ class ResetPasswordController extends SiteController
     private $userHandler;
     private $translator;
     private UserRepository $userRepository;
+    private SetNewPasswordRequestParser $setNewPasswordRequestParser;
 
     /**
      * ResetPasswordController constructor.
@@ -30,11 +33,13 @@ class ResetPasswordController extends SiteController
     public function __construct(
         UserHandler $userHandler,
         TranslatorInterface $translator,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        SetNewPasswordRequestParser $setNewPasswordRequestParser
     ) {
         $this->userHandler = $userHandler;
         $this->translator = $translator;
         $this->userRepository = $userRepository;
+        $this->setNewPasswordRequestParser = $setNewPasswordRequestParser;
     }
 
     #[Route('/api/reset-password/{email}', name: 'site_user_reset_password', options: ['expose' => true], methods: ['PUT'])]
@@ -64,9 +69,9 @@ class ResetPasswordController extends SiteController
     #[Route('/api/set-new-password/{token}', name: 'site_user_set_password', methods: ['POST'])]
     public function setNewPassword(
         #[MapEntity(mapping: ['token' => 'token'])] User $user,
-        Request $request
+        #[MapRequestPayload(acceptFormat: 'form')] SetNewPasswordRequest $dto
     ): JsonResponse {
-        $data = $this->requestToArray($request);
+        $data = $this->setNewPasswordRequestParser->toArray($dto);
 
         $response = $this->userHandler->doResetPassword($user, $data);
 

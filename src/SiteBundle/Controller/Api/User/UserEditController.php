@@ -6,11 +6,14 @@ namespace SiteBundle\Controller\Api\User;
 use Psr\Log\LoggerInterface;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Controller\SiteController;
+use SiteBundle\Dto\User\RegisterUserRequest;
+use SiteBundle\Dto\User\UpdateUserRequest;
 use SiteBundle\Entity\User;
 use SiteBundle\Handler\UserHandler;
+use SiteBundle\Parser\RegisterUserRequestParser;
+use SiteBundle\Parser\UpdateUserRequestParser;
 use SiteBundle\Services\UserService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -20,39 +23,50 @@ class UserEditController extends SiteController
 
     private LoggerInterface $logger;
 
+    private RegisterUserRequestParser $registerUserRequestParser;
+
+    private UpdateUserRequestParser $updateUserRequestParser;
+
+    private UserService $userService;
+
     public function __construct(
         UserHandler $userHandler,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        RegisterUserRequestParser $registerUserRequestParser,
+        UpdateUserRequestParser $updateUserRequestParser,
+        UserService $userService
     ) {
         $this->userHandler = $userHandler;
         $this->logger = $logger;
+        $this->registerUserRequestParser = $registerUserRequestParser;
+        $this->updateUserRequestParser = $updateUserRequestParser;
+        $this->userService = $userService;
     }
 
     #[Route('/api/add-new-user', name: 'site_registration_post', methods: ['POST'])]
-    public function addNewUser(Request $request)
-    {
+    public function addNewUser(
+        ?RegisterUserRequest $dto = null,
+    ): JsonResponse {
+        if (null === $dto) {
+            return $this->json(['msg' => MessageConstants::EMPTY_REQUEST], Response::HTTP_BAD_REQUEST);
+        }
+
         try {
-            if (!($data = $this->requestToArray($request))) {
-                throw new \Exception('Unable to register user');
-            }
+            $data = $this->registerUserRequestParser->toArray($dto);
 
             $userResponse = $this->userHandler->insertUser($data);
 
-            if (is_array($userResponse)) {
+            if (true === is_array($userResponse)) {
                 return $this->json($userResponse, Response::HTTP_BAD_REQUEST);
             }
 
-//            if (isset($data['facebookId'])) {
-//                $userResponse['facebookId'] = $data['facebookId'];
-//            }
-
             return $this->json($userResponse);
-        }catch (\Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             $this->logger->error(
                 'Unable to register user',
                 [
-                    'request' => $request,
-                    'exception' => $throwable
+                    'email' => $dto->email,
+                    'exception' => $throwable,
                 ]
             );
 
@@ -60,22 +74,16 @@ class UserEditController extends SiteController
         }
     }
 
-    /**
-     * @param $id
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function updateUserAction($id, Request $request)
-    {
-        if(!($data = $this->requestToArray($request)))
-            return $this->jsonResponse->setData([ 'success' => false, 'msg' => MessageConstants::EMPTY_REQUEST ]);
+    public function updateUserAction(
+        int $id,
+        UpdateUserRequest $dto,
+    ): JsonResponse {
+        $data = $this->updateUserRequestParser->toArray($dto);
 
-        /** @var UserService $userService */
-        $userService = $this->setService('site.user_service');
-        $userResponse = $userService->setUpUser($data, $id);
+        $userResponse = $this->userService->setUpUser($data, $id);
         $userResponse['id'] = $id;
 
-        return $this->jsonResponse->setData($userResponse);
+        return $this->json($userResponse);
     }
 
     #[Route('/aktivacija-naloga/{id}', name: 'site_activate_registration', methods: ['GET'], requirements: ['id' => '\d+'])]

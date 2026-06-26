@@ -2,14 +2,15 @@
 
 namespace SiteBundle\Controller;
 
+use SiteBundle\Dto\Index\IndexRequest;
 use SiteBundle\Entity\User;
 use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\CityRepository;
 use SiteBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -37,16 +38,14 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return RedirectResponse|Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(#[MapQueryString] IndexRequest $query): RedirectResponse|Response
     {
         $recommended = $this->adsRepository->getPayed(15);
         $cities = $this->cityRepository->getForIndex();
 
-        $token = $request->query->get('token');
+        $token = $query->token;
 
         if (!empty($token)) {
             /** @var User $user */
