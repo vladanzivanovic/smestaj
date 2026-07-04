@@ -11,7 +11,6 @@ use SiteBundle\Services\UserService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class UserGetController extends SiteController

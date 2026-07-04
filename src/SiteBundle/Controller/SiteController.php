@@ -5,7 +5,6 @@ namespace SiteBundle\Controller;
 use SiteBundle\Helper\ArrayHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SiteController extends AbstractController
@@ -15,32 +14,6 @@ class SiteController extends AbstractController
     protected $response;
     protected $jsonResponse;
     protected $mainEntity;
-
-    /**
-     * Convert Request content to array
-     * @param Request $request
-     *
-     * @return mixed
-     * @throws \LogicException
-     */
-    public function requestToArray(Request $request)
-    {
-        $data = [];
-        switch($request->getMethod()){
-            case $request::METHOD_GET:
-                $data = $request->query->all();
-                break;
-            case $request::METHOD_POST:
-            case $request::METHOD_PUT:
-                $data = $request->request->all();
-                break;
-            default:
-                $data = $this->jsonStringToArray($request->getContent());
-                break;
-        }
-
-        return $data;
-    }
 
     /**
      * @param array $data

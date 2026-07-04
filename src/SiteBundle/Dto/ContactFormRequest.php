@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SiteBundle\Dto;
 
+use SiteBundle\Dto\Contact\ContactRequestError;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class ContactFormRequest
@@ -25,6 +26,7 @@ final class ContactFormRequest
     #[Assert\Length(min: 5, max: 5000)]
     public string $message = '';
 
-    #[Assert\Blank]
     public string $website = '';
+
+    public ?ContactRequestError $error = null;
 }

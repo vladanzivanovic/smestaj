@@ -10,7 +10,7 @@ Encore
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
-    .addEntry('js/admin/app', [
+    .addEntry('admin_app_js', [
         './src/AdminBundle/Resources/public/js/index.js'
     ])
 
@@ -21,7 +21,7 @@ Encore
     .addStyleEntry('css/site/pages/ad_view', './src/SiteBundle/Resources/public/sass/Pages/_ad_view.scss')
     .addStyleEntry('css/site/pages/info_page', './src/SiteBundle/Resources/public/sass/Pages/_info_page.scss')
     .addStyleEntry('css/site/pages/single_ads_view', './src/SiteBundle/Resources/public/sass/Pages/_single_ads_view.scss')
-    .addStyleEntry('css/admin/app', [
+    .addStyleEntry('admin_app_css', [
         './src/AdminBundle/Resources/public/scss/style.scss',
     ])
 

@@ -6,12 +6,12 @@ use Psr\Log\LoggerInterface;
 use SiteBundle\Collector\AdsPageCollector;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Dom\SingleAdsDom;
+use SiteBundle\Dto\Ads\AdsListRequest;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Category;
 use SiteBundle\Formatter\AdsPageFormatter;
 use SiteBundle\Parser\SearchDataParser;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -47,11 +47,11 @@ final class AdsIndexController extends SiteController
 
     public function indexAction(
         #[MapEntity(mapping: ['category' => 'alias'])] Category $category,
-        Request $request,
+        AdsListRequest $listRequest,
         null|string $extraParams = null
     ): Response {
         try {
-            $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
+            $searchCriteria = $this->searchDataParser->parseSearch($listRequest->query, $extraParams);
 
             if (null !== $searchCriteria['ad']) {
                 return $this->singleAdsDom->singleAdsAction($searchCriteria['ad']);
@@ -69,7 +69,7 @@ final class AdsIndexController extends SiteController
                 'Failed render ads list page',
                 [
                     'category' => $category->getAlias(),
-                    'request' => $request,
+                    'query' => $listRequest->query->all(),
                     'extraParams' => $extraParams,
                 ]
             );
@@ -79,11 +79,11 @@ final class AdsIndexController extends SiteController
     }
 
     public function listOrDetailByParamsExceptCategoryAction(
-        Request $request,
+        AdsListRequest $listRequest,
         null|string $extraParams = null
     ): Response {
         try {
-            $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
+            $searchCriteria = $this->searchDataParser->parseSearch($listRequest->query, $extraParams);
 
             if (null !== $searchCriteria['ad']) {
                 return $this->singleAdsDom->singleAdsAction($searchCriteria['ad']);
@@ -100,7 +100,7 @@ final class AdsIndexController extends SiteController
             $this->logger->error(
                 'Failed render ads list page',
                 [
-                    'request' => $request,
+                    'query' => $listRequest->query->all(),
                     'extraParams' => $extraParams,
                 ]
             );

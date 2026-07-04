@@ -5,13 +5,13 @@ namespace SiteBundle\Controller\Api\Ads;
 use Psr\Log\LoggerInterface;
 use SiteBundle\Collector\AdsPageCollector;
 use SiteBundle\Controller\SiteController;
+use SiteBundle\Dto\Ads\AdsListRequest;
 use SiteBundle\Entity\Category;
 use SiteBundle\Formatter\AdsPageFormatter;
 use SiteBundle\Parser\SearchDataParser;
 use SiteBundle\Services\Ads\AdsService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdsIndexController extends SiteController
@@ -42,11 +42,11 @@ final class AdsIndexController extends SiteController
 
     public function indexAction(
         #[MapEntity(mapping: ['category' => 'alias'])] Category $category,
-        Request $request,
+        AdsListRequest $listRequest,
         ?string $extraParams
     ): JsonResponse {
         try {
-            $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
+            $searchCriteria = $this->searchDataParser->parseSearch($listRequest->query, $extraParams);
 
             $data = $this->adsPageCollector->collect($searchCriteria, $category);
 
@@ -56,7 +56,7 @@ final class AdsIndexController extends SiteController
                 'Failed getting ads from API',
                 [
                     'category' => $category,
-                    'request' => $request,
+                    'query' => $listRequest->query->all(),
                     'extraParams' => $extraParams,
                 ]
             );
@@ -66,11 +66,11 @@ final class AdsIndexController extends SiteController
     }
 
     public function listOrDetailByParamsExceptCategoryAction(
-        Request $request,
+        AdsListRequest $listRequest,
         ?string $extraParams
     ): JsonResponse {
         try {
-            $searchCriteria = $this->searchDataParser->parseSearch($request->query, $extraParams);
+            $searchCriteria = $this->searchDataParser->parseSearch($listRequest->query, $extraParams);
 
             $data = $this->adsPageCollector->collect($searchCriteria);
 
@@ -79,7 +79,7 @@ final class AdsIndexController extends SiteController
             $this->logger->error(
                 'Failed getting ads from API',
                 [
-                    'request' => $request,
+                    'query' => $listRequest->query->all(),
                     'extraParams' => $extraParams,
                 ]
             );

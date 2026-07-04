@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="../../../assets/images/favicon.png" />
 
     {% block stylesheets %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/admin/app.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/admin_app_css.css') }}"/>
     {% endblock %}
 </head>
 <body class="login">
@@ -69,7 +69,7 @@
     <script src="{{ asset('js/bundles/bazingajstranslation/js/translator.min.js') }}"></script>
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'messages', 'locales': locale_codes()|join(',') }) }}"></script>
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'validators', 'locales': locale_codes()|join(',') }) }}"></script>
-    <script type="text/javascript" src="{{ asset('build/js/admin/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('build/admin_app_js.js') }}"></script>
     <script src="{{ asset('js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 {% endblock %}

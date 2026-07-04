@@ -3,6 +3,7 @@
 namespace SiteBundle\Controller\Ads;
 
 use SiteBundle\Controller\SiteController;
+use SiteBundle\Dto\Ads\CheckAdsExistRequest;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Media;
 use SiteBundle\Entity\User;
@@ -14,8 +15,8 @@ use SiteBundle\Services\Ads\AdsTagService;
 use SiteBundle\Services\TagService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 
 class AdsGetController extends SiteController
@@ -110,14 +111,14 @@ class AdsGetController extends SiteController
 //    }
 
     /**
-     * @param Request $request
-     *
      * @return JsonResponse
      */
-    public function checkAdsExistByTitleAction(Request $request)
+    public function checkAdsExistByTitleAction(#[MapQueryString(validationFailedStatusCode: 200)] ?CheckAdsExistRequest $query = null)
     {
-        $id = $request->query->get('id');
-        if( !($title = $request->query->get('Title')) ) {
+        $title = $query?->title;
+        $id = $query?->id;
+
+        if (null === $title || '' === $title) {
             return $this->json(true);
         }
 
@@ -125,7 +126,7 @@ class AdsGetController extends SiteController
         /** @var Ads $ads */
         $ads = $this->setEntity(Ads::class)->findOneBy(['title' => $title]);
 
-        if ( (int) $id > 0 && $ads && $ads->getId() == $id) {
+        if (null !== $id && 0 < $id && $ads && $ads->getId() == $id) {
             $ads = null;
         }
 
