@@ -1,17 +1,11 @@
 <div id="settings" class="tab-pane fade">
     <h2>Podešavanje naloga</h2>
-    <form action="{{ path('site_user_update', {'id': app.user.id} ) }}" method="PUT" id="signup-form" enctype="multipart/form-data" onsubmit="loginService.register(event)" data-toggle="validator">
+    <form id="settings-form" enctype="multipart/form-data">
         <h5 class="skin-color">Osnovni podaci</h5>
         <div class="row form-group">
             <div class="col-xs-12 col-sm-6 col-md-4">
-                <label>Korisničko ime</label>
-                <input type="text" class="input-text full-width" name="username" value="{{ app.user.username }}">
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-xs-12 col-sm-6 col-md-4">
                 <label>Nova lozinka</label>
-                <input type="text" class="input-text full-width" name="newPassword" id="new-password">
+                <input type="password" class="input-text full-width" name="newPassword" id="new-password" autocomplete="new-password">
             </div>
         </div>
         <div class="row form-group">

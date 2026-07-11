@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class ParamsExtension extends AbstractExtension
+final class ParamsExtension extends AbstractExtension
 {
     private ParameterBagInterface $params;
 

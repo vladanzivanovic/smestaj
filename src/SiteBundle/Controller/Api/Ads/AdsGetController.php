@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api\Ads;
 
 
@@ -10,7 +12,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class AdsGetController extends SiteController
+final class AdsGetController extends SiteController
 {
     private AdsDashboardService $adsDashboardService;
 
@@ -21,7 +23,7 @@ class AdsGetController extends SiteController
     }
 
     #[Route('/api/product/{alias}', name: 'get_ad_dashboard_edit', methods: ['GET'])]
-    public function getAdDashboard(#[MapEntity(mapping: ['alias' => 'alias'])] Ads $ads)
+    public function getAdDashboard(#[MapEntity(mapping: ['alias' => 'alias'])] Ads $ads): JsonResponse
     {
         $data = $this->adsDashboardService->getAdDashboard($ads);
 

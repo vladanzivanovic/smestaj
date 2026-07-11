@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use SiteBundle\Entity\Contact;
 
-class ContactRepository extends ExtendedEntityRepository
+final class ContactRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

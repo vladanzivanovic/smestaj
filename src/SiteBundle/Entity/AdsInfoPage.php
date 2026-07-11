@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 #[ORM\Entity(repositoryClass: AdsInfoPageRepository::class)]
 #[ORM\Table(name: 'ads_info_page')]
 #[ORM\HasLifecycleCallbacks]
-final class AdsInfoPage implements EntityInterface
+class AdsInfoPage implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

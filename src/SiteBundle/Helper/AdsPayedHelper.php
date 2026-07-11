@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Helper;
 
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\AdsPayedDate;
 use \DateTime;
 
-class AdsPayedHelper
+final class AdsPayedHelper
 {
     /**
      * @param Ads $ads

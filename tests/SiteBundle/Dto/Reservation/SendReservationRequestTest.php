@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace SiteBundle\Tests\Dto\Reservation;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use SiteBundle\Dto\Reservation\SendReservationRequest;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class SendReservationRequestTest extends TestCase
@@ -14,7 +16,7 @@ final class SendReservationRequestTest extends TestCase
     {
         $dto = new SendReservationRequest();
 
-        self::assertSame('', $dto->token);
+        self::assertSame('', $dto->csrfToken);
         self::assertSame('', $dto->firstname);
         self::assertSame('', $dto->lastname);
         self::assertSame('', $dto->email);
@@ -32,7 +34,7 @@ final class SendReservationRequestTest extends TestCase
     {
         $dto = new SendReservationRequest();
 
-        $dto->token = 'csrf-abc';
+        $dto->csrfToken = 'csrf-abc';
         $dto->firstname = 'Pera';
         $dto->lastname = 'Perić';
         $dto->email = 'pera@example.com';
@@ -45,7 +47,7 @@ final class SendReservationRequestTest extends TestCase
         $dto->checkout = '20.07.2025';
         $dto->notificationtype = '2';
 
-        self::assertSame('csrf-abc', $dto->token);
+        self::assertSame('csrf-abc', $dto->csrfToken);
         self::assertSame('Pera', $dto->firstname);
         self::assertSame('Perić', $dto->lastname);
         self::assertSame('pera@example.com', $dto->email);
@@ -59,11 +61,15 @@ final class SendReservationRequestTest extends TestCase
         self::assertSame('2', $dto->notificationtype);
     }
 
-    public function testTokenHasNotBlankConstraint(): void
+    public function testCsrfTokenCarriesNotBlankAndSerializedNameTokenWireKey(): void
     {
-        $names = $this->collectAssertAttributeNames('token');
+        $property = new ReflectionProperty(SendReservationRequest::class, 'csrfToken');
 
-        self::assertContains(Assert\NotBlank::class, $names);
+        self::assertCount(1, $property->getAttributes(Assert\NotBlank::class));
+
+        $serializedName = $property->getAttributes(SerializedName::class);
+        self::assertCount(1, $serializedName);
+        self::assertSame(['token'], $serializedName[0]->getArguments());
     }
 
     public function testFirstnameHasNotBlankAndLengthConstraints(): void
@@ -154,7 +160,7 @@ final class SendReservationRequestTest extends TestCase
      */
     private function collectAssertAttributeNames(string $property): array
     {
-        $reflection = new \ReflectionProperty(SendReservationRequest::class, $property);
+        $reflection = new ReflectionProperty(SendReservationRequest::class, $property);
 
         $names = [];
 

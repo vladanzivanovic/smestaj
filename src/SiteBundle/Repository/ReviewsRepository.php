@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -16,7 +17,7 @@ use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Reviews;
 use SiteBundle\Entity\Stars;
 
-class ReviewsRepository extends ExtendedEntityRepository
+final class ReviewsRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

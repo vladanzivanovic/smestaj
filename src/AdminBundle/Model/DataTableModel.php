@@ -6,7 +6,7 @@ namespace AdminBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-class DataTableModel
+final class DataTableModel
 {
     private int $draw;
 

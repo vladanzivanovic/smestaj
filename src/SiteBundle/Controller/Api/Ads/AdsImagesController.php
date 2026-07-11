@@ -1,65 +1,55 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api\Ads;
 
 use SiteBundle\Controller\SiteController;
-use SiteBundle\Dto\Ads\ResizeImageRequest;
-use SiteBundle\Helper\RandomCodeGenerator;
-use SiteBundle\Services\Ads\AdsImageResizer;
+use SiteBundle\Parser\ResizeImageRequestParser;
 use SiteBundle\Services\ImageService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class AdsImagesController extends SiteController
+final class AdsImagesController extends SiteController
 {
-    private $imageResizer;
-    private $imageService;
+    private ImageService $imageService;
     private Security $security;
-    private RandomCodeGenerator $randomCodeGenerator;
+    private ResizeImageRequestParser $resizeImageRequestParser;
 
     public function __construct(
-        AdsImageResizer $imageResizer,
         ImageService $imageService,
         Security $security,
-        RandomCodeGenerator $randomCodeGenerator
+        ResizeImageRequestParser $resizeImageRequestParser
     ) {
-        $this->imageResizer = $imageResizer;
         $this->imageService = $imageService;
         $this->security = $security;
-        $this->randomCodeGenerator = $randomCodeGenerator;
+        $this->resizeImageRequestParser = $resizeImageRequestParser;
     }
 
     #[Route('/api/ads-image/resize', name: 'site_ads_image_resize_on_fly', methods: ['POST'])]
-    public function resizeImageOnFlyAction(?ResizeImageRequest $imageRequest = null)
-    {
-        if (null === $imageRequest) {
-            return $this->json([], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
+    public function resizeImageOnFlyAction(
+        #[MapUploadedFile(constraints: [new Assert\Image(maxSize: '10M')], name: 'tmp_image')] UploadedFile $file
+    ): JsonResponse {
         try {
-            $file = $imageRequest->tmpImage;
-
-            $name = md5($file->getFilename()).
-                $this->randomCodeGenerator->random(15);
-
-            $originalPath = $this->imageResizer->resizeOnFly($file, $name.'.'.$file->getClientOriginalExtension());
+            $result = $this->resizeImageRequestParser->parse($file);
 
             return $this->json([
-                'file' => '/uploads/tmp_images/'.$originalPath,
-                'originalFilePath' => $originalPath,
-                'fileName' => $name,
-                'isMain' => false,
-                'isImage' => true,
+                'file' => $result->file,
+                'originalFilePath' => $result->originalFilePath,
+                'fileName' => $result->fileName,
+                'isMain' => $result->isMain,
+                'isImage' => $result->isImage,
             ]);
-
         } catch (\Throwable $throwable) {
             return $this->json([], JsonResponse::HTTP_BAD_REQUEST);
         }
     }
 
-    #[Route('/api/remove-tmp-image/{filename}', methods: ['DELETE'], name: 'remove_tmp_image')]
+    #[Route('/api/remove-tmp-image/{filename}', name: 'remove_tmp_image', methods: ['DELETE'])]
     public function removeTmpImage(string $filename)
     {
         $file = $this->imageService->setFileObject([

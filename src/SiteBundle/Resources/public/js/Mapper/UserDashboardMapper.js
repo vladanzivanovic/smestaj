@@ -5,6 +5,7 @@ class UserDashboardMapper {
 
         this.adsForm = $('#setAd');
         this.roomModal = $('#add-room');
+        this.settingsForm = $('#settings-form');
     }
 }
 

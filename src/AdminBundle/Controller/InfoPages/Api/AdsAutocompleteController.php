@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace AdminBundle\Controller\InfoPages\Api;
 
+use AdminBundle\Dto\InfoPage\AdsAutocompleteRequest;
 use SiteBundle\Repository\AdsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdsAutocompleteController extends AbstractController
@@ -20,9 +21,9 @@ final class AdsAutocompleteController extends AbstractController
     }
 
     #[Route('/api/info-pages/ads-autocomplete', name: 'admin.api.info_pages.ads_autocomplete', methods: ['GET'], options: ['expose' => true])]
-    public function autocomplete(Request $request): JsonResponse
+    public function autocomplete(#[MapQueryString] ?AdsAutocompleteRequest $dto = null): JsonResponse
     {
-        $q = (string) $request->query->get('q', '');
+        $q = $dto?->q ?? '';
 
         $rows = $this->adsRepository->searchForAutocomplete($q, self::DEFAULT_LIMIT);
 

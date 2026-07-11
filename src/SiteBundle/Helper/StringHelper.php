@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -9,7 +10,7 @@
 namespace SiteBundle\Helper;
 
 
-class StringHelper
+final class StringHelper
 {
     public function formatPhone($phone)
     {

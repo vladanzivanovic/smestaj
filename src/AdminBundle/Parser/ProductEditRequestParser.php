@@ -4,98 +4,59 @@ declare(strict_types=1);
 
 namespace AdminBundle\Parser;
 
+use AdminBundle\Dto\Product\ProductSaveRequest;
+use SiteBundle\Dto\User\UserRoleAssignmentDto;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\EntityInterface;
 use SiteBundle\Entity\EntityStatusInterface;
 use SiteBundle\Entity\Role;
 use SiteBundle\Entity\User;
-use SiteBundle\Entity\Usertorole;
 use SiteBundle\Helper\TextHelper;
 use SiteBundle\Parser\AdsEditParser;
 use SiteBundle\Parser\UserToRoleParser;
 use SiteBundle\Repository\UserRepository;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class ProductEditRequestParser implements RequestParserInterface
 {
-    use ParserTrait;
-
-    private ParameterBagInterface $parameterBag;
-
-    /**
-     * @var array<int, array<string, string>>
-     */
-    private array $languages;
-
-    private TextHelper $textHelper;
-
-    private AdsEditParser $adsEditParser;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private UserPasswordHasherInterface $passwordEncoder;
-
-    private UserToRoleParser $userToRoleParser;
-
-    private UserRepository $userRepository;
-
-    private ProductPaymentRequestParser $paymentRequestParser;
-
     /**
      * @param array<int, array<string, string>> $languages
      */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        TextHelper $textHelper,
-        AdsEditParser $adsEditParser,
-        TokenStorageInterface $tokenStorage,
-        UserPasswordHasherInterface $passwordEncoder,
-        UserToRoleParser $userToRoleParser,
-        UserRepository $userRepository,
-        ProductPaymentRequestParser $paymentRequestParser,
-        array $languages
+        private readonly TextHelper $textHelper,
+        private readonly AdsEditParser $adsEditParser,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly UserPasswordHasherInterface $passwordEncoder,
+        private readonly UserToRoleParser $userToRoleParser,
+        private readonly UserRepository $userRepository,
+        private readonly ProductPaymentRequestParser $paymentRequestParser,
+        private readonly array $languages,
     ) {
-        $this->parameterBag = $parameterBag;
-        $this->languages = $languages;
-        $this->textHelper = $textHelper;
-        $this->adsEditParser = $adsEditParser;
-        $this->tokenStorage = $tokenStorage;
-        $this->passwordEncoder = $passwordEncoder;
-        $this->userToRoleParser = $userToRoleParser;
-        $this->userRepository = $userRepository;
-        $this->paymentRequestParser = $paymentRequestParser;
     }
 
     /**
-     * @param ParameterBag $bag
-     * @param EntityInterface|null $entity
-     *
-     * @return EntityInterface
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \SiteBundle\Exceptions\ApplicationException
-     * @throws \Exception
+     * @param ProductSaveRequest $dto
      */
-    public function parse(ParameterBag $bag, ?EntityInterface $entity = null): EntityInterface
+    public function parse(object $dto, ?EntityInterface $entity = null): Ads
     {
+        assert($dto instanceof ProductSaveRequest);
+
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $contact = $bag->all('contact');
+        $owner = 0 < $dto->owner ? $this->userRepository->find($dto->owner) : null;
 
-        $owner = $this->userRepository->find($bag->getInt('owner'));
-
-        $entity = $this->adsEditParser->parse($bag, $user, $owner, $entity);
+        $entity = $this->adsEditParser->parse($dto, $user, $owner, $entity);
 
         $contactUser = $entity->getContact();
 
-        $entity->setShortDescription($this->textHelper->clearText($bag->get('short_description_rs')));
+        $entity->setShortDescription($this->textHelper->clearText($dto->shortDescription));
 
-        if (null === $entity->getId() && null === $owner && isset($contact['password'])) {
-            $this->setOwnerFromContact($contactUser, $entity, $contact['password']);
+        if (null === $entity->getId() && null === $owner && '' !== $dto->contact->password) {
+            $this->setOwnerFromContact($contactUser, $entity, $dto->contact->password);
         }
+
+        $this->paymentRequestParser->parse($dto, $entity);
 
         return $entity;
     }
@@ -114,7 +75,7 @@ final class ProductEditRequestParser implements RequestParserInterface
 
             $owner->setContactemail(null);
             $owner->setEmail($contact->getContactemail());
-            $owner->setRoles($this->userToRoleParser->parse(new ParameterBag(['user' => $owner, 'user_role' => Role::ROLE_ADVANCED_USER])));
+            $owner->setRoles($this->userToRoleParser->parse(new UserRoleAssignmentDto($owner, Role::ROLE_ADVANCED_USER)));
             $owner->setPassword($this->passwordEncoder->hashPassword($owner, $password));
             $owner->setStatus(EntityStatusInterface::STATUS_ACTIVE);
         }

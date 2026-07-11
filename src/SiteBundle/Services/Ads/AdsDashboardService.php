@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services\Ads;
 
 use SiteBundle\Entity\Ads;
@@ -8,7 +10,7 @@ use SiteBundle\Repository\MediaRepository;
 use SiteBundle\Repository\UserRepository;
 use SiteBundle\Repository\YouTubeInfoRepository;
 
-class AdsDashboardService
+final class AdsDashboardService
 {
     private YouTubeInfoRepository $youTubeInfoRepository;
 

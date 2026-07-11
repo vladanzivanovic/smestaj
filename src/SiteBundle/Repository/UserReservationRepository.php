@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -13,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use SiteBundle\Entity\Userreservation;
 
-class UserReservationRepository extends ExtendedEntityRepository
+final class UserReservationRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

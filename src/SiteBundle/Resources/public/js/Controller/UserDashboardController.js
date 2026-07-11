@@ -6,8 +6,8 @@ import PaginationService from "../Services/PaginationService";
 import AdsHandler from "../Handler/AdsHandler";
 import Loader from "../../../../../../app/Resources/public/js/Dom/Loader";
 import singleAdView from "../Dom/Dashboard/SingleAdView";
-import loginService from "../Services/LoginService";
 import cityService from "../Services/CityService";
+import UserSettingsHandler from "../Handler/UserSettingsHandler";
 
 const Private = Symbol('private');
 
@@ -126,7 +126,6 @@ class UserDashboardController {
             $('a[href="#settings"]').on('show.bs.tab', function (e) {
                 var form = $(e.currentTarget.hash).find('form');
 
-                form.validate(loginService.signUpValidationOptions);
                 Private.cityService.citiesTypeahead();
             });
             $(document).on('click touchend', '.change-ad', (e) => {
@@ -148,6 +147,12 @@ class UserDashboardController {
 
                 this.removeAd(e, alias);
             })
+            $(document).on('submit', '#settings-form', e => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                UserSettingsHandler().save();
+            });
         };
 
         return Private;

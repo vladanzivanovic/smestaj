@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace AdminBundle\Controller\InfoPages\Api;
 
+use AdminBundle\Dto\InfoPage\InfoPageEditRequest;
 use AdminBundle\Handler\InfoPageEditHandler;
 use AdminBundle\Parser\InfoPageEditRequestParser;
 use SiteBundle\Entity\AdsInfoPage;
-use SiteBundle\Repository\AdsInfoPageRepository;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class InfoPageEditController extends AbstractController
@@ -21,21 +23,21 @@ final class InfoPageEditController extends AbstractController
     public function __construct(
         private readonly InfoPageEditRequestParser $requestParser,
         private readonly InfoPageEditHandler $editHandler,
-        private readonly AdsInfoPageRepository $adsInfoPageRepository,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly TranslatorInterface $translator
     ) {
     }
 
     #[Route('/api/info-pages/{id}', name: 'admin.api.info_pages.update', requirements: ['id' => '\d+'], options: ['expose' => true], methods: ['POST'])]
-    public function update(Request $request, int $id): JsonResponse
-    {
-        $entity = $this->adsInfoPageRepository->find($id);
-
-        if (false === $entity instanceof AdsInfoPage) {
-            throw new NotFoundHttpException();
+    public function update(
+        #[MapEntity(id: 'id')] AdsInfoPage $entity,
+        #[MapRequestPayload(acceptFormat: 'form')] InfoPageEditRequest $dto,
+    ): JsonResponse {
+        if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('info_page_edit', $dto->csrfToken))) {
+            throw $this->createAccessDeniedException();
         }
 
-        $model = $this->requestParser->parse($request->request, $entity);
+        $model = $this->requestParser->parse($dto, $entity);
 
         if (0 < count($model->parserViolations)) {
             return new JsonResponse([

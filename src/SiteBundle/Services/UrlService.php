@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: Vladan
@@ -10,7 +11,7 @@ namespace SiteBundle\Services;
 
 use SiteBundle\Constants\UrlLetterConstants;
 
-class UrlService
+final class UrlService
 {
     private $patternSpace = "/\\s+/";
     private $patternSpecialSpace = "/[^A-z0-9\\s]+/";

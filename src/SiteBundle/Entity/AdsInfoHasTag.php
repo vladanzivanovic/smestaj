@@ -12,7 +12,7 @@ use SiteBundle\Repository\AdsInfoHasTagRepository;
 #[ORM\Index(name: 'IDX_aiht_info_page', columns: ['info_page_id'])]
 #[ORM\Index(name: 'IDX_aiht_tag', columns: ['tag_id'])]
 #[ORM\UniqueConstraint(name: 'uniq_info_page_tag', columns: ['info_page_id', 'tag_id'])]
-final class AdsInfoHasTag implements EntityInterface
+class AdsInfoHasTag implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

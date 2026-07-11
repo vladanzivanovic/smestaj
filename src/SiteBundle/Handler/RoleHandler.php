@@ -12,7 +12,7 @@ use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class RoleHandler extends ServiceContainer
+final class RoleHandler extends ServiceContainer
 {
     private RoleRepository $roleRepository;
 

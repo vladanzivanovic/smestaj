@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace SiteBundle\Services;
 
 use Doctrine\ORM\Query;
@@ -7,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class PaginationService
+final class PaginationService
 {
     protected $offset;
     protected $currentPage;

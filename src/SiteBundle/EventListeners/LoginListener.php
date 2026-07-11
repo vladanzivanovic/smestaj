@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\EventListeners;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 
-class LoginListener
+final class LoginListener
 {
     protected TokenStorageInterface $token;
 

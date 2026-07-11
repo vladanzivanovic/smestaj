@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 use SiteBundle\Entity\User;
 
-class UserExtension extends \Twig\Extension\AbstractExtension
+final class UserExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @return array

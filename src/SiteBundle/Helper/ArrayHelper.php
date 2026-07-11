@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -12,7 +13,7 @@ namespace SiteBundle\Helper;
 
 use JMS\Serializer\SerializerInterface;
 
-class ArrayHelper
+final class ArrayHelper
 {
     private SerializerInterface $serializer;
 

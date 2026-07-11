@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SiteBundle\Services\Contact;
 
 use RuntimeException;
-use SiteBundle\Dto\ContactFormRequest;
+use SiteBundle\Dto\Contact\ContactSubmission;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -25,7 +25,7 @@ final class ContactMailer
     /**
      * @throws TransportExceptionInterface
      */
-    public function send(ContactFormRequest $dto): void
+    public function send(ContactSubmission $submission): void
     {
         $recipient = (string) $this->params->get('contact_recipient_email');
         if ('' === $recipient) {
@@ -48,13 +48,13 @@ final class ContactMailer
             $fromAddress = new Address($fallback);
         }
 
-        $html = $this->twig->render('@Site/Email/contact_form.html.twig', ['data' => $dto]);
+        $html = $this->twig->render('@Site/Email/contact_form.html.twig', ['data' => $submission]);
 
         $email = (new Email())
             ->from($fromAddress)
             ->to(new Address($recipient))
-            ->replyTo(new Address($dto->email, $dto->name))
-            ->subject('[Kontakt forma] ' . $dto->subject)
+            ->replyTo(new Address($submission->email, $submission->name))
+            ->subject('[Kontakt forma] ' . $submission->subject)
             ->html($html);
 
         $this->mailer->send($email);

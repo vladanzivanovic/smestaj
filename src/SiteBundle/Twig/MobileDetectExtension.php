@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 use Detection\MobileDetect;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class MobileDetectExtension extends AbstractExtension
+final class MobileDetectExtension extends AbstractExtension
 {
     private MobileDetect $detector;
 

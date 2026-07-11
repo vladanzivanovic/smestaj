@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace SiteBundle\Services;
 
@@ -14,7 +16,7 @@ use Symfony\Bridge\Twig\Extension\HttpFoundationExtension;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class SocialShareService extends ServiceContainer
+final class SocialShareService extends ServiceContainer
 {
     private $allInOne;
     private $router;

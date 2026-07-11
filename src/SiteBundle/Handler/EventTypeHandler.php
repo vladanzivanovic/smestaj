@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -13,7 +15,7 @@ use SiteBundle\Services\UrlService;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class EventTypeHandler extends ServiceContainer
+final class EventTypeHandler extends ServiceContainer
 {
     private $urlService;
 

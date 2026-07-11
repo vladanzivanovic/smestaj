@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SiteBundle\Dto\Reservation;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,10 +33,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                       inbound `adsid` because PHP method dispatch is case-insensitive
  *                       and `adsId` is iterated after `adsid` in the parser output)
  *
- * The `token` property carries the CSRF token. The CSRF validation stays in
- * the controller (per CONTEXT_SPEC decision #6 — token VALUE travels via DTO,
- * VALIDATION stays in controller via `$this->isCsrfTokenValid()`). The parser
- * does NOT include `token` in the array returned for the handler.
+ * The `$csrfToken` property carries the CSRF token — wire key is `token`
+ * (preserved via `#[SerializedName('token')]`; the form emits
+ * `<input name="token" value="{{ csrf_token('ad_reservation') }}">`). CSRF
+ * validation stays in the controller (per CONTEXT_SPEC decision #6 — token
+ * VALUE travels via DTO, VALIDATION stays in controller). The parser does
+ * NOT include the token in the array returned for the handler.
  *
  * Empty-value-to-null normalization (port of SiteController::emptyValueSetToNull)
  * happens inside the parser, EXCEPT for `notificationtype` (preserved as-is —
@@ -45,7 +48,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class SendReservationRequest
 {
     #[Assert\NotBlank]
-    public string $token = '';
+    #[SerializedName('token')]
+    public string $csrfToken = '';
 
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]

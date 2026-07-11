@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services;
 
 use SiteBundle\Repository\CategoryRepository;
@@ -9,7 +11,7 @@ use SiteBundle\Services\ServiceContainer;
 /**
  * Class TagService
  */
-class TagService
+final class TagService
 {
     private TagRepository $tagRepository;
 

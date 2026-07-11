@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api;
 
 use SiteBundle\Controller\SiteController;
@@ -7,7 +9,7 @@ use SiteBundle\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class CategoryController extends SiteController
+final class CategoryController extends SiteController
 {
     private CategoryRepository $categoryRepository;
 

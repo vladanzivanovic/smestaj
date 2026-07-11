@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace AdminBundle\Controller\InfoPages\Api;
 
+use AdminBundle\Dto\InfoPage\InfoPageCreateRequest;
 use AdminBundle\Handler\InfoPageEditHandler;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Repository\AdsInfoPageRepository;
 use SiteBundle\Repository\AdsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -26,16 +27,11 @@ final class InfoPageCreateController extends AbstractController
     }
 
     #[Route('/api/info-pages', name: 'admin.api.info_pages.create', methods: ['POST'], options: ['expose' => true])]
-    public function create(Request $request): JsonResponse
+    public function create(#[MapRequestPayload(acceptFormat: 'form')] InfoPageCreateRequest $dto): JsonResponse
     {
-        $linkedAdsId = (int) $request->request->get('linkedAdsId');
-        $copyData = $this->parseBool($request->request->get('copyData'));
+        $copyData = $this->parseBool($dto->copyData);
 
-        if (0 >= $linkedAdsId) {
-            return new JsonResponse(['error' => 'invalid_linked_ads_id'], Response::HTTP_BAD_REQUEST);
-        }
-
-        $ads = $this->adsRepository->find($linkedAdsId);
+        $ads = $this->adsRepository->find($dto->linkedAdsId);
 
         if (false === $ads instanceof Ads) {
             return new JsonResponse(['error' => 'ads_not_found'], Response::HTTP_NOT_FOUND);
@@ -58,13 +54,9 @@ final class InfoPageCreateController extends AbstractController
         ], Response::HTTP_CREATED);
     }
 
-    private function parseBool(mixed $value): bool
+    private function parseBool(?string $value): bool
     {
-        if (true === $value || 1 === $value) {
-            return true;
-        }
-
-        if (false === is_string($value)) {
+        if (null === $value) {
             return false;
         }
 

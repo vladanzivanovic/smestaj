@@ -1,23 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace SiteBundle\Controller\Api\Ads;
 
 use Psr\Log\LoggerInterface;
-use SiteBundle\Dto\Ads\AdsInsertRequest;
-use SiteBundle\Dto\Ads\AdsUpdateRequest;
+use SiteBundle\Dto\Ads\AdsSaveRequest;
 use SiteBundle\Handler\AdsHandler;
 use SiteBundle\Controller\SiteController;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Parser\AdsEditParser;
+use SiteBundle\Parser\AdsSaveRequestParser;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AdsEditController extends SiteController
+final class AdsEditController extends SiteController
 {
     private AdsHandler $adsHandler;
 
@@ -25,32 +30,37 @@ class AdsEditController extends SiteController
 
     private AdsEditParser $adsEditParser;
 
+    private AdsSaveRequestParser $adsSaveRequestParser;
+
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
     private LoggerInterface $logger;
 
     public function __construct(
         AdsHandler $adsHandler,
         TranslatorInterface $translator,
         AdsEditParser $adsEditParser,
+        AdsSaveRequestParser $adsSaveRequestParser,
+        CsrfTokenManagerInterface $csrfTokenManager,
         LoggerInterface $logger
     ) {
         $this->adsHandler = $adsHandler;
         $this->translator = $translator;
         $this->adsEditParser = $adsEditParser;
+        $this->adsSaveRequestParser = $adsSaveRequestParser;
+        $this->csrfTokenManager = $csrfTokenManager;
         $this->logger = $logger;
     }
 
     #[Route('/api/product', name: 'site_ads_save', methods: ['POST'])]
-    public function insert(AdsInsertRequest $insertRequest): JsonResponse
+    public function insert(#[MapRequestPayload(acceptFormat: 'form')] AdsSaveRequest $dto): JsonResponse
     {
-        try {
-            if (
-                (false === $this->isCsrfTokenValid('set_ad', $insertRequest->csrfToken)) ||
-                null === $this->getUser()
-            ) {
-                throw $this->createAccessDeniedException();
-            }
+        if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('set_ad', $dto->csrfToken))) {
+            throw $this->createAccessDeniedException();
+        }
 
-            $ads = $this->adsEditParser->parse($insertRequest->body, $this->getUser(), $this->getUser());
+        try {
+            $ads = $this->adsSaveRequestParser->parse($dto);
 
             $this->adsHandler->save($ads);
 
@@ -62,8 +72,7 @@ class AdsEditController extends SiteController
                 'Failed to save ad',
                 [
                     'message' => $throwable->getMessage(),
-                    'csrfPrefix' => substr($insertRequest->csrfToken, 0, 8) . '…',
-                    'bodyKeys' => array_keys($insertRequest->body->all()),
+                    'csrfPrefix' => substr($dto->csrfToken, 0, 8) . '…',
                     'stackTrace' => $throwable->getTraceAsString(),
                     'errorFile' => $throwable->getFile(),
                     'errorLine' => $throwable->getLine(),
@@ -76,17 +85,16 @@ class AdsEditController extends SiteController
     }
 
     #[Route('/product/{id}', name: 'site_ads_update', methods: ['PUT'])]
-    public function update(#[MapEntity] Ads $ads, AdsUpdateRequest $updateRequest): JsonResponse
-    {
-        try {
-            if (
-                (false === $this->isCsrfTokenValid('set_ad', $updateRequest->csrfToken)) ||
-                null === $this->getUser()
-            ) {
-                throw $this->createAccessDeniedException();
-            }
+    public function update(
+        #[MapEntity] Ads $ads,
+        #[MapRequestPayload(acceptFormat: 'form')] AdsSaveRequest $dto
+    ): JsonResponse {
+        if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('set_ad', $dto->csrfToken))) {
+            throw $this->createAccessDeniedException();
+        }
 
-            $ads = $this->adsEditParser->parse($updateRequest->body, $this->getUser(), $this->getUser(), $ads);
+        try {
+            $ads = $this->adsSaveRequestParser->parse($dto, $ads);
 
             $this->adsHandler->save($ads);
 
@@ -98,8 +106,7 @@ class AdsEditController extends SiteController
                 'Failed to save ad',
                 [
                     'message' => $throwable->getMessage(),
-                    'csrfPrefix' => substr($updateRequest->csrfToken, 0, 8) . '…',
-                    'bodyKeys' => array_keys($updateRequest->body->all()),
+                    'csrfPrefix' => substr($dto->csrfToken, 0, 8) . '…',
                     'stackTrace' => $throwable->getTraceAsString(),
                     'errorFile' => $throwable->getFile(),
                     'errorLine' => $throwable->getLine(),
@@ -111,7 +118,7 @@ class AdsEditController extends SiteController
         }
     }
 
-    #[Route('/api/product/{alias}', methods: ['DELETE'], name: 'remove_ad')]
+    #[Route('/api/product/{alias}', name: 'remove_ad', methods: ['DELETE'])]
     public function removeAd(#[MapEntity(mapping: ['alias' => 'alias'])] Ads $ads)
     {
         try {

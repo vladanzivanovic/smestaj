@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Formatter;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -14,7 +16,7 @@ use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class ReservationEmailFormatter extends ServiceContainer
+final class ReservationEmailFormatter extends ServiceContainer
 {
     private $codeGenerator;
     private $parameterBag;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services;
 
 use Doctrine\Persistence\ObjectManager;

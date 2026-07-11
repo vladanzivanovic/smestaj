@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Throwable;
 
-class SiteImageController extends SiteController
+final class SiteImageController extends SiteController
 {
     private EmailsRepository $emailsRepository;
 

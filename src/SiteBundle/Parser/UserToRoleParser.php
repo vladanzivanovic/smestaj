@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SiteBundle\Parser;
 
 use AdminBundle\Parser\RequestParserInterface;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
+use SiteBundle\Dto\User\UserRoleAssignmentDto;
 use SiteBundle\Entity\EntityInterface;
 use SiteBundle\Entity\Usertorole;
 use SiteBundle\Repository\RoleRepository;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class UserToRoleParser implements RequestParserInterface
 {
@@ -20,16 +20,25 @@ final class UserToRoleParser implements RequestParserInterface
         $this->roleRepository = $roleRepository;
     }
 
-    public function parse(ParameterBag $bag, ?EntityInterface $entity = null): EntityInterface
+    /**
+     * @param UserRoleAssignmentDto $dto    concrete DTO — must be a UserRoleAssignmentDto instance
+     * @param EntityInterface|null  $entity unused (LSP-satisfies the interface); a fresh Usertorole is always returned
+     */
+    public function parse(object $dto, ?EntityInterface $entity = null): Usertorole
     {
-        if (null === $user = $bag->get('user')) {
-            throw new InvalidArgumentException('There is no user on which to set role.');
+        if (false === $dto instanceof UserRoleAssignmentDto) {
+            throw new InvalidArgumentException(sprintf(
+                '%s::parse expects a %s, got %s',
+                self::class,
+                UserRoleAssignmentDto::class,
+                $dto::class,
+            ));
         }
 
-        $roleObj = $this->roleRepository->findOneBy(['code' => $bag->get('user_role')]);
+        $roleObj = $this->roleRepository->findOneBy(['code' => $dto->roleCode]);
 
         $userToRole = $this->create();
-        $userToRole->setUserId($user);
+        $userToRole->setUserId($dto->user);
         $userToRole->setRoleId($roleObj);
 
         return $userToRole;

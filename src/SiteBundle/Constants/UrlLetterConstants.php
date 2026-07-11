@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace SiteBundle\Constants;
 /**
  * Created by PhpStorm.
@@ -6,7 +7,7 @@ namespace SiteBundle\Constants;
  * Date: 9/27/2016
  * Time: 7:55 AM
  */
-class UrlLetterConstants
+final class UrlLetterConstants
 {
     const LETTER_CYRILIC = array('А', 'Б', 'В', 'Г', 'Д', 'Ђ', 'Е', 'Ж', 'З', 'И', 'Ј', 'К', 'Л', 'Љ', 'М', 'Н', 'Њ', 'О', 'П', 'Р', 'С', 'Т', 'Ћ', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Џ', 'Ш', 'а', 'б', 'в', 'г', 'д', 'ђ', 'е', 'ж', 'з', 'и', 'ј', 'к', 'л', 'љ', 'м', 'н', 'њ', 'о', 'п', 'р', 'с', 'т', 'ћ', 'у', 'ф', 'х', 'ц', 'ч', 'џ', 'ш' );
 

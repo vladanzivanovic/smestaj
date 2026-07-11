@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Helper;
 
 use Exception;
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Class ValidatorService
  */
-class ValidatorHelper extends TraceableValidator
+final class ValidatorHelper extends TraceableValidator
 {
     /**
      * @param ValidatorInterface $validator

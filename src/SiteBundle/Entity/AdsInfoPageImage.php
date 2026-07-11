@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'ads_info_page_image')]
-final class AdsInfoPageImage implements EntityInterface
+class AdsInfoPageImage implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

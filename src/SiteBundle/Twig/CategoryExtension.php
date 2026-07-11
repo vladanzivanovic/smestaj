@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 use SiteBundle\Entity\Category;
@@ -8,7 +10,7 @@ use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\CategoryRepository;
 use SiteBundle\Services\CategoryService;
 
-class CategoryExtension extends \Twig\Extension\AbstractExtension
+final class CategoryExtension extends \Twig\Extension\AbstractExtension
 {
     private AdsRepository $adsRepository;
 

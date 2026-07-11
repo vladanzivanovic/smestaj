@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services\Ads;
 
 use SiteBundle\Entity\Ads;
 use Symfony\Component\Routing\RouterInterface;
 
-class AdsFormatter
+final class AdsFormatter
 {
     private RouterInterface $router;
 

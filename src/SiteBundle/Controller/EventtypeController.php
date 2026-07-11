@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller;
 
 
-class EventtypeController extends SiteController
+final class EventtypeController extends SiteController
 {
     public function getAllAction()
     {

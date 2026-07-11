@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AdminBundle\Formatter\Datatable;
 
 use AdminBundle\Model\DataTableModel;

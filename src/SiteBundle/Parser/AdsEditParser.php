@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace SiteBundle\Parser;
 
+use SiteBundle\Dto\Ads\AdsSaveRequest;
 use SiteBundle\Entity\Ads;
-use SiteBundle\Entity\Contact;
-use SiteBundle\Entity\EntityInterface;
 use SiteBundle\Entity\EntityStatusInterface;
-use SiteBundle\Entity\User;
-use SiteBundle\Exceptions\ApplicationException;
 use SiteBundle\Helper\TextHelper;
 use SiteBundle\Repository\CategoryRepository;
 use SiteBundle\Repository\CityRepository;
 use SiteBundle\Services\Ads\AdsImageService;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class AdsEditParser
@@ -55,33 +51,35 @@ class AdsEditParser
         $this->adsPayedDateParser = $adsPayedDateParser;
     }
 
-    public function parse(ParameterBag $bag, UserInterface $user, ?UserInterface $owner, ?Ads $ads= null): Ads
-    {
+    public function parse(
+        AdsSaveRequest $dto,
+        UserInterface $user,
+        ?UserInterface $owner,
+        ?Ads $ads = null
+    ): Ads {
         if (null === $ads) {
             $ads = $this->create();
             $ads->setStatus(EntityStatusInterface::STATUS_PENDING);
         }
 
-        $contactArray = $bag->all('contact');
-
-        $ads->setTitle($bag->get('title_rs'));
-        $ads->setDescription($this->textHelper->clearText($bag->get('description_rs')));
+        $ads->setTitle($dto->title);
+        $ads->setDescription($this->textHelper->clearText($dto->description));
         $ads->setShortDescription($this->generateShortDescription($ads->getDescription()));
-        $ads->setLat((float)$bag->get('lat'));
-        $ads->setLng((float)$bag->get('lng'));
-        $ads->setPostpricefrom($bag->getInt('post_price_from'));
-        $ads->setPostpriceto($bag->getInt('post_price_to'));
-        $ads->setPrepricefrom($bag->getInt('pre_price_from'));
-        $ads->setPrepriceto($bag->getInt('pre_price_to'));
-        $ads->setPriceFrom($bag->getInt('price_from'));
-        $ads->setPriceTo($bag->getInt('price_to'));
-        $ads->setAddress($bag->get('_address'));
+        $ads->setLat($dto->lat);
+        $ads->setLng($dto->lng);
+        $ads->setPostpricefrom($dto->postPriceFrom);
+        $ads->setPostpriceto($dto->postPriceTo);
+        $ads->setPrepricefrom($dto->prePriceFrom);
+        $ads->setPrepriceto($dto->prePriceTo);
+        $ads->setPriceFrom($dto->priceFrom);
+        $ads->setPriceTo($dto->priceTo);
+        $ads->setAddress($dto->address);
         $ads->setSysModifyTime(new \DateTime());
         $ads->setSysModifyUserId($user);
         $ads->setOwner(null);
-        $ads->setFacebook($bag->get('facebook'));
-        $ads->setWebsite($bag->get('website'));
-        $ads->setInstagram($bag->get('instagram'));
+        $ads->setFacebook($dto->facebook);
+        $ads->setWebsite($dto->website);
+        $ads->setInstagram($dto->instagram);
 
         if (null === $ads->getId()) {
             $ads->setSysCreatedUserId($user);
@@ -92,27 +90,27 @@ class AdsEditParser
             $ads->setOwner($owner);
         }
 
-        $youtube = json_decode($bag->get('youtube'), true);
+        $youtube = json_decode($dto->youtube, true);
 
         if (0 < count($youtube)) {
             $this->youTubeParser->parse($ads, $youtube);
         }
 
-        $this->adsImageService->setImage($ads, json_decode($bag->get('documents'), true));
-        $this->adsUserParser->parse($ads, $contactArray);
+        $this->adsImageService->setImage($ads, json_decode($dto->documents, true));
+        $this->adsUserParser->parse($ads, $dto->contact);
 
-        $this->adsTagParser->parse($ads, $bag->all('tags'));
-        $this->setCategory($ads, $bag->getInt('category'));
-        $this->setCity($ads, $bag->get('city'));
+        $this->adsTagParser->parse($ads, $dto->tags);
+        $this->setCategory($ads, $dto->category);
+        $this->setCity($ads, $dto->city);
 
         $now = new \DateTimeImmutable();
         $paymentDate = $now->modify('+1 year');
 
-        if ($bag->has('payment_date')) {
-            $paymentDate = new \DateTimeImmutable($bag->get('payment_date'));
+        if (null !== $dto->paymentDate) {
+            $paymentDate = new \DateTimeImmutable($dto->paymentDate);
         }
 
-        $paymentType = $this->adsPayedDateParser->parse($ads, $bag->getInt('price_plan'), $paymentDate);
+        $paymentType = $this->adsPayedDateParser->parse($ads, $dto->pricePlan, $paymentDate);
 
         $ads->addPayedType($paymentType);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -7,7 +9,7 @@ use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Media;
 
-class MediaRepository extends ExtendedEntityRepository
+final class MediaRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

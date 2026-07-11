@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services\Ads;
 
 use SiteBundle\Entity\Category;
@@ -11,7 +13,7 @@ use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class AdsService
+final class AdsService
 {
     private AdsRepository $adsRepository;
 

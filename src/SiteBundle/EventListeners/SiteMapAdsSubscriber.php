@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace SiteBundle\EventListeners;
 
@@ -12,7 +14,7 @@ use SiteBundle\Repository\AdsRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SiteMapAdsSubscriber implements EventSubscriberInterface
+final class SiteMapAdsSubscriber implements EventSubscriberInterface
 {
     private UrlGeneratorInterface $urlGenerator;
 

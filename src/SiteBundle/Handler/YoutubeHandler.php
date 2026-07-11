@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -13,7 +15,7 @@ use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class YoutubeHandler extends ServiceContainer
+final class YoutubeHandler extends ServiceContainer
 {
     public function __construct(
         ObjectManager $entity,

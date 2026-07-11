@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SiteBundle\Parser;
 
+use SiteBundle\Dto\Embedded\AdsContactDto;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Contact;
 use SiteBundle\Entity\Role;
@@ -26,19 +27,19 @@ final class AdsContactUserParser
         $this->cityRepository = $cityRepository;
     }
 
-    public function parse(Ads $ads, array $data): void
+    public function parse(Ads $ads, AdsContactDto $contact): void
     {
-        $city = $this->cityRepository->findOneBy(['alias' => $data['city']]);
+        $city = $this->cityRepository->findOneBy(['alias' => $contact->city]);
 
         $user = $this->getContact($ads);
 
-        $user->setFirstname($data['first_name']);
-        $user->setLastname($data['surname']);
-        $user->setContactEmail(trim($data['email']));
-        $user->setTelephone($data['telephone']);
-        $user->setViber($data['viber'] ?? null);
-        $user->setMobilephone($data['mobile_phone'] ?? null);
-        $user->setAddress($data['address']);
+        $user->setFirstname($contact->firstName);
+        $user->setLastname($contact->surname);
+        $user->setContactEmail(trim($contact->email));
+        $user->setTelephone($contact->telephone);
+        $user->setViber($contact->viber);
+        $user->setMobilephone($contact->mobilePhone);
+        $user->setAddress($contact->address);
         $user->setCity($city);
 
         $ads->setContact($user);

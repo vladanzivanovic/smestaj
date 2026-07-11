@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -9,7 +10,7 @@
 namespace SiteBundle\Constants;
 
 
-class MainConstants
+final class MainConstants
 {
     const DAY_CACHE = 1; //86400
     const HOUR_CACHE = 1; // 3600

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api\Ads;
 
 use Psr\Log\LoggerInterface;
@@ -12,41 +14,27 @@ use SiteBundle\Parser\SearchDataParser;
 use SiteBundle\Services\Ads\AdsService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdsIndexController extends SiteController
 {
-    private AdsService $adsService;
-
-    private AdsPageCollector $adsPageCollector;
-
-    private AdsPageFormatter $adsPageFormatter;
-
-    private SearchDataParser $searchDataParser;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        AdsService $adsService,
-        AdsPageCollector $adsPageCollector,
-        AdsPageFormatter $adsPageFormatter,
-        SearchDataParser $searchDataParser,
-        LoggerInterface $logger
+        private readonly AdsService $adsService,
+        private readonly AdsPageCollector $adsPageCollector,
+        private readonly AdsPageFormatter $adsPageFormatter,
+        private readonly SearchDataParser $searchDataParser,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->adsService = $adsService;
-        $this->adsPageCollector = $adsPageCollector;
-        $this->adsPageFormatter = $adsPageFormatter;
-        $this->searchDataParser = $searchDataParser;
-        $this->logger = $logger;
     }
 
     public function indexAction(
         #[MapEntity(mapping: ['category' => 'alias'])] Category $category,
-        AdsListRequest $listRequest,
-        ?string $extraParams
+        #[MapQueryString] ?AdsListRequest $listRequest = null,
+        ?string $extraParams = null
     ): JsonResponse {
         try {
-            $searchCriteria = $this->searchDataParser->parseSearch($listRequest->query, $extraParams);
+            $searchCriteria = $this->searchDataParser->parseSearch($listRequest, $extraParams);
 
             $data = $this->adsPageCollector->collect($searchCriteria, $category);
 
@@ -56,7 +44,6 @@ final class AdsIndexController extends SiteController
                 'Failed getting ads from API',
                 [
                     'category' => $category,
-                    'query' => $listRequest->query->all(),
                     'extraParams' => $extraParams,
                 ]
             );
@@ -66,11 +53,11 @@ final class AdsIndexController extends SiteController
     }
 
     public function listOrDetailByParamsExceptCategoryAction(
-        AdsListRequest $listRequest,
-        ?string $extraParams
+        #[MapQueryString] ?AdsListRequest $listRequest = null,
+        ?string $extraParams = null
     ): JsonResponse {
         try {
-            $searchCriteria = $this->searchDataParser->parseSearch($listRequest->query, $extraParams);
+            $searchCriteria = $this->searchDataParser->parseSearch($listRequest, $extraParams);
 
             $data = $this->adsPageCollector->collect($searchCriteria);
 
@@ -79,7 +66,6 @@ final class AdsIndexController extends SiteController
             $this->logger->error(
                 'Failed getting ads from API',
                 [
-                    'query' => $listRequest->query->all(),
                     'extraParams' => $extraParams,
                 ]
             );
@@ -89,7 +75,7 @@ final class AdsIndexController extends SiteController
     }
 
     #[Route('/api/product-pagination/{page}', name: 'site_ads_paginate', methods: ['GET'])]
-    public function adsPagination($page)
+    public function adsPagination(int $page): JsonResponse
     {
         $user = $this->getUser();
 

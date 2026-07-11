@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services;
 
 
@@ -7,7 +9,7 @@ use SiteBundle\Constants\MessageConstants;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 
-class UploadService
+final class UploadService
 {
     protected $rootDir;
     protected $uploadTmpDir;

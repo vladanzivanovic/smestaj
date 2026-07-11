@@ -8,7 +8,7 @@ use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Adshastags;
 use SiteBundle\Repository\TagRepository;
 
-class AdsTagParser
+final class AdsTagParser
 {
     private TagRepository $tagRepository;
 

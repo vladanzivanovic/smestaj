@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -9,7 +10,7 @@
 namespace SiteBundle\Constants;
 
 
-class MessageConstants
+final class MessageConstants
 {
     const EMAIL_NOT_VALID = 'Email nije validan';
     const EMAIL_NOT_SENT = 'Email nije poslat';

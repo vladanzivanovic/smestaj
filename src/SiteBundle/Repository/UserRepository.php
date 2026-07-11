@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Repository;
 
 use AdminBundle\Model\DataTableModel;
@@ -14,7 +16,7 @@ use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserRepository extends ExtendedEntityRepository implements UserLoaderInterface
+final class UserRepository extends ExtendedEntityRepository implements UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

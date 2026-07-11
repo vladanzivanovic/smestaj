@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\EventListeners;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -10,7 +12,7 @@ use SiteBundle\Helper\Email;
 use SiteBundle\Repository\MediaRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class ReservationEmailListener
+final class ReservationEmailListener
 {
     private MediaRepository $mediaRepository;
     private ParameterBagInterface $parameterBag;

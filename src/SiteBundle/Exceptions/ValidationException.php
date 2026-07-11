@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -13,7 +15,7 @@ use Exception;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ValidationException extends ApplicationException
+final class ValidationException extends ApplicationException
 {
     /**
      * ValidationException constructor.

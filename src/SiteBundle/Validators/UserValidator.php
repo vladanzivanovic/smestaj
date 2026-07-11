@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -14,7 +15,7 @@ use SiteBundle\Validators\ValidatorConstants\UserFieldsConstants;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
-class UserValidator extends ValidatorContainer
+final class UserValidator extends ValidatorContainer
 {
     public function __construct(EntityManager $entity, TokenStorage $tokenStorage)
     {

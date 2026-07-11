@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace SiteBundle\Services\Ads;
 
@@ -10,7 +12,7 @@ use SiteBundle\Repository\MediaRepository;
 use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AdsAdditionalInfoService extends ServiceContainer
+final class AdsAdditionalInfoService extends ServiceContainer
 {
     private $upload_image_dir;
     private $infoRepository;

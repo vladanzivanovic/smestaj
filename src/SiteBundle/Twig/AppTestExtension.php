@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 use SiteBundle\Entity\Category;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigTest;
 
-class AppTestExtension extends AbstractExtension
+final class AppTestExtension extends AbstractExtension
 {
     public function getTests(): array
     {

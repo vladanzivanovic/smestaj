@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AdminBundle\Parser;
 
+use AdminBundle\Dto\InfoPage\InfoPageEditRequest;
 use AdminBundle\Model\InfoPageEditModel;
 use DateTimeImmutable;
 use SiteBundle\Entity\AdsInfoPage;
 use SiteBundle\Services\InfoPage\HouseRulesHtmlSanitizer;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Parses the info-page edit form into the entity (scalar fields)
@@ -29,18 +29,18 @@ final class InfoPageEditRequestParser
     ) {
     }
 
-    public function parse(ParameterBag $bag, AdsInfoPage $entity): InfoPageEditModel
+    public function parse(InfoPageEditRequest $dto, AdsInfoPage $entity): InfoPageEditModel
     {
-        $this->writeScalars($bag, $entity);
-        $this->writeLocaleFields($bag, $entity);
-        $this->writeTimes($bag, $entity);
+        $this->writeScalars($dto, $entity);
+        $this->writeLocaleFields($dto, $entity);
+        $this->writeTimes($dto, $entity);
 
         $violations = [];
 
-        $street = $this->trimToNull($bag->get('address_street'));
-        $city = $this->trimToNull($bag->get('address_city'));
-        $lat = $this->toFloatOrNull($bag->get('google_maps_lat'));
-        $lng = $this->toFloatOrNull($bag->get('google_maps_lng'));
+        $street = $this->trimToNull($dto->addressStreet);
+        $city = $this->trimToNull($dto->addressCity);
+        $lat = $this->toFloatOrNull($dto->googleMapsLat);
+        $lng = $this->toFloatOrNull($dto->googleMapsLng);
 
         if (null !== $street && null !== $city && (null === $lat || null === $lng)) {
             $message = 'Mapa nije postavljena — unesite grad i ulicu pa sačekajte da se mapa centrira na tačnu lokaciju.';
@@ -59,66 +59,66 @@ final class InfoPageEditRequestParser
             $violations['wifiPassword'] = 'Wi-Fi lozinka može imati najviše 100 karaktera.';
         }
 
-        $tags = $this->parseTagsBag($bag);
+        $tags = $this->parseTagsBag($dto->tags);
 
-        $imageStates = $this->parseImageStates($bag->get('uploadedImages'));
+        $imageStates = $this->parseImageStates($dto->uploadedImages);
 
         return new InfoPageEditModel(
             entity: $entity,
-            requestedPublish: $this->parseBool($bag->get('published')),
+            requestedPublish: $this->parseBool($dto->published),
             tags: $tags,
             imageStates: $imageStates,
             parserViolations: $violations,
         );
     }
 
-    private function writeScalars(ParameterBag $bag, AdsInfoPage $entity): void
+    private function writeScalars(InfoPageEditRequest $dto, AdsInfoPage $entity): void
     {
-        $slug = $this->trimToNull($bag->get('slug'));
+        $slug = $this->trimToNull($dto->slug);
 
         if (null !== $slug) {
             $entity->setSlug($slug);
         }
 
-        $propertyName = $this->trimToNull($bag->get('propertyName'));
+        $propertyName = $this->trimToNull($dto->propertyName);
 
         if (null !== $propertyName) {
             $entity->setPropertyName($propertyName);
         }
 
-        $entity->setHostFirstName($this->trimToNull($bag->get('host_first_name')));
-        $entity->setHostLastName($this->trimToNull($bag->get('host_last_name')));
-        $entity->setHostMobile($this->trimToNull($bag->get('host_mobile')));
+        $entity->setHostFirstName($this->trimToNull($dto->hostFirstName));
+        $entity->setHostLastName($this->trimToNull($dto->hostLastName));
+        $entity->setHostMobile($this->trimToNull($dto->hostMobile));
 
-        $entity->setInstagramUrl($this->validateUrlOrNull($bag->get('instagram_url')));
-        $entity->setFacebookUrl($this->validateUrlOrNull($bag->get('facebook_url')));
-        $entity->setWhatsappPhone($this->validatePhoneOrNull($bag->get('whatsapp_phone')));
-        $entity->setViberPhone($this->validatePhoneOrNull($bag->get('viber_phone')));
-        $entity->setBookingUrl($this->validateUrlOrNull($bag->get('booking_url')));
-        $entity->setAirbnbUrl($this->validateUrlOrNull($bag->get('airbnb_url')));
+        $entity->setInstagramUrl($this->validateUrlOrNull($dto->instagramUrl));
+        $entity->setFacebookUrl($this->validateUrlOrNull($dto->facebookUrl));
+        $entity->setWhatsappPhone($this->validatePhoneOrNull($dto->whatsappPhone));
+        $entity->setViberPhone($this->validatePhoneOrNull($dto->viberPhone));
+        $entity->setBookingUrl($this->validateUrlOrNull($dto->bookingUrl));
+        $entity->setAirbnbUrl($this->validateUrlOrNull($dto->airbnbUrl));
 
-        $entity->setGoogleReviewInput($this->trimToNull($bag->get('google_review_input')));
+        $entity->setGoogleReviewInput($this->trimToNull($dto->googleReviewInput));
 
-        $entity->setAddressStreet($this->trimToNull($bag->get('address_street')));
-        $entity->setAddressPostalCode($this->trimToNull($bag->get('address_postal_code')));
-        $entity->setAddressCity($this->trimToNull($bag->get('address_city')));
+        $entity->setAddressStreet($this->trimToNull($dto->addressStreet));
+        $entity->setAddressPostalCode($this->trimToNull($dto->addressPostalCode));
+        $entity->setAddressCity($this->trimToNull($dto->addressCity));
 
-        $entity->setGoogleMapsLat($this->toFloatOrNull($bag->get('google_maps_lat')));
-        $entity->setGoogleMapsLng($this->toFloatOrNull($bag->get('google_maps_lng')));
+        $entity->setGoogleMapsLat($this->toFloatOrNull($dto->googleMapsLat));
+        $entity->setGoogleMapsLng($this->toFloatOrNull($dto->googleMapsLng));
 
-        $entity->setWifiUsername($this->trimToNull($bag->get('wifi_username')));
-        $entity->setWifiPassword($this->trimToNull($bag->get('wifi_password')));
-        $entity->setHouseRules($this->sanitizer->sanitize($this->trimToNull($bag->get('house_rules'))));
+        $entity->setWifiUsername($this->trimToNull($dto->wifiUsername));
+        $entity->setWifiPassword($this->trimToNull($dto->wifiPassword));
+        $entity->setHouseRules($this->sanitizer->sanitize($this->trimToNull($dto->houseRules)));
     }
 
-    private function writeLocaleFields(ParameterBag $bag, AdsInfoPage $entity): void
+    private function writeLocaleFields(InfoPageEditRequest $dto, AdsInfoPage $entity): void
     {
         foreach (self::LOCALES as $locale) {
             $suffix = ucfirst($locale);
 
-            $tagline = $this->trimToNull($bag->get('tagline_' . $locale));
-            $shortDescription = $this->trimToNull($bag->get('short_description_' . $locale));
-            $welcomeMessage = $this->trimToNull($bag->get('welcome_message_' . $locale));
+            $tagline = $this->trimToNull($this->localeValue($dto, 'tagline', $locale));
+            $shortDescription = $this->trimToNull($this->localeValue($dto, 'shortDescription', $locale));
+            $welcomeMessage = $this->trimToNull($this->localeValue($dto, 'welcomeMessage', $locale));
 
             $entity->{'setTagline' . $suffix}($tagline);
             $entity->{'setShortDescription' . $suffix}($shortDescription);
@@ -126,28 +126,36 @@ final class InfoPageEditRequestParser
         }
     }
 
-    private function writeTimes(ParameterBag $bag, AdsInfoPage $entity): void
+    /**
+     * Reads a locale-suffixed DTO property (e.g. `taglineRs`, `taglineEn`).
+     * The DTO holds one flat property per locale per field — the parser
+     * still groups them by locale to preserve the legacy loop structure.
+     */
+    private function localeValue(InfoPageEditRequest $dto, string $field, string $locale): ?string
     {
-        $entity->setCheckInTime($this->parseTime($bag->get('check_in_time')));
-        $entity->setCheckOutTime($this->parseTime($bag->get('check_out_time')));
+        $property = $field . ucfirst($locale);
+
+        return $dto->{$property} ?? null;
+    }
+
+    private function writeTimes(InfoPageEditRequest $dto, AdsInfoPage $entity): void
+    {
+        $entity->setCheckInTime($this->parseTime($dto->checkInTime));
+        $entity->setCheckOutTime($this->parseTime($dto->checkOutTime));
     }
 
     /**
-     * Extracts the nested tag bag posted by the InfoEdit form into
+     * Normalises the DTO's `tags` 2D map into
      * `[<tag_type_label>][<tag_id>] => <value-string>`. Non-numeric tag IDs,
      * non-string type labels, and non-scalar values are silently dropped.
      * Returns an empty array when the form omits the `tags` key entirely.
      *
+     * @param array<string, array<int|string, string>> $raw
+     *
      * @return array<string, array<int, string>>
      */
-    private function parseTagsBag(ParameterBag $bag): array
+    private function parseTagsBag(array $raw): array
     {
-        $raw = $bag->all()['tags'] ?? [];
-
-        if (false === is_array($raw)) {
-            return [];
-        }
-
         $out = [];
 
         foreach ($raw as $typeLabel => $tagArray) {

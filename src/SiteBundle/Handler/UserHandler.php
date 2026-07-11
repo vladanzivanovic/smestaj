@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -17,7 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UserHandler extends ServiceContainer
+final class UserHandler extends ServiceContainer
 {
     protected UserPasswordHasherInterface $passwordEncoder;
     protected RoleHandler $roleHandler;

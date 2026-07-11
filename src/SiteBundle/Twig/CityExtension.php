@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 use SiteBundle\Entity\Category;
@@ -7,7 +9,7 @@ use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\CityRepository;
 use SiteBundle\Services\CategoryService;
 
-class CityExtension extends \Twig\Extension\AbstractExtension
+final class CityExtension extends \Twig\Extension\AbstractExtension
 {
     private CityRepository $cityRepository;
 
@@ -31,7 +33,7 @@ class CityExtension extends \Twig\Extension\AbstractExtension
     {
         $cities = $this->cityRepository->getCitiesWithHavingAds();
 
-        $chunk = \ceil(\round(count($cities)/6, PHP_ROUND_HALF_UP));
+        $chunk = (int) \ceil(\round(count($cities)/6, PHP_ROUND_HALF_UP));
 
         return array_chunk($cities, $chunk);
     }

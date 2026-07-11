@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -14,7 +16,7 @@ use SiteBundle\Services\UrlService;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class CategoryHandler extends ServiceContainer
+final class CategoryHandler extends ServiceContainer
 {
     protected $categoryDir;
     protected $img;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Ads;
 
 use SiteBundle\Controller\SiteController;
@@ -19,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 
-class AdsGetController extends SiteController
+final class AdsGetController extends SiteController
 {
     private TagService $tagService;
 

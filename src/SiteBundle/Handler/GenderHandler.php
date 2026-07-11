@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -15,7 +17,7 @@ use SiteBundle\Services\UrlService;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class GenderHandler extends ServiceContainer
+final class GenderHandler extends ServiceContainer
 {
     private $urlService;
 
