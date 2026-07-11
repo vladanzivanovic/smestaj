@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services\Ads;
 
 use Liip\ImagineBundle\Controller\ImagineController;

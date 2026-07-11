@@ -7,7 +7,7 @@ use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\AdsPayedDate;
 use SiteBundle\Entity\EntityStatusInterface;
 
-class AdsPayedDateParser
+final class AdsPayedDateParser
 {
     public function parse(Ads $ads, int $type, ?\DateTimeInterface $activeTo = null): AdsPayedDate
     {

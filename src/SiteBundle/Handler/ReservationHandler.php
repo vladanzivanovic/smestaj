@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -11,7 +13,7 @@ use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class ReservationHandler extends ServiceContainer
+final class ReservationHandler extends ServiceContainer
 {
     private UserReservationHandler $userHandler;
 

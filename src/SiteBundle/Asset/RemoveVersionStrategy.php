@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Asset;
 
 use Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface;
 
-class RemoveVersionStrategy implements VersionStrategyInterface
+final class RemoveVersionStrategy implements VersionStrategyInterface
 {
 
     /**

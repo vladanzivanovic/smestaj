@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -15,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Validator\Constraints\Date;
 
-class BadgesHandler extends ServiceContainer
+final class BadgesHandler extends ServiceContainer
 {
     protected $badgesDir;
     protected $img;

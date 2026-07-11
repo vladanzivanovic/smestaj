@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 use Doctrine\Persistence\ObjectManager;
@@ -11,7 +13,7 @@ use SiteBundle\Services\UserService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserReservationHandler extends ServiceContainer
+final class UserReservationHandler extends ServiceContainer
 {
     private $userService;
     private $userHandler;

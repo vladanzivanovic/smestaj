@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\EventListeners;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -8,7 +10,7 @@ use SiteBundle\Services\ImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AdsFileUploadListener
+final class AdsFileUploadListener
 {
     private ImageService $imageService;
 

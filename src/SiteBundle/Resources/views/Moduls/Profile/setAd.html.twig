@@ -3,6 +3,7 @@
 <div id="ads-origin" class="hide">
     <h2>Dodavanje - Izmena oglasa</h2>
     <form action="" id="setAd-origin">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('set_ad') }}">
         <div id="smartwizard-origin">
             <ul>
                 <li class="step-tab"><a href="#step-basic-info">Osnovni podaci</a></li>

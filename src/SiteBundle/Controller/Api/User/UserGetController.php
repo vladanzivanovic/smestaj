@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api\User;
 
 use SiteBundle\Constants\MessageConstants;
@@ -13,7 +15,7 @@ use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class UserGetController extends SiteController
+final class UserGetController extends SiteController
 {
     private $userService;
 

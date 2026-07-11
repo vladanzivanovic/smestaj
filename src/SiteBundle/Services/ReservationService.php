@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services;
 
 use Doctrine\ORM\EntityManager;
@@ -9,7 +11,7 @@ use SiteBundle\Entity\Reservation;
 use SiteBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class ReservationService extends ServiceContainer
+final class ReservationService extends ServiceContainer
 {
     public function __construct(EntityManager $entity, TokenStorage $tokenStorage)
     {

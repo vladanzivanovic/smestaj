@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api;
 
 use SiteBundle\Controller\SiteController;
@@ -9,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * Class CityController
  */
-class CityController extends SiteController
+final class CityController extends SiteController
 {
     private $cityRepository;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\EventListeners;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -12,7 +14,7 @@ use SiteBundle\Entity\User;
 use SiteBundle\Helper\Email;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class UserEmailListener
+final class UserEmailListener
 {
     private $parameterBag;
     /**

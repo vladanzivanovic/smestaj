@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 
-class PluralizationExtension extends \Twig\Extension\AbstractExtension
+final class PluralizationExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @return array|\Twig\TwigFunction[]

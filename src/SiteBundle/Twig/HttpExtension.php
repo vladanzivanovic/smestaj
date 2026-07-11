@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Twig;
 
 use Symfony\Bridge\Twig\Extension\HttpFoundationExtension;
 use Symfony\Component\Routing\RouterInterface;
 
-class HttpExtension extends \Twig\Extension\AbstractExtension
+final class HttpExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var HttpFoundationExtension

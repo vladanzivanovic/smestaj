@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-class ReservationEditController extends SiteController
+final class ReservationEditController extends SiteController
 {
     private UserReservationHandler $reservationHandler;
 
@@ -40,7 +40,7 @@ class ReservationEditController extends SiteController
         #[MapEntity(mapping: ['slug' => 'alias'])] Ads $ads,
         #[MapRequestPayload(acceptFormat: 'form')] SendReservationRequest $dto
     ): JsonResponse {
-        if (false === $this->isCsrfTokenValid('ad_reservation', $dto->token)) {
+        if (false === $this->isCsrfTokenValid('ad_reservation', $dto->csrfToken)) {
             return new JsonResponse(['msg' => MessageConstants::EMPTY_REQUEST], Response::HTTP_BAD_REQUEST);
         }
 
@@ -51,11 +51,12 @@ class ReservationEditController extends SiteController
 
             return $this->json(['reservation_id' => $reservation->getId()]);
         } catch (\Throwable $throwable) {
+            dd($throwable);
             $this->logger->error(
                 'Reservation failed',
                 [
                     'adsId' => $ads->getId(),
-                    'reservationToken' => substr($dto->token, 0, 8) . '…',
+                    'reservationToken' => substr($dto->csrfToken, 0, 8) . '…',
                     'ads' => (array) $ads,
                     'errorMessage' => $throwable->getMessage(),
                     'errorCode' => $throwable->getCode(),

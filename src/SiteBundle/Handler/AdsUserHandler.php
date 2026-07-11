@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -13,7 +15,7 @@ use SiteBundle\Repository\UserRepository;
 use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AdsUserHandler extends ServiceContainer
+final class AdsUserHandler extends ServiceContainer
 {
     private $userRepository;
     private $roleHandler;

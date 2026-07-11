@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Reservation;
 
 
@@ -17,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ReservationGetController extends SiteController
+final class ReservationGetController extends SiteController
 {
     private ReservationRepository $reservationRepository;
     private AdsRepository $adsRepository;

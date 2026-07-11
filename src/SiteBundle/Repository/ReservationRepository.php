@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -18,7 +19,7 @@ use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Reservation;
 use SiteBundle\Exceptions\ApplicationException;
 
-class ReservationRepository extends ExtendedEntityRepository
+final class ReservationRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

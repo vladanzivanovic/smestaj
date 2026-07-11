@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Repository;
 
 
@@ -21,7 +23,7 @@ use SiteBundle\Entity\User;
 use SiteBundle\Entity\AdsInfoPage;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class AdsRepository extends ExtendedEntityRepository
+final class AdsRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -354,7 +356,7 @@ class AdsRepository extends ExtendedEntityRepository
             ->setParameter('dateDiff', -1)
             ->groupBy('a.alias')
             ->addOrderBy('RAND()')
-            ->setMaxResults('6');
+            ->setMaxResults(6);
 
         return $query->getQuery()->getArrayResult();
     }

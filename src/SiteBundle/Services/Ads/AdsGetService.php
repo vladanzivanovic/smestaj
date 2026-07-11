@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services\Ads;
 
 use Doctrine\ORM\EntityManager;
@@ -10,7 +12,7 @@ use SiteBundle\Helper\AppHelper;
 use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class AdsGetService extends ServiceContainer
+final class AdsGetService extends ServiceContainer
 {
     private $appHelper;
     private $uploadAdsDir;

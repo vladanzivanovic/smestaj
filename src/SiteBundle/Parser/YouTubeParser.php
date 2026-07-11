@@ -7,7 +7,7 @@ namespace SiteBundle\Parser;
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Youtubeinfo;
 
-class YouTubeParser
+final class YouTubeParser
 {
     public function parse(Ads $ads, array $youtubeData): void
     {

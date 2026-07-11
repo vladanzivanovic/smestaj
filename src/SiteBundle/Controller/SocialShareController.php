@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace SiteBundle\Controller;
 
@@ -8,7 +10,7 @@ use MartinGeorgiev\SocialPost\Provider\AllInOne;
 use MartinGeorgiev\SocialPost\Provider\Message;
 use SiteBundle\Services\SocialShareService;
 
-class SocialShareController extends SiteController
+final class SocialShareController extends SiteController
 {
     /**
      * @param int $adsType

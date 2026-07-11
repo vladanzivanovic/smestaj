@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -14,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Badgetoad;
 
-class BadgeToAdRepository extends ExtendedEntityRepository
+final class BadgeToAdRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

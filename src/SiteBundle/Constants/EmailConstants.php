@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -9,7 +10,7 @@
 namespace SiteBundle\Constants;
 
 
-class EmailConstants
+final class EmailConstants
 {
     const USER_REGISTRATION_SCRIPT = 'USER_REGISTRATION';
     const USER_RESERVATION = 'USER_RESERVATION';

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api\User;
 
 
@@ -17,7 +19,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ResetPasswordController extends SiteController
+final class ResetPasswordController extends SiteController
 {
     private $userHandler;
     private $translator;

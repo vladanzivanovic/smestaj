@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace SiteBundle\Services;
 
@@ -9,7 +11,7 @@ use SiteBundle\Entity\City;
 use SiteBundle\Entity\Country;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class GoogleGeoCodeService extends ServiceContainer
+final class GoogleGeoCodeService extends ServiceContainer
 {
     public function __construct(
         EntityManager $entity,

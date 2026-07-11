@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Webmozart\Assert\Assert;
 
-class AdsImageService
+final class AdsImageService
 {
     private ImageService $imageService;
 

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services\Ads;
 
 use SiteBundle\Entity\Ads;
 use SiteBundle\Entity\Media;
 use SiteBundle\Entity\Reservation;
 
-class AdsEmailDataPreparation
+final class AdsEmailDataPreparation
 {
     public function prepareAdsEmailData(Ads $ads, Reservation $reservation, array $data)
     {

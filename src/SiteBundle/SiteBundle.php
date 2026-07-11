@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SiteBundle extends Bundle
+final class SiteBundle extends Bundle
 {
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -18,7 +19,7 @@ use SiteBundle\Entity\City;
 use SiteBundle\Entity\EntityStatusInterface;
 use SiteBundle\Entity\Media;
 
-class CityRepository extends ExtendedEntityRepository
+final class CityRepository extends ExtendedEntityRepository
 {
     private LoggerInterface $logger;
 

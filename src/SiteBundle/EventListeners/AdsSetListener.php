@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\EventListeners;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -10,7 +12,7 @@ use SiteBundle\Helper\Email;
 use SiteBundle\Services\ImageService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class AdsSetListener
+final class AdsSetListener
 {
     private $imageService;
     private $uploadAdsDir;

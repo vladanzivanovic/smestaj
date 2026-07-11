@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -14,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Youtubeinfo;
 
-class YouTubeInfoRepository extends ExtendedEntityRepository
+final class YouTubeInfoRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 
@@ -12,7 +14,7 @@ use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AdsAdditionalInfoHandler extends ServiceContainer
+final class AdsAdditionalInfoHandler extends ServiceContainer
 {
     /**
      * @var AdsAdditionalInfoImageService

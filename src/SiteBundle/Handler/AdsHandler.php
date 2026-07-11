@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Handler;
 
 use Doctrine\Persistence\ObjectManager;
@@ -13,7 +15,7 @@ use SiteBundle\Services\ServiceContainer;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AdsHandler extends ServiceContainer
+final class AdsHandler extends ServiceContainer
 {
     private AdsImageService $adsImage;
 

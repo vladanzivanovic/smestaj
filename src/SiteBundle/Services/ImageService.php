@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services;
 
 ini_set('memory_limit', '512M');
@@ -17,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use \Throwable;
 
-class ImageService
+final class ImageService
 {
     private $fs;
     private $fileTypes;

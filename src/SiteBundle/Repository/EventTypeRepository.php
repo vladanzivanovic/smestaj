@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -14,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Eventtype;
 
-class EventTypeRepository extends ExtendedEntityRepository
+final class EventTypeRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

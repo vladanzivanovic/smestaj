@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Helper;
 
 use SiteBundle\Entity\Ads;
 
-class ConstantsHelper
+final class ConstantsHelper
 {
     /**
      * @param string|int $searchVal

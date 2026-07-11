@@ -128,6 +128,69 @@ These regenerate `web/js/fos_js_routes.json` (FOSJsRouting) and the Bazinga tran
 
 **Never run `curl` on the host.** Use PHP's curl functions via `docker exec smestaj-app php -r "..."`.
 
+### 6.0 Fixture setup / test users
+
+Before running any authenticated curl check (subsection 6.3 or later), seed the two sanctioned test accounts by running the fixture command:
+
+```bash
+docker exec smestaj-app php bin/console app:create-test-users
+```
+
+The command is idempotent — running it twice does not create duplicates and is not a failure. **Run it at the start of every QA session that needs authenticated calls**, so QA does not re-hit the "no test credentials" wall.
+
+Two accounts and one shared password:
+
+| Email | Role | Password |
+|---|---|---|
+| `siteuser@test.com` | `ROLE_ADVANCED_USER` (regular site user, `/korisnicki-profil` dashboard) | `Test1234.` |
+| `adminuser@test.com` | `ROLE_ADMIN` (admin dashboard access) | `Test1234.` |
+
+These two accounts are the **ONLY** sanctioned test identities. Do NOT create ad-hoc test users. Do NOT reset real-user passwords. Do NOT query real-user emails for testing purposes. If a scenario needs more identities, extend `SiteBundle\Command\CreateTestUsersCommand` — do not seed ad-hoc from QA.
+
+#### 6.0.1 Acquiring a session cookie
+
+Use the PHP-inside-container pattern from subsection 6.3, but with an **explicit named jar path** (not `tempnam`) so multiple concurrent sessions do not collide:
+
+```bash
+docker exec smestaj-app php -r "
+\$jar = '/tmp/cookies_siteuser.txt';
+\$c = curl_init('http://localhost/site-login-check');
+curl_setopt_array(\$c, [
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_POST => true,
+  CURLOPT_POSTFIELDS => http_build_query(['_username' => 'siteuser@test.com', '_password' => 'Test1234.']),
+  CURLOPT_COOKIEJAR => \$jar,
+  CURLOPT_COOKIEFILE => \$jar,
+]);
+curl_exec(\$c);
+\$code = curl_getinfo(\$c, CURLINFO_HTTP_CODE);
+echo \"login: HTTP \$code (jar: \$jar)\n\";
+"
+```
+
+For admin operations, swap `siteuser` for `adminuser` in both the `_username` field and the jar filename (`/tmp/cookies_adminuser.txt`). Keep the jars separate — reusing a jar across accounts silently overwrites the previous session cookie and produces impossible-to-diagnose 403s downstream.
+
+Then replay the jar against any protected route using the same pattern as subsection 6.3 / 6.4 (GET / POST / PUT / DELETE). Example authenticated PUT with JSON body:
+
+```bash
+docker exec smestaj-app php -r "
+\$jar = '/tmp/cookies_siteuser.txt';
+\$c = curl_init('http://localhost/api/user/<USER_ID>');
+curl_setopt_array(\$c, [
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_CUSTOMREQUEST => 'PUT',
+  CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Accept: application/json'],
+  CURLOPT_POSTFIELDS => json_encode(['firstname' => 'Renamed']),
+  CURLOPT_COOKIEJAR => \$jar,
+  CURLOPT_COOKIEFILE => \$jar,
+]);
+\$body = curl_exec(\$c);
+\$code = curl_getinfo(\$c, CURLINFO_HTTP_CODE);
+echo \"HTTP \$code: \$body\n\";
+"
+```
+
 ### 6.1 Port reference
 
 | Where | URL |
@@ -160,7 +223,7 @@ docker exec smestaj-app php -r "
 \$jar = tempnam(sys_get_temp_dir(), 'cj');
 
 // Login POST
-\$c = curl_init('http://localhost/login_check');
+\$c = curl_init('http://localhost/site-login-check');
 curl_setopt_array(\$c, [
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_FOLLOWLOCATION => true,

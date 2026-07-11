@@ -59,11 +59,12 @@ final class SendReservationRequestParserTest extends TestCase
     public function testToArrayDoesNotIncludeTokenKey(): void
     {
         $dto = $this->buildFullDto();
-        $dto->token = 'csrf-secret-value';
+        $dto->csrfToken = 'csrf-secret-value';
 
         $data = $this->parser->toArray($dto, $this->ads);
 
         self::assertArrayNotHasKey('token', $data);
+        self::assertArrayNotHasKey('csrfToken', $data);
     }
 
     public function testToArrayDoesNotIncludeFormAdsidKey(): void
@@ -138,7 +139,7 @@ final class SendReservationRequestParserTest extends TestCase
     private function buildFullDto(): SendReservationRequest
     {
         $dto = new SendReservationRequest();
-        $dto->token = 'csrf-abc';
+        $dto->csrfToken = 'csrf-abc';
         $dto->firstname = 'Pera';
         $dto->lastname = 'Perić';
         $dto->email = 'pera@example.com';

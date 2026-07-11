@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -15,7 +16,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use SiteBundle\Constants\MainConstants;
 use SiteBundle\Entity\Badges;
 
-class BadgeRepository extends ExtendedEntityRepository
+final class BadgeRepository extends ExtendedEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

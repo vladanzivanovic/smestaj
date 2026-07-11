@@ -1,58 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller\Api\User;
 
 
 use Psr\Log\LoggerInterface;
 use SiteBundle\Constants\MessageConstants;
 use SiteBundle\Controller\SiteController;
-use SiteBundle\Dto\User\RegisterUserRequest;
-use SiteBundle\Dto\User\UpdateUserRequest;
+use SiteBundle\Dto\User\UserSaveRequest;
 use SiteBundle\Entity\User;
 use SiteBundle\Handler\UserHandler;
-use SiteBundle\Parser\RegisterUserRequestParser;
-use SiteBundle\Parser\UpdateUserRequestParser;
-use SiteBundle\Services\UserService;
+use SiteBundle\Parser\UserSaveRequestParser;
+use SiteBundle\Security\Voter\UserVoter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-class UserEditController extends SiteController
+final class UserEditController extends SiteController
 {
     private UserHandler $userHandler;
 
     private LoggerInterface $logger;
 
-    private RegisterUserRequestParser $registerUserRequestParser;
-
-    private UpdateUserRequestParser $updateUserRequestParser;
-
-    private UserService $userService;
+    private UserSaveRequestParser $userSaveRequestParser;
 
     public function __construct(
         UserHandler $userHandler,
         LoggerInterface $logger,
-        RegisterUserRequestParser $registerUserRequestParser,
-        UpdateUserRequestParser $updateUserRequestParser,
-        UserService $userService
+        UserSaveRequestParser $userSaveRequestParser,
     ) {
         $this->userHandler = $userHandler;
         $this->logger = $logger;
-        $this->registerUserRequestParser = $registerUserRequestParser;
-        $this->updateUserRequestParser = $updateUserRequestParser;
-        $this->userService = $userService;
+        $this->userSaveRequestParser = $userSaveRequestParser;
     }
 
     #[Route('/api/add-new-user', name: 'site_registration_post', methods: ['POST'])]
     public function addNewUser(
-        ?RegisterUserRequest $dto = null,
+        #[MapRequestPayload(acceptFormat: 'form', validationGroups: ['Default', 'register'])] UserSaveRequest $dto,
     ): JsonResponse {
-        if (null === $dto) {
-            return $this->json(['msg' => MessageConstants::EMPTY_REQUEST], Response::HTTP_BAD_REQUEST);
-        }
-
         try {
-            $data = $this->registerUserRequestParser->toArray($dto);
+            $data = $this->userSaveRequestParser->toRegistrationArray($dto);
 
             $userResponse = $this->userHandler->insertUser($data);
 
@@ -75,15 +65,27 @@ class UserEditController extends SiteController
     }
 
     public function updateUserAction(
-        int $id,
-        UpdateUserRequest $dto,
+        #[MapEntity(id: 'id')] User $user,
+        #[MapRequestPayload(validationGroups: ['Default', 'update'])] UserSaveRequest $dto,
     ): JsonResponse {
-        $data = $this->updateUserRequestParser->toArray($dto);
+        $this->denyAccessUnlessGranted(UserVoter::EDIT, $user);
 
-        $userResponse = $this->userService->setUpUser($data, $id);
-        $userResponse['id'] = $id;
+        try {
+            $user = $this->userSaveRequestParser->parse($dto, $user);
+            $this->userHandler->saveUser($user);
 
-        return $this->json($userResponse);
+            return $this->json(['ok' => true, 'id' => $user->getId()]);
+        } catch (\Throwable $throwable) {
+            $this->logger->error(
+                'Unable to update user',
+                [
+                    'id' => $user->getId(),
+                    'exception' => $throwable,
+                ]
+            );
+
+            return $this->json(['msg' => MessageConstants::EMPTY_REQUEST], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     #[Route('/aktivacija-naloga/{id}', name: 'site_activate_registration', methods: ['GET'], requirements: ['id' => '\d+'])]

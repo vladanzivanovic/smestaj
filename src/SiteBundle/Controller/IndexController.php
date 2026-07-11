@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Controller;
 
 use SiteBundle\Dto\Index\IndexRequest;
@@ -15,7 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class IndexController extends AbstractController
+final class IndexController extends AbstractController
 {
     private AdsRepository $adsRepository;
     private CityRepository $cityRepository;

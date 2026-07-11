@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services\Ads;
 
 use Doctrine\ORM\EntityManager;
@@ -11,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 /**
  * @deprecated
  */
-class AdsTagService
+final class AdsTagService
 {
     private $adshastagsRepository;
 

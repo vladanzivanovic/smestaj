@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SiteBundle\Services;
 
 use Doctrine\Persistence\ObjectManager;
@@ -15,7 +17,7 @@ use SiteBundle\Repository\UserRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserService extends ServiceContainer
+final class UserService extends ServiceContainer
 {
     protected $userHandler;
     protected $email;
@@ -57,7 +59,7 @@ class UserService extends ServiceContainer
      * @param User $user
      * @return bool|null|string
      */
-    public function activateRegistration($user)
+    public function activateRegistration(User $user): bool|string|null
     {
 
         $userResponse = 'already_register';

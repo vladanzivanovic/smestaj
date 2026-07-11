@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -9,7 +10,7 @@
 namespace SiteBundle\Validators\ValidatorConstants;
 
 
-class UserFieldsConstants
+final class UserFieldsConstants
 {
     const NUMERIC_REGEX = '/^[\p{Latin}[A-ž0-9]+$/m';
     const EMAIL_REGEX = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';

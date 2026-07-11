@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SiteBundle\View;
 
-class AdPriceView
+final class AdPriceView
 {
     public function view(int $fromPrice, int $toPrice): array
     {

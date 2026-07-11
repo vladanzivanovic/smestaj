@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace SiteBundle\Parser;
 
+use SiteBundle\Dto\Ads\AdsListRequest;
+use SiteBundle\Dto\Ads\AdsSearchCriteria;
+use SiteBundle\Entity\Ads;
+use SiteBundle\Entity\City;
 use SiteBundle\Repository\AdsRepository;
 use SiteBundle\Repository\CityRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -20,16 +24,20 @@ final class SearchDataParser
 
     private AdsRepository $adsRepository;
 
+    private AdsListRequestParser $adsListRequestParser;
+
     public function __construct(
         TranslatorInterface $translator,
         ParameterBagInterface $bag,
         CityRepository $cityRepository,
-        AdsRepository $adsRepository
+        AdsRepository $adsRepository,
+        AdsListRequestParser $adsListRequestParser
     ) {
         $this->translator = $translator;
         $this->bag = $bag;
         $this->cityRepository = $cityRepository;
         $this->adsRepository = $adsRepository;
+        $this->adsListRequestParser = $adsListRequestParser;
     }
 
     public function parse(string $data): ParameterBag
@@ -58,17 +66,18 @@ final class SearchDataParser
         return new ParameterBag(array_combine($filters, $criteria));
     }
 
-    public function parseSearch(?ParameterBag $bag, ?string $extraParams): array
+    /**
+     * @return array{page:int, searchData:array<string, mixed>, city:?City, ad:?Ads}
+     */
+    public function parseSearch(?AdsListRequest $dto, ?string $extraParams): array
     {
-        $currentPage = 1;
+        $criteria = null === $dto ? new AdsSearchCriteria() : $this->adsListRequestParser->parse($dto);
+
+        $currentPage = $criteria->page ?? 1;
         $city = null;
         $ad = null;
         $searchData = [];
         $sortMapper = $this->bag->get('shop')['sort_mapping'];
-
-        if ($bag->has('stranica')) {
-            $currentPage = $bag->getInt('stranica');
-        }
 
         if (null !== $extraParams) {
             $extraParamsArray = explode('/', $extraParams);
@@ -80,16 +89,36 @@ final class SearchDataParser
             }
         }
 
-        foreach ($bag->all() as $filter => $items) {
-            $filterTrans = $this->translator->trans($filter, [], 'messages', 'en');
+        if (count($criteria->tags) > 0) {
+            $searchData['tags'] = $criteria->tags;
+        }
 
-            if ($filterTrans !== 'page') {
-                $searchData[$filterTrans] = $items;
-            }
+        if (count($criteria->city) > 0) {
+            $searchData['city'] = $criteria->city;
+        }
 
-            if ($filterTrans === 'sort') {
-                $sort = $this->translator->trans($items, [], 'messages', 'rs');
-                $searchData['orderBy'] = $sortMapper[$sort];
+        if (count($criteria->categories) > 0) {
+            $searchData['categories'] = $criteria->categories;
+        }
+
+        if (count($criteria->size) > 0) {
+            $searchData['size'] = $criteria->size;
+        }
+
+        if (count($criteria->color) > 0) {
+            $searchData['color'] = $criteria->color;
+        }
+
+        if (count($criteria->price) > 0) {
+            $searchData['price'] = $criteria->price;
+        }
+
+        if (null !== $criteria->sort) {
+            $searchData['sort'] = $criteria->sort;
+            $sortKey = $this->translator->trans($criteria->sort, [], 'messages', 'rs');
+
+            if (true === isset($sortMapper[$sortKey])) {
+                $searchData['orderBy'] = $sortMapper[$sortKey];
             }
         }
 

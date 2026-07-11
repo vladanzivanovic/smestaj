@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AdminBundle\Model;
 
-class DataTableColumnModel
+final class DataTableColumnModel
 {
     private string $data;
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: vlada
@@ -11,7 +12,7 @@ namespace SiteBundle\Helper;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class AppHelper
+final class AppHelper
 {
     private $request;
     private $environment;
