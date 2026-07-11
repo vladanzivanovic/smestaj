@@ -74,7 +74,7 @@ final class SendReservationRequest
     public ?string $note = null;
 
     #[Assert\NotBlank]
-    public string $adultnumber = '';
+    public int $adultnumber = 0;
 
     public ?string $childrennumber = null;
 
@@ -85,5 +85,5 @@ final class SendReservationRequest
     public string $checkout = '';
 
     #[Assert\NotBlank]
-    public ?string $notificationtype = null;
+    public ?int $notificationtype = null;
 }

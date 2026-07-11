@@ -51,6 +51,7 @@ final class ReservationEditController extends SiteController
 
             return $this->json(['reservation_id' => $reservation->getId()]);
         } catch (\Throwable $throwable) {
+            dd($throwable);
             $this->logger->error(
                 'Reservation failed',
                 [
